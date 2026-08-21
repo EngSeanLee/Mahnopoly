@@ -7,14 +7,21 @@
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+<script>
+  // Demo-only gate: redirects back to the login screen unless the fake
+  // credentials were just entered. Not real authentication — see README.
+  if (sessionStorage.getItem("mahnopoly_demo_admin") !== "1") {
+    window.location.replace("admin-login.html");
+  }
+</script>
 
 <div class="mockup-banner">
-  <strong>Draft mockup</strong> — this is what staff would see, not the public site. No real login, and nothing here saves.
+  <strong>Draft mockup</strong> — this is what staff would see, not the public site. The sign-in is a demo gate, not real security, and nothing here saves.
 </div>
 
 <div class="admin-header">
   <div class="title">Mahnopoly admin</div>
-  <div>Signed in as William <span class="ph-icon" style="border-color:#cfd6ea;"></span></div>
+  <div>Signed in as William &middot; <button class="logout-link" id="logout-btn">Log out</button></div>
 </div>
 
 <div class="admin-wrap">

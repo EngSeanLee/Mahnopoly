@@ -143,6 +143,39 @@ function renderPropertyPage() {
   });
 }
 
+// Demo-only credentials for the mockup's admin sign-in. There is no real
+// account system behind this — it's a client-side check so the review
+// flow feels real, and it's fully visible to anyone who views the page
+// source. Do not reuse this pattern once the real site is built.
+const ADMIN_DEMO_USER = "william";
+const ADMIN_DEMO_PASS = "mahnopoly2026";
+
+function initAdminLogin() {
+  const form = document.getElementById("login-form");
+  if (!form) return;
+  const errorEl = document.getElementById("login-error");
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const user = document.getElementById("login-user").value.trim().toLowerCase();
+    const pass = document.getElementById("login-pass").value;
+    if (user === ADMIN_DEMO_USER && pass === ADMIN_DEMO_PASS) {
+      sessionStorage.setItem("mahnopoly_demo_admin", "1");
+      window.location.href = "admin.html";
+    } else {
+      errorEl.style.display = "block";
+    }
+  });
+}
+
+function initAdminLogout() {
+  const btn = document.getElementById("logout-btn");
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    sessionStorage.removeItem("mahnopoly_demo_admin");
+    window.location.href = "admin-login.html";
+  });
+}
+
 function initAdminForm() {
   const openBtn = document.getElementById("add-property-btn");
   const panel = document.getElementById("add-property-panel");
@@ -167,5 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderHomeListings();
   renderListingsPage();
   renderPropertyPage();
+  initAdminLogin();
+  initAdminLogout();
   initAdminForm();
 });

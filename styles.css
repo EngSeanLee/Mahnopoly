@@ -405,6 +405,62 @@ table.admin-table td.edit-cell { text-align: right; color: var(--navy); font-wei
   font-weight: 600;
 }
 
+/* Admin login */
+.login-wrap {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem;
+}
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 2rem 1.75rem;
+}
+.login-card h1 {
+  font-size: 1.3rem;
+  margin: 0.25rem 0 1.25rem;
+  text-align: center;
+}
+.login-demo-hint {
+  background: var(--cream);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  color: var(--ink);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.login-demo-hint code {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.1rem 0.35rem;
+  font-family: Consolas, Menlo, monospace;
+}
+.login-error {
+  display: none;
+  background: #fbe4e4;
+  color: #9a1f1f;
+  border-radius: 6px;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+.logout-link {
+  color: #cfd6ea;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  text-decoration: underline;
+}
+.logout-link:hover { color: #fff; }
+
 .settings-note {
   background: var(--cream);
   border-radius: 8px;

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mahnopoly — Staff sign in</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="mockup-banner">
+  <strong>Draft mockup</strong> — this login is for the demo only. It checks a fake password in the page's own code, not a real account system.
+</div>
+
+<header class="site-header">
+  <div class="brand">
+    <div class="brand-name"><span class="mah">MAH</span><span class="nopoly">NOPOLY</span></div>
+    <div class="brand-tag">Properties for sale or rent</div>
+  </div>
+</header>
+
+<div class="login-wrap">
+  <div class="login-card">
+    <h1>Staff sign in</h1>
+
+    <div class="login-demo-hint">
+      Demo login for review &mdash; username <code>william</code>, password <code>mahnopoly2026</code>
+    </div>
+
+    <div class="login-error" id="login-error">That username or password doesn't match the demo login above.</div>
+
+    <form id="login-form">
+      <div class="form-row">
+        <label for="login-user">Username</label>
+        <input id="login-user" type="text" placeholder="william" autocomplete="username" />
+      </div>
+      <div class="form-row">
+        <label for="login-pass">Password</label>
+        <input id="login-pass" type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" autocomplete="current-password" />
+      </div>
+      <button type="submit" class="btn btn-navy" style="width:100%;">Sign in</button>
+    </form>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
