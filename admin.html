@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mahnopoly — Admin (staff only, for review)</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="mockup-banner">
+  <strong>Draft mockup</strong> — this is what staff would see, not the public site. No real login, and nothing here saves.
+</div>
+
+<div class="admin-header">
+  <div class="title">Mahnopoly admin</div>
+  <div>Signed in as William <span class="ph-icon" style="border-color:#cfd6ea;"></span></div>
+</div>
+
+<div class="admin-wrap">
+  <div class="stat-row">
+    <div class="stat-card"><div class="label">Rentals listed</div><div class="value">3</div></div>
+    <div class="stat-card"><div class="label">Available</div><div class="value green">3</div></div>
+    <div class="stat-card"><div class="label">For sale</div><div class="value">2</div></div>
+    <div class="stat-card"><div class="label">New inquiries</div><div class="value accent">7</div></div>
+  </div>
+
+  <div class="admin-tabs">
+    <div class="tabgroup">
+      <button class="tab active">All properties</button>
+      <button class="tab">Inquiries</button>
+      <button class="tab">Users</button>
+    </div>
+    <div class="admin-actions">
+      <button class="btn btn-navy" id="add-property-btn">+ Add property</button>
+      <span class="admin-save-note" id="admin-save-note"></span>
+    </div>
+  </div>
+
+  <table class="admin-table">
+    <thead>
+      <tr><th>Address</th><th>Type</th><th>Price</th><th>Status</th><th></th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1412 SW Clay St</td><td>Rental</td><td>$1,150/mo</td>
+        <td><span class="status-badge status-available">Available</span></td>
+        <td class="edit-cell">Edit</td>
+      </tr>
+      <tr>
+        <td>2208 SE Indiana Ave</td><td>Rental</td><td>$875/mo</td>
+        <td><span class="status-badge status-rented">Rented</span></td>
+        <td class="edit-cell">Edit</td>
+      </tr>
+      <tr>
+        <td>905 NW Lyman Rd</td><td>For sale</td><td>$189,900</td>
+        <td><span class="status-badge status-pending">Pending</span></td>
+        <td class="edit-cell">Edit</td>
+      </tr>
+      <tr>
+        <td>3317 SW Burlingame Rd</td><td>Rental</td><td>$1,400/mo</td>
+        <td><span class="status-badge status-available">Available</span></td>
+        <td class="edit-cell">Edit</td>
+      </tr>
+      <tr>
+        <td>1725 SW MacVicar Ave</td><td>For sale</td><td>$214,500</td>
+        <td><span class="status-badge status-available">Available</span></td>
+        <td class="edit-cell">Edit</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="settings-note">
+    <strong>Settings (not shown in this mockup):</strong> a separate panel lets staff edit the tenant portal link, maintenance link, office address, phone, and hours — and turn the tenant buttons on the home page on or off — without any code changes.
+  </div>
+
+  <div class="add-property-panel" id="add-property-panel">
+    <h3>Adding a property — the whole form, one screen</h3>
+    <div class="two-col">
+      <div class="form-row">
+        <label>Street address</label>
+        <input type="text" placeholder="1412 SW Clay St" />
+      </div>
+      <div class="form-row">
+        <label>Rent or sale</label>
+        <select>
+          <option>Rental</option>
+          <option>For sale</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Price</label>
+        <input type="text" placeholder="$1,150" />
+      </div>
+      <div class="form-row">
+        <label>Available date</label>
+        <input type="text" placeholder="Sept 1" />
+      </div>
+      <div class="form-row">
+        <label>Beds / baths</label>
+        <input type="text" placeholder="3 / 2" />
+      </div>
+      <div class="form-row">
+        <label>Pets</label>
+        <select>
+          <option>No pets</option>
+          <option>Cats only</option>
+          <option>Dogs &amp; cats ok</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Photos</label>
+      <div class="dropzone">Drag photos here, or tap to pick from your phone</div>
+    </div>
+    <div class="admin-actions">
+      <button class="btn btn-navy" id="publish-btn">Publish to site</button>
+      <button class="btn btn-outline" id="draft-btn">Save as draft</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mahnopoly — Property detail</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="mockup-banner">
+  <strong>Draft mockup</strong> — sample look &amp; feel only. Addresses, prices, and photos are placeholders. Nothing here saves or sends.
+</div>
+
+<header class="site-header">
+  <div class="brand">
+    <div class="brand-name"><span class="mah">MAH</span><span class="nopoly">NOPOLY</span></div>
+    <div class="brand-tag">Properties for sale or rent</div>
+  </div>
+  <nav class="main-nav">
+    <a class="nav-link" href="index.html">Home</a>
+    <a class="nav-link" href="listings.html?tab=rent">For rent</a>
+    <a class="nav-link" href="listings.html?tab=sale">For sale</a>
+    <a class="nav-link" href="index.html#about">About</a>
+    <a class="nav-link" href="index.html#contact">Contact</a>
+  </nav>
+  <a class="phone-btn" href="tel:7859256505">785.925.6505</a>
+</header>
+
+<div class="property-wrap" id="property-detail">
+  <div class="gallery">
+    <div class="photo-placeholder big"><span class="ph-icon"></span> main photo</div>
+    <div class="thumb-col">
+      <div class="photo-placeholder"><span class="ph-icon"></span> photo</div>
+      <div class="photo-placeholder"><span class="ph-icon"></span> photo</div>
+    </div>
+  </div>
+
+  <div class="property-header">
+    <div>
+      <h1 class="addr" id="prop-address">&nbsp;</h1>
+      <div id="prop-status"></div>
+    </div>
+    <div class="price-big" id="prop-price"></div>
+  </div>
+
+  <div class="property-facts">
+    <div><strong id="prop-beds"></strong> bed</div>
+    <div><strong id="prop-baths"></strong> bath</div>
+    <div><span id="prop-neighborhood"></span></div>
+    <div>Pets: <span id="prop-pets"></span></div>
+    <div>Available: <span id="prop-available"></span></div>
+  </div>
+
+  <div class="detail-grid">
+    <div>
+      <h3>About this property</h3>
+      <p style="color:#6b7280;">Placeholder description — the real listing copy (layout, updates, what's nearby) will go here once William sends over the details for each property.</p>
+    </div>
+
+    <div class="inquiry-box">
+      <h3>Ask about this property</h3>
+      <form id="inquiry-form">
+        <div class="form-row">
+          <label for="name">Name</label>
+          <input id="name" type="text" placeholder="Jane Smith" required />
+        </div>
+        <div class="form-row">
+          <label for="contact">Phone or email</label>
+          <input id="contact" type="text" placeholder="jane@example.com" required />
+        </div>
+        <div class="form-row">
+          <label for="movein">Move-in date (if renting)</label>
+          <input id="movein" type="text" placeholder="Sept 1" />
+        </div>
+        <div class="form-row">
+          <label for="pets">Pet situation</label>
+          <input id="pets" type="text" placeholder="One cat, no dogs" />
+        </div>
+        <div class="form-row">
+          <label for="message">Message</label>
+          <textarea id="message" rows="3" placeholder="I'd like to schedule a showing..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-navy" style="width:100%;">Send inquiry</button>
+      </form>
+      <div class="form-success" id="inquiry-success">
+        Thanks — in the real site this would save your message and email the office right away.
+      </div>
+      <div class="form-note">This is a preview form. Nothing is saved or sent.</div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div>
+    <div class="foot-name">Mahnopoly LLC</div>
+    <div class="foot-meta">Office address &middot; Topeka, KS &middot; Mon&ndash;Fri hours</div>
+  </div>
+  <div class="foot-phone">785.925.6505</div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
