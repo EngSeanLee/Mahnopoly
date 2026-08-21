@@ -71,6 +71,13 @@ nav.main-nav a.nav-link {
   color: var(--ink);
 }
 nav.main-nav a.nav-link:hover { color: var(--navy); }
+nav.main-nav a.nav-staff {
+  font-size: 0.85rem;
+  color: var(--gray);
+  border-left: 1px solid var(--border);
+  padding-left: 1.75rem;
+}
+nav.main-nav a.nav-staff:hover { color: var(--navy); }
 .phone-btn {
   background: var(--red);
   color: #fff;
