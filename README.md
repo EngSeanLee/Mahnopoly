@@ -10,10 +10,12 @@ reference) once this build is finished and approved.
 - **What William reviews today:** https://mahnopoly.vercel.app — the
   static clickable mockup (`mockup-review/`), not the real build below.
 - **The real build, in progress:** preview deployment, currently
-  https://mahnopoly-me2si17cy-lee-ai-solutions.vercel.app — requires
-  being logged into the `lee-ai-solutions` Vercel team to view (Vercel's
-  own SSO wall on non-custom-domain URLs, not something this app added).
-  This URL changes on redeploy; get the current one with `vercel ls` or
+  https://mahnopoly-luj7cyphe-lee-ai-solutions.vercel.app — requires
+  being logged into the `lee-ai-solutions` Vercel team (eng.lee785@gmail.com)
+  in your browser to view (Vercel's own SSO wall on non-custom-domain
+  URLs, not something this app added — you'll get redirected to a Vercel
+  login page if you're not signed in there). This URL changes on
+  redeploy; get the current one with `vercel ls` or
   the Vercel dashboard if this one goes stale.
 
 **Status: in progress.** The public pages (home, listings, a property page,
