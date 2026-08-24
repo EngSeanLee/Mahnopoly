@@ -5,10 +5,11 @@ and for-sale listings and lets visitors send an inquiry on any property.
 It replaces the clickable draft in `mockup-review/` (kept there for
 reference) once this build is finished and approved.
 
-**Status: in progress.** The pages you can click through today (home,
-listings, a property page, and the inquiry form) run on placeholder
-addresses and prices — nothing is saved yet, because the real database
-(Supabase) hasn't been created. See "What's left" below.
+**Status: in progress.** The public pages (home, listings, a property page,
+and the inquiry form) work end to end against a real Supabase project and
+Resend — an inquiry submitted locally saves to the database and emails the
+office. Listing data itself is still the placeholder set in
+`src/lib/listings.ts`, not read from Supabase yet. See "What's left" below.
 
 ## What this is, in plain terms
 
@@ -61,16 +62,22 @@ it's gitignored on purpose.
 
 ## What's left before this can go live
 
-1. Supabase project created, schema applied (`supabase/schema.sql`), and
-   `.env.local` filled in — this is what makes listings, inquiries, and
-   the admin panel actually save data.
-2. Resend account created and wired in, so inquiry emails send.
-3. Staff admin panel (add/edit listings, photo upload, real login via
+1. ~~Supabase project created, schema applied, `.env.local` filled in~~ —
+   done. ~~Resend wired in~~ — done; currently sends from Resend's shared
+   sandbox address (`onboarding@resend.dev`) to a placeholder inbox
+   (`leeaisolutions@gmail.com`), which only works because Resend's sandbox
+   mode restricts sending to the account's own address until a domain is
+   verified. Switching `OFFICE_NOTIFICATION_EMAIL` to the real office
+   inbox and verifying a real domain in Resend (so mail sends from
+   something like `inquiries@mahnopoly...com` instead) is a tracked
+   action item, not forgotten.
+2. Staff admin panel (add/edit listings, photo upload, real login via
    Supabase Auth — not the mockup's fake password).
-4. Real listing content and photos from William, replacing the placeholder
-   data in `src/lib/listings.ts`.
-5. A domain, pointed at this deployment.
-6. Automated tests for the inquiry save-then-email path.
+3. Switch `src/lib/listings.ts` to read from the `listings` table instead
+   of the hardcoded array, once real listing content and photos come in
+   from William.
+4. A domain, pointed at this deployment.
+5. Automated tests for the inquiry save-then-email path.
 
 ## If something breaks
 

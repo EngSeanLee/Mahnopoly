@@ -21,7 +21,11 @@ export async function notifyOfficeOfInquiry(details: {
 
   try {
     const resend = new Resend(apiKey);
-    await resend.emails.send({
+    // The SDK does NOT throw for API-level rejections (unverified domain,
+    // invalid sender, etc.) — it resolves normally with `error` set. Only
+    // network-level failures throw. Checking `error` here was the missing
+    // piece; without it this always reported success.
+    const { data, error } = await resend.emails.send({
       from: "Mahnopoly Website <onboarding@resend.dev>",
       to: officeEmail,
       subject: `New inquiry: ${details.listingAddress}`,
@@ -34,9 +38,14 @@ export async function notifyOfficeOfInquiry(details: {
         details.message,
       ].join("\n"),
     });
+    if (error) {
+      console.error("notifyOfficeOfInquiry: Resend rejected the send", error);
+      return { sent: false };
+    }
+    console.log("notifyOfficeOfInquiry: sent", data?.id);
     return { sent: true };
   } catch (err) {
-    console.error("notifyOfficeOfInquiry: send failed", err);
+    console.error("notifyOfficeOfInquiry: send threw", err);
     return { sent: false };
   }
 }
