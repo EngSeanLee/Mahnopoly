@@ -185,8 +185,14 @@ function initAdminForm() {
     panel.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
+  function closePanel() {
+    panel.classList.remove("open");
+    openBtn.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   const publishBtn = document.getElementById("publish-btn");
   const draftBtn = document.getElementById("draft-btn");
+  const cancelBtn = document.getElementById("cancel-btn");
   const note = document.getElementById("admin-save-note");
   function showNote(text) {
     note.textContent = text;
@@ -194,6 +200,31 @@ function initAdminForm() {
   }
   publishBtn.addEventListener("click", () => showNote("Preview only — this would publish to the live site."));
   draftBtn.addEventListener("click", () => showNote("Preview only — this would save as a draft."));
+  cancelBtn.addEventListener("click", closePanel);
+}
+
+function initAdminTabs() {
+  const propertiesBtn = document.getElementById("tab-properties-btn");
+  const portalBtn = document.getElementById("tab-portal-btn");
+  const propertiesPanel = document.getElementById("properties-panel");
+  const portalPanel = document.getElementById("portal-panel");
+  if (!propertiesBtn || !portalBtn || !propertiesPanel || !portalPanel) return;
+
+  function showProperties() {
+    propertiesBtn.classList.add("active");
+    portalBtn.classList.remove("active");
+    propertiesPanel.style.display = "";
+    portalPanel.style.display = "none";
+  }
+  function showPortal() {
+    portalBtn.classList.add("active");
+    propertiesBtn.classList.remove("active");
+    propertiesPanel.style.display = "none";
+    portalPanel.style.display = "block";
+  }
+  propertiesBtn.addEventListener("click", showProperties);
+  portalBtn.addEventListener("click", showPortal);
+  // Inquiries and Users tabs are not wired up yet — same as before this change.
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -203,4 +234,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initAdminLogin();
   initAdminLogout();
   initAdminForm();
+  initAdminTabs();
 });

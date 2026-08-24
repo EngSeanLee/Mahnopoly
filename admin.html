@@ -34,9 +34,10 @@
 
   <div class="admin-tabs">
     <div class="tabgroup">
-      <button class="tab active">All properties</button>
+      <button class="tab active" id="tab-properties-btn">All properties</button>
       <button class="tab">Inquiries</button>
       <button class="tab">Users</button>
+      <button class="tab" id="tab-portal-btn">Tenant portal</button>
     </div>
     <div class="admin-actions">
       <button class="btn btn-navy" id="add-property-btn">+ Add property</button>
@@ -44,41 +45,48 @@
     </div>
   </div>
 
-  <table class="admin-table">
-    <thead>
-      <tr><th>Address</th><th>Type</th><th>Price</th><th>Status</th><th></th></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>1412 SW Clay St</td><td>Rental</td><td>$1,150/mo</td>
-        <td><span class="status-badge status-available">Available</span></td>
-        <td class="edit-cell">Edit</td>
-      </tr>
-      <tr>
-        <td>2208 SE Indiana Ave</td><td>Rental</td><td>$875/mo</td>
-        <td><span class="status-badge status-rented">Rented</span></td>
-        <td class="edit-cell">Edit</td>
-      </tr>
-      <tr>
-        <td>905 NW Lyman Rd</td><td>For sale</td><td>$189,900</td>
-        <td><span class="status-badge status-pending">Pending</span></td>
-        <td class="edit-cell">Edit</td>
-      </tr>
-      <tr>
-        <td>3317 SW Burlingame Rd</td><td>Rental</td><td>$1,400/mo</td>
-        <td><span class="status-badge status-available">Available</span></td>
-        <td class="edit-cell">Edit</td>
-      </tr>
-      <tr>
-        <td>1725 SW MacVicar Ave</td><td>For sale</td><td>$214,500</td>
-        <td><span class="status-badge status-available">Available</span></td>
-        <td class="edit-cell">Edit</td>
-      </tr>
-    </tbody>
-  </table>
+  <div id="properties-panel">
+    <table class="admin-table">
+      <thead>
+        <tr><th>Address</th><th>Type</th><th>Price</th><th>Status</th><th></th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1412 SW Clay St</td><td>Rental</td><td>$1,150/mo</td>
+          <td><span class="status-badge status-available">Available</span></td>
+          <td class="edit-cell">Edit</td>
+        </tr>
+        <tr>
+          <td>2208 SE Indiana Ave</td><td>Rental</td><td>$875/mo</td>
+          <td><span class="status-badge status-rented">Rented</span></td>
+          <td class="edit-cell">Edit</td>
+        </tr>
+        <tr>
+          <td>905 NW Lyman Rd</td><td>For sale</td><td>$189,900</td>
+          <td><span class="status-badge status-pending">Pending</span></td>
+          <td class="edit-cell">Edit</td>
+        </tr>
+        <tr>
+          <td>3317 SW Burlingame Rd</td><td>Rental</td><td>$1,400/mo</td>
+          <td><span class="status-badge status-available">Available</span></td>
+          <td class="edit-cell">Edit</td>
+        </tr>
+        <tr>
+          <td>1725 SW MacVicar Ave</td><td>For sale</td><td>$214,500</td>
+          <td><span class="status-badge status-available">Available</span></td>
+          <td class="edit-cell">Edit</td>
+        </tr>
+      </tbody>
+    </table>
 
-  <div class="settings-note">
-    <strong>Settings (not shown in this mockup):</strong> a separate panel lets staff edit the tenant portal link, maintenance link, office address, phone, and hours — and turn the tenant buttons on the home page on or off — without any code changes.
+    <div class="settings-note">
+      <strong>Settings (not shown in this mockup):</strong> a separate panel lets staff edit the tenant portal link, maintenance link, office address, phone, and hours — and turn the tenant buttons on the home page on or off — without any code changes.
+    </div>
+  </div>
+
+  <div id="portal-panel" class="construction-note" style="display:none;">
+    <h3>Tenant portal</h3>
+    <p><strong>Under construction.</strong> This tab will hold the tenant portal link once William picks a Phase 2 property-management platform (per the project plan). Staff will paste that link in here — no developer or redeploy needed to change it. No rent payments or tenant financial data are handled by this site; that stays with the licensed platform.</p>
   </div>
 
   <div class="add-property-panel" id="add-property-panel">
@@ -121,6 +129,7 @@
       <div class="dropzone">Drag photos here, or tap to pick from your phone</div>
     </div>
     <div class="admin-actions">
+      <button class="btn btn-outline" id="cancel-btn">Cancel</button>
       <button class="btn btn-navy" id="publish-btn">Publish to site</button>
       <button class="btn btn-outline" id="draft-btn">Save as draft</button>
     </div>
