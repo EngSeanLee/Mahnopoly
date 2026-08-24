@@ -1,6 +1,6 @@
 "use server";
 
-import { getSupabaseServerClient } from "@/lib/supabase";
+import { getSupabasePublicClient } from "@/lib/supabase/public";
 import { notifyOfficeOfInquiry } from "@/lib/notify";
 
 export type InquiryResult =
@@ -23,7 +23,7 @@ export async function submitInquiry(
     return { ok: false, error: "Name and email are required." };
   }
 
-  const supabase = getSupabaseServerClient();
+  const supabase = getSupabasePublicClient();
   if (!supabase) {
     // No Supabase project wired up yet — this is expected until the
     // account from docs/plan.md exists. Fail loudly in dev rather than

@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { getListings } from "@/lib/listings";
+import { getSettings } from "@/lib/settings";
 import ListingCard from "@/components/ListingCard";
 import PhotoPlaceholder from "@/components/PhotoPlaceholder";
 
 export default async function Home() {
-  const listings = await getListings();
+  const [listings, settings] = await Promise.all([getListings(), getSettings()]);
   const featured = listings.filter((l) => l.status !== "rented").slice(0, 4);
 
   return (
@@ -32,11 +33,20 @@ export default async function Home() {
           <h3>Looking to buy</h3>
           <p>See what&apos;s on the market</p>
         </Link>
-        <Link className="path-card tenant" href="/#contact">
-          <span className="dot" />
-          <h3>Already a tenant</h3>
-          <p>Get in touch with the office</p>
-        </Link>
+        {settings.showTenantButtons && (
+          <Link
+            className="path-card tenant"
+            href={settings.tenantPortalUrl || "/#contact"}
+          >
+            <span className="dot" />
+            <h3>Already a tenant</h3>
+            <p>
+              {settings.tenantPortalUrl
+                ? "Pay rent or submit a request"
+                : "Get in touch with the office"}
+            </p>
+          </Link>
+        )}
       </div>
 
       <div className="section-row">

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { submitInquiry } from "@/app/listings/[id]/actions";
+import { submitInquiry } from "@/app/(site)/listings/[id]/actions";
 
 export default function InquiryForm({
   listingId,

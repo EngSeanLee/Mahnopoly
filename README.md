@@ -7,16 +7,22 @@ reference) once this build is finished and approved.
 
 **Status: in progress.** The public pages (home, listings, a property page,
 and the inquiry form) work end to end against a real Supabase project and
-Resend — an inquiry submitted locally saves to the database and emails the
-office. Listing data itself is still the placeholder set in
-`src/lib/listings.ts`, not read from Supabase yet. See "What's left" below.
+Resend, reading real listing and settings data from the database. The
+staff admin panel (`/admin`) is built — real Supabase Auth login, add/
+edit/delete listings, view inquiries, edit settings — but not yet tested
+against a real login, since creating that first staff account needs to
+happen in the Supabase dashboard (see "What's left"). See that section for
+what's still not done.
 
 ## What this is, in plain terms
 
 A public website with:
 - A home page and a listings page (rentals and for-sale, filterable).
 - A page per property with photos-to-be and an inquiry form.
-- (Coming) A staff-only admin panel to add/edit listings and see inquiries.
+- A staff-only admin panel (`/admin`, real login required) to add/edit/
+  remove listings, view inquiries, and edit the settings that control the
+  tenant portal link and office info — no code changes needed for any of
+  that day to day.
 
 The full plan — scope, what's explicitly excluded, and why the pieces were
 chosen — is in `docs/plan.md`.
@@ -71,11 +77,19 @@ it's gitignored on purpose.
    inbox and verifying a real domain in Resend (so mail sends from
    something like `inquiries@mahnopoly...com` instead) is a tracked
    action item, not forgotten.
-2. Staff admin panel (add/edit listings, photo upload, real login via
-   Supabase Auth — not the mockup's fake password).
-3. Switch `src/lib/listings.ts` to read from the `listings` table instead
-   of the hardcoded array, once real listing content and photos come in
-   from William.
+2. ~~Staff admin panel~~ — built (`/admin`): listings CRUD, inquiries view,
+   settings editor, real Supabase Auth login (no more mockup fake
+   password). Not yet tested against a real login — creating the first
+   staff account has to happen manually in Supabase (Authentication >
+   Users > Add user), since that needs the project's admin dashboard, not
+   anything the app's own keys can do. **Photo upload is still a
+   placeholder** — the listing form takes pasted photo URLs, not
+   drag-and-drop upload to Supabase Storage; that's a distinct follow-up
+   piece of work, not done here.
+3. ~~Switch `src/lib/listings.ts` to read from the `listings` table~~ —
+   done, along with `src/lib/settings.ts` for the tenant portal
+   link/office info. Real listing content and photos from William still
+   need to replace what's currently seeded (`supabase/seed.sql`).
 4. A domain, pointed at this deployment.
 5. Automated tests for the inquiry save-then-email path.
 
