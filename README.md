@@ -49,6 +49,18 @@ browse the public pages locally — it falls back to placeholder data if
 `.env.local` isn't set up. The admin panel needs real Supabase credentials
 either way (see "Environment variables").
 
+## Running tests
+
+```
+npm test
+```
+
+Runs the inquiry-flow logic tests (mocked Supabase/Resend, no real
+project needed). Separately, `npm run test:rls` checks row-level security
+against the *real* Supabase project using only the public key — needs
+`.env.local` filled in, and leaves one harmless test inquiry behind each
+run (visible in `/admin`, clearly labeled).
+
 ## Deploying
 
 Deploys are **manual only**, on purpose: `vercel deploy` for a preview,
@@ -140,7 +152,18 @@ set in Vercel too (`vercel env add <NAME> preview`) — they don't inherit
 5. When the real build is ready to go live: promote a deployment to
    production (`vercel deploy --prod`), point the domain at it, and only
    then consider reconnecting GitHub auto-deploy if that's still wanted.
-6. Automated tests for the inquiry save-then-email path.
+6. ~~Automated tests for the inquiry save-then-email path~~ — done
+   (`npm test`): covers validation, the save-fails case, the
+   email-fails-but-lead-still-saves case (the exact bug class caught by
+   hand earlier — this is now a regression test, not just a memory), and
+   save-before-email ordering. Also added `npm run test:rls` —
+   `scripts/verify-rls.mjs`, a standalone script (no login, just the
+   public key, same access a real visitor has) that checks the actual
+   Supabase project: public can read listings/settings/photos and submit
+   inquiries, and is denied reading other people's inquiries, writing
+   listings, editing settings, or uploading photos. Satisfies
+   `docs/plan.md`'s "Definition of done" RLS-verification item — rerun
+   it any time the schema changes.
 
 ## If something breaks
 

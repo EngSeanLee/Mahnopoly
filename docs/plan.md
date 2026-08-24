@@ -111,10 +111,11 @@ drop-in alternatives) without touching the site's core.
 
 - All listing, inquiry, and admin flows work end to end on a production
   deployment, tested with real (or realistic placeholder) photos and data.
-- Automated tests cover the inquiry-save-then-email path, including the
-  case where email delivery fails and the lead still saves.
-- Row-level security is verified: a logged-out or non-staff request cannot
-  read or write admin-only data.
+- ✅ Automated tests cover the inquiry-save-then-email path, including the
+  case where email delivery fails and the lead still saves (`npm test`).
+- ✅ Row-level security is verified: a logged-out or non-staff request cannot
+  read or write admin-only data (`npm run test:rls`, against the real
+  project — see root README's "Running tests").
 - The settings-driven links (portal, maintenance, tenant button visibility)
   can be changed by staff through the admin panel with no code change or
   redeploy.
