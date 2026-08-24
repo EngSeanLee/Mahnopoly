@@ -161,13 +161,13 @@ nav.main-nav a.nav-staff:hover { color: var(--navy); }
 }
 .path-card h3 { margin: 0.5rem 0 0.25rem; font-size: 1.1rem; }
 .path-card p { margin: 0; color: var(--gray); font-size: 0.9rem; }
-.path-card .dot {
-  width: 12px; height: 12px;
-  margin: 0 auto;
-  border: 2px solid var(--navy);
-  display: block;
+.path-card .icon {
+  display: flex;
+  justify-content: center;
+  color: var(--navy);
+  margin-bottom: 0.25rem;
 }
-.path-card.buy .dot { border-color: var(--red); }
+.path-card.buy .icon { color: var(--red); }
 
 /* Section heading row */
 .section-row {

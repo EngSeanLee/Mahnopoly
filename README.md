@@ -164,6 +164,26 @@ set in Vercel too (`vercel env add <NAME> preview`) — they don't inherit
    listings, editing settings, or uploading photos. Satisfies
    `docs/plan.md`'s "Definition of done" RLS-verification item — rerun
    it any time the schema changes.
+7. Appearance/UX pass: dedicated `/about` page (replaces the home page's
+   old inline section — content still placeholder, needs William's bio
+   and a real family photo), a real `/tenant-portal` "under construction"
+   page (the home page's "Already a tenant" card now always shows,
+   linking there until a real portal URL is set in Settings), icons on
+   the home page's rent/buy/tenant cards, a "back to the website" link on
+   the staff login page, and real office phone/address/hours (pulled
+   from William's Facebook page and Google listing — verify he confirms
+   these). Also added a self-serve "Forgot password?" flow
+   (`/admin/forgot-password` → emailed link → `/admin/reset-password`)
+   — the request side is verified working against the real project; the
+   full email-click round trip still needs a live human test, since
+   there's no inbox to check from here.
+8. Found and fixed a real bug while doing the above: `(site)/layout.tsx`
+   (Header/Footer, settings-driven) was capable of serving stale,
+   build-time-frozen data on some pages even after staff saved new
+   Settings — silently contradicting the "no code change or redeploy"
+   requirement. Now forced dynamic so every page under it reads fresh
+   data on every request; documented trade-off (gives up static-page
+   caching) in that file, reasonable given this site's traffic.
 
 ## If something breaks
 

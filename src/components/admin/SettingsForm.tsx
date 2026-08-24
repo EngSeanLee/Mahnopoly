@@ -36,17 +36,10 @@ export default function SettingsForm({ settings }: { settings: SiteSettings }) {
           defaultValue={settings.maintenanceRequestUrl}
           placeholder="https://…"
         />
-      </div>
-      <div className="form-row">
-        <label>
-          <input
-            name="showTenantButtons"
-            type="checkbox"
-            defaultChecked={settings.showTenantButtons}
-            style={{ width: "auto", marginRight: "0.5rem" }}
-          />
-          Show tenant portal / maintenance buttons on the home page
-        </label>
+        <p className="form-note">
+          The home page&apos;s &quot;Already a tenant&quot; button always shows.
+          It links here once set; until then it shows &quot;coming soon.&quot;
+        </p>
       </div>
       <div className="two-col">
         <div className="form-row">

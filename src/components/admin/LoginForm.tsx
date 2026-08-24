@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import { signIn } from "@/app/admin/login/actions";
 
 export default function LoginForm() {
@@ -36,6 +37,11 @@ export default function LoginForm() {
       <button className="btn btn-navy" type="submit" disabled={isPending} style={{ width: "100%" }}>
         {isPending ? "Signing in…" : "Sign in"}
       </button>
+      <p style={{ textAlign: "center", marginTop: "1rem" }}>
+        <Link href="/admin/forgot-password" style={{ color: "var(--gray)", fontSize: "0.85rem" }}>
+          Forgot your password?
+        </Link>
+      </p>
     </form>
   );
 }

@@ -36,16 +36,21 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const isLoginPage = request.nextUrl.pathname === "/admin/login";
+  // Public even while "logged out" — reset-password in particular has to
+  // be, since its recovery token typically arrives as a URL hash
+  // fragment the server never sees at all. Gating it here would redirect
+  // to /admin/login before the client-side recovery flow ever runs.
+  const publicAuthPaths = ["/admin/login", "/admin/forgot-password", "/admin/reset-password"];
+  const isPublicAuthPage = publicAuthPaths.includes(request.nextUrl.pathname);
   const isAdminRoute = request.nextUrl.pathname.startsWith("/admin");
 
-  if (isAdminRoute && !isLoginPage && !user) {
+  if (isAdminRoute && !isPublicAuthPage && !user) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/admin/login";
     return NextResponse.redirect(loginUrl);
   }
 
-  if (isLoginPage && user) {
+  if (request.nextUrl.pathname === "/admin/login" && user) {
     const adminUrl = request.nextUrl.clone();
     adminUrl.pathname = "/admin";
     return NextResponse.redirect(adminUrl);

@@ -4,18 +4,25 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 export interface SiteSettings {
   tenantPortalUrl: string;
   maintenanceRequestUrl: string;
+  // No longer drives any UI — the home page's tenant card always shows
+  // now (falls back to "coming soon" until tenantPortalUrl is set).
+  // Column stays in the DB/type to avoid an unnecessary migration; not
+  // exposed in the admin settings form anymore.
   showTenantButtons: boolean;
   officeAddress: string;
   officePhone: string;
   officeHours: string;
 }
 
+// Real values, matching William's Facebook business page — used both as
+// the fallback when Supabase isn't reachable and as the seed for the
+// settings row itself (see the update below).
 const FALLBACK_SETTINGS: SiteSettings = {
   tenantPortalUrl: "",
   maintenanceRequestUrl: "",
   showTenantButtons: false,
-  officeAddress: "Topeka, KS",
-  officePhone: "785.925.6505",
+  officeAddress: "504 SW 2nd Street, Topeka, KS 66603",
+  officePhone: "(785) 329-6344",
   officeHours: "Mon–Fri hours",
 };
 

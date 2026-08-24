@@ -3,7 +3,15 @@ import { getListings } from "@/lib/listings";
 import { getSettings } from "@/lib/settings";
 import ListingCard from "@/components/ListingCard";
 import PhotoPlaceholder from "@/components/PhotoPlaceholder";
+import { KeyIcon, HomeIcon, UserIcon } from "@/components/Icons";
 
+// This page stays statically generated (per docs/plan.md's "static
+// generation for the marketing pages") rather than force-dynamic —
+// freshness comes from on-demand revalidation instead: listing changes
+// already call revalidatePath("/") (see admin/listings/actions.ts), and
+// settings changes now call revalidatePath("/", "layout") (see
+// admin/settings/actions.ts), so both stay current without redeploying
+// and without giving up the caching/speed benefit of static rendering.
 export default async function Home() {
   const [listings, settings] = await Promise.all([getListings(), getSettings()]);
   const featured = listings.filter((l) => l.status !== "rented").slice(0, 4);
@@ -24,29 +32,27 @@ export default async function Home() {
 
       <div className="path-cards">
         <Link className="path-card rent" href="/listings?tab=rent">
-          <span className="dot" />
+          <span className="icon"><KeyIcon /></span>
           <h3>Looking to rent</h3>
           <p>Browse what&apos;s open now</p>
         </Link>
         <Link className="path-card buy" href="/listings?tab=sale">
-          <span className="dot" />
+          <span className="icon"><HomeIcon /></span>
           <h3>Looking to buy</h3>
           <p>See what&apos;s on the market</p>
         </Link>
-        {settings.showTenantButtons && (
-          <Link
-            className="path-card tenant"
-            href={settings.tenantPortalUrl || "/#contact"}
-          >
-            <span className="dot" />
-            <h3>Already a tenant</h3>
-            <p>
-              {settings.tenantPortalUrl
-                ? "Pay rent or submit a request"
-                : "Get in touch with the office"}
-            </p>
-          </Link>
-        )}
+        <Link
+          className="path-card tenant"
+          href={settings.tenantPortalUrl || "/tenant-portal"}
+        >
+          <span className="icon"><UserIcon /></span>
+          <h3>Already a tenant</h3>
+          <p>
+            {settings.tenantPortalUrl
+              ? "Pay rent or submit a request"
+              : "Tenant portal — coming soon"}
+          </p>
+        </Link>
       </div>
 
       <div className="section-row">
@@ -60,19 +66,6 @@ export default async function Home() {
           <ListingCard key={listing.id} listing={listing} />
         ))}
       </div>
-
-      <section
-        id="about"
-        style={{ maxWidth: 1200, margin: "0 auto", padding: "0 2rem 2.5rem" }}
-      >
-        <h2>About Mahnopoly</h2>
-        <p style={{ color: "#6b7280", maxWidth: 700 }}>
-          A short paragraph about William&apos;s background and how long the
-          business has been managing and selling property in the Topeka area
-          goes here — placeholder text until he sends over what he wants
-          said.
-        </p>
-      </section>
     </>
   );
 }

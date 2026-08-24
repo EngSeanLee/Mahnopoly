@@ -25,7 +25,9 @@ export async function saveSettings(formData: FormData): Promise<SaveSettingsResu
     return { ok: false, error: "Something went wrong saving settings." };
   }
 
+  // (site)/layout.tsx is force-dynamic (see that file), so pages under it
+  // already read fresh settings on every request without this — kept as
+  // a harmless no-op for /admin/settings itself, which isn't.
   revalidatePath("/admin/settings");
-  revalidatePath("/");
   return { ok: true };
 }

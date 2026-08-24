@@ -5,12 +5,16 @@
 export default function PhotoPlaceholder({
   label = "property photo",
   className = "",
+  height,
 }: {
   label?: string;
   className?: string;
+  // .hero and .gallery give this a height via CSS; anywhere else (e.g.
+  // the About page) it collapses flat without one.
+  height?: number;
 }) {
   return (
-    <div className={`photo-placeholder ${className}`}>
+    <div className={`photo-placeholder ${className}`} style={height ? { height } : undefined}>
       <span className="ph-icon" /> {label}
     </div>
   );
