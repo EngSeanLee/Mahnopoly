@@ -9,14 +9,11 @@ reference) once this build is finished and approved.
 
 - **What William reviews today:** https://mahnopoly.vercel.app — the
   static clickable mockup (`mockup-review/`), not the real build below.
-- **The real build, in progress:** preview deployment, currently
-  https://mahnopoly-luj7cyphe-lee-ai-solutions.vercel.app — requires
-  being logged into the `lee-ai-solutions` Vercel team (eng.lee785@gmail.com)
-  in your browser to view (Vercel's own SSO wall on non-custom-domain
-  URLs, not something this app added — you'll get redirected to a Vercel
-  login page if you're not signed in there). This URL changes on
-  redeploy; get the current one with `vercel ls` or
-  the Vercel dashboard if this one goes stale.
+- **The real build, in progress:** https://mahnopoly-preview.vercel.app
+  — a stable alias (doesn't change on redeploy — re-run
+  `vercel alias set <new-deployment-url> mahnopoly-preview.vercel.app`
+  after future deploys to keep it current). No login required; Vercel
+  deployment protection is deliberately off for this project right now.
 
 **Status: in progress.** The public pages (home, listings, a property page,
 and the inquiry form) work end to end against a real Supabase project and
@@ -65,6 +62,29 @@ explicitly disconnected (`vercel git disconnect`) so that can't happen
 again unnoticed. If auto-deploy is ever wanted back (e.g., once the real
 build is ready to become production), reconnect it deliberately — don't
 assume it's already off.
+
+**Why preview deployments 404'd for a while:** this Vercel project was
+originally created for the static HTML mockup, and its framework setting
+was left as `null` ("Other"). Every deploy still ran `next build`
+successfully and the build logs looked completely clean, but Vercel
+didn't know to read the output as Next.js — so it never registered the
+actual page routes as functions, only picking up `middleware.ts` (or
+nothing) as a build artifact. Every real page 404'd at Vercel's edge,
+before the request ever reached application code — nothing in the app
+itself was broken. Fixed by adding `vercel.json` with
+`"framework": "nextjs"` at the repo root, so this can't silently drift
+back even if the dashboard setting does. If a deployment ever again
+serves only `middleware` (or nothing) in `vercel inspect <url>`'s Builds
+list, check this first.
+
+**Deployment protection is currently off** for this project (Vercel
+Authentication/SSO disabled) — a deliberate choice after it caused
+confusing, hard-to-diagnose errors (an SSO redirect-handshake failure
+that looked like a generic 404) on top of the framework-detection bug
+above. Anyone with a deployment URL can view it, including previews.
+Nothing sensitive is exposed by that on its own — the admin panel still
+requires a real Supabase Auth login regardless — but revisit this before
+launch if it matters for other reasons.
 
 ## Environment variables
 
