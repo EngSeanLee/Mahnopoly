@@ -105,9 +105,14 @@ set in Vercel too (`vercel env add <NAME> preview`) — they don't inherit
    and a logged-out write attempt is confirmed rejected by RLS (403).
 3. ~~Switch `src/lib/listings.ts` to read from the `listings` table~~ —
    done, along with `src/lib/settings.ts` for the tenant portal
-   link/office info. Real listing content and photos from William still
-   need to replace what's currently seeded (`supabase/seed.sql`) — the
-   pipeline for that now exists (item 2 above), this is applying it.
+   link/office info. Added 3 real sample listings (real addresses, real
+   photos pulled from William's Facebook business page) alongside the 5
+   placeholder ones from `supabase/seed.sql`, to prove the content
+   pipeline end to end — their beds/baths/price are estimated, not
+   pulled from an MLS, and are flagged as such in each listing's
+   description. Still need: William's confirmation of exact specs on
+   those 3, and his full real inventory replacing the remaining
+   placeholders entirely before launch.
 4. A domain, pointed at this deployment.
 5. When the real build is ready to go live: promote a deployment to
    production (`vercel deploy --prod`), point the domain at it, and only
