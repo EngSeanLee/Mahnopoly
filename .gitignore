@@ -1,2 +1,19 @@
+# Vercel / env
 .vercel
 .env*
+!.env.example
+
+# dependencies
+/node_modules
+
+# next.js
+/.next/
+/out/
+next-env.d.ts
+*.tsbuildinfo
+
+# misc
+/coverage
+.DS_Store
+*.pem
+npm-debug.log*

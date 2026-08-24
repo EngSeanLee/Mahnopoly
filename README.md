@@ -1,40 +1,85 @@
-# Mahnopoly — website mockup
+# Mahnopoly — the real website
 
-This is a **clickable draft**, not the real website. It's here so William can
-click around and react to the layout and flow before any real build starts.
-No backend, no database, no real listings — just placeholder addresses and
-prices so the pages don't look empty.
+This is William's live property website — a Next.js app that shows rental
+and for-sale listings and lets visitors send an inquiry on any property.
+It replaces the clickable draft in `mockup-review/` (kept there for
+reference) once this build is finished and approved.
 
-## What's in here
+**Status: in progress.** The pages you can click through today (home,
+listings, a property page, and the inquiry form) run on placeholder
+addresses and prices — nothing is saved yet, because the real database
+(Supabase) hasn't been created. See "What's left" below.
 
-- `index.html` — home page
-- `listings.html` — for rent / for sale, with the tab toggle working
-- `property.html` — a single listing's detail page, with a preview inquiry
-  form (it doesn't actually send anything)
-- `admin-login.html` / `admin.html` — a rough look at what staff would see,
-  including the "add a property" form. Sign-in is a **demo gate only**:
-  username `william`, password `mahnopoly2026`, checked in plain JavaScript
-  in `script.js` and visible to anyone who views the page source. It exists
-  so the review flow feels real, not to protect anything — there's nothing
-  behind it worth protecting yet. Do not carry this pattern into the real
-  build; that gets real auth (Supabase Auth + row-level security, per
-  `../docs/plan.md`).
+## What this is, in plain terms
 
-Plain HTML/CSS/JS, no build step, no dependencies. `script.js` holds the
-sample listing data every page reads from.
+A public website with:
+- A home page and a listings page (rentals and for-sale, filterable).
+- A page per property with photos-to-be and an inquiry form.
+- (Coming) A staff-only admin panel to add/edit listings and see inquiries.
+
+The full plan — scope, what's explicitly excluded, and why the pieces were
+chosen — is in `docs/plan.md`.
 
 ## Running it locally
 
-Open `index.html` directly in a browser, or serve the folder with any static
-file server, e.g. `npx serve .` from this folder.
+You need [Node.js](https://nodejs.org) 20 or newer.
+
+```
+npm install
+npm run dev
+```
+
+Then open http://localhost:3000. No account or database is required to
+browse the site locally — it runs on the same placeholder data you can
+click through in production right now.
 
 ## Deploying
 
-This folder deploys as-is to Vercel (or any static host) with no config —
-there's no framework and no build step.
+This repo deploys to Vercel. Pushing to `main` on GitHub is what triggers a
+deploy once the project's Git integration is turned on (not yet — see
+"What's left"). Until then, deploys go out with `vercel --prod` from this
+folder.
 
-## Status
+## Environment variables
 
-Draft for client review. Once William gives feedback, the real build follows
-the plan in `../docs/plan.md` and will replace this with the actual
-Next.js/Supabase site described there.
+Copy `.env.example` to `.env.local` and fill in real values — see that
+file for what each one is and where to get it. Never commit `.env.local`;
+it's gitignored on purpose.
+
+## Who hosts it, and what it costs
+
+- **Hosting:** Vercel. Which tier (and the exact monthly cost) is still an
+  open question — see "Open questions" in `docs/plan.md`. Currently
+  deployed under a temporary account during development; ownership moves
+  to William's own account before launch (billing and control should sit
+  with him, not the developer).
+- **Domain:** not secured yet. `mahnopoly.com` is owned by someone else
+  (a parked/for-sale page, not William) — see the project conversation
+  log for the alternatives checked and their prices (~$11-14/yr).
+- **Database (Supabase) and email (Resend):** free tier is expected to
+  cover a site this size; confirm once real usage is known.
+
+## What's left before this can go live
+
+1. Supabase project created, schema applied (`supabase/schema.sql`), and
+   `.env.local` filled in — this is what makes listings, inquiries, and
+   the admin panel actually save data.
+2. Resend account created and wired in, so inquiry emails send.
+3. Staff admin panel (add/edit listings, photo upload, real login via
+   Supabase Auth — not the mockup's fake password).
+4. Real listing content and photos from William, replacing the placeholder
+   data in `src/lib/listings.ts`.
+5. A domain, pointed at this deployment.
+6. Automated tests for the inquiry save-then-email path.
+
+## If something breaks
+
+- **Site is down:** check the deployment status at vercel.com (or ask
+  whoever holds the Vercel account to check). Vercel's own status page is
+  status.vercel.com.
+- **Inquiry form errors or listings look wrong:** most likely the
+  Supabase project's data or the `.env.local` / Vercel environment
+  variables — check those before assuming the code is broken.
+- **Anything else:** this README plus `docs/plan.md` should be enough
+  context for another developer to pick this up without the original
+  author.
