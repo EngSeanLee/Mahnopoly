@@ -97,14 +97,17 @@ set in Vercel too (`vercel env add <NAME> preview`) — they don't inherit
    something like `inquiries@mahnopoly...com` instead) is a tracked
    action item, not forgotten.
 2. ~~Staff admin panel~~ — built and verified (`/admin`): listings CRUD,
-   inquiries view, settings editor, real Supabase Auth login. **Photo
-   upload is still a placeholder** — the listing form takes pasted photo
-   URLs, not drag-and-drop upload to Supabase Storage; that's a distinct
-   follow-up piece of work, not done here.
+   inquiries view, settings editor, real Supabase Auth login. ~~Photo
+   upload~~ — done: real file upload to Supabase Storage (bucket +
+   staff-only write RLS in `supabase/storage.sql`), with reordering and
+   remove, replacing the old pasted-URL placeholder. Verified end to end
+   — a staff-uploaded photo renders on the public listing/property pages,
+   and a logged-out write attempt is confirmed rejected by RLS (403).
 3. ~~Switch `src/lib/listings.ts` to read from the `listings` table~~ —
    done, along with `src/lib/settings.ts` for the tenant portal
    link/office info. Real listing content and photos from William still
-   need to replace what's currently seeded (`supabase/seed.sql`).
+   need to replace what's currently seeded (`supabase/seed.sql`) — the
+   pipeline for that now exists (item 2 above), this is applying it.
 4. A domain, pointed at this deployment.
 5. When the real build is ready to go live: promote a deployment to
    production (`vercel deploy --prod`), point the domain at it, and only
