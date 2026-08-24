@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getListing, formatPrice } from "@/lib/listings";
-import PhotoPlaceholder from "@/components/PhotoPlaceholder";
+import ListingPhoto from "@/components/ListingPhoto";
 import StatusBadge from "@/components/StatusBadge";
 import InquiryForm from "@/components/InquiryForm";
 
@@ -16,10 +16,10 @@ export default async function PropertyPage({
   return (
     <div className="property-wrap">
       <div className="gallery">
-        <PhotoPlaceholder className="big" />
+        <ListingPhoto photos={listing.photos} index={0} className="big" sizes="(max-width: 760px) 100vw, 66vw" />
         <div className="thumb-col">
-          <PhotoPlaceholder />
-          <PhotoPlaceholder />
+          <ListingPhoto photos={listing.photos} index={1} sizes="33vw" />
+          <ListingPhoto photos={listing.photos} index={2} sizes="33vw" />
         </div>
       </div>
 
@@ -54,8 +54,8 @@ export default async function PropertyPage({
       <div className="detail-grid">
         <div>
           <p style={{ color: "#6b7280" }}>
-            Full property description goes here once William provides it —
-            square footage, features, and neighborhood notes.
+            {listing.description ||
+              "Full property description goes here once William provides it — square footage, features, and neighborhood notes."}
           </p>
         </div>
         <div className="inquiry-box">

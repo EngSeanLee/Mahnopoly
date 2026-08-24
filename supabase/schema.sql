@@ -1,8 +1,10 @@
--- Mahnopoly database schema. Run this in the Supabase project's SQL editor
--- once the project exists (see docs/plan.md and the root README's setup
--- steps). Written to match what src/app currently expects to query.
---
--- Not yet applied anywhere — this is the plan, not a migration history.
+-- Mahnopoly database schema. Applied to the real Supabase project — this
+-- is what's live, not just a plan. Kept here so the schema travels with
+-- the code and a fresh project can be brought up to match by running this
+-- file once. The table definitions are safe to re-run (`if not exists` /
+-- `on conflict do nothing`); the `create policy` statements are not —
+-- re-running this against a project that already has it applied will
+-- fail on those with a "policy already exists" error, which is expected.
 
 create table if not exists listings (
   id text primary key,

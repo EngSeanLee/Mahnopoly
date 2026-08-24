@@ -134,6 +134,15 @@ nav.main-nav a.nav-staff:hover { color: var(--navy); }
   border: 1px solid #a39d8c;
   display: inline-block;
 }
+/* A real photo reuses .photo-placeholder for sizing/shape in each
+   context (card, hero, gallery) but shouldn't show the empty-state
+   dashed border/cream background behind it. */
+.photo-placeholder.has-photo {
+  background: none;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
 
 /* Three-up path cards */
 .path-cards {

@@ -35,9 +35,9 @@ function parseListingForm(formData: FormData): Omit<ListingInput, "id"> & { id?:
     pets: String(formData.get("pets") || "").trim(),
     available: String(formData.get("available") || "").trim(),
     description: String(formData.get("description") || "").trim(),
-    // One photo URL per line — real drag-and-drop upload (Supabase
-    // Storage, per docs/plan.md) is a separate, not-yet-built piece; this
-    // is the placeholder until that exists.
+    // Newline-joined public Supabase Storage URLs, set by the
+    // PhotoUpload client component's hidden field (src/components/admin/
+    // PhotoUpload.tsx) after real uploads — not free text staff type in.
     photos: String(formData.get("photos") || "")
       .split("\n")
       .map((s) => s.trim())

@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import type { Listing } from "@/lib/listings";
+import PhotoUpload from "./PhotoUpload";
 
 type SaveResult = { ok: false; error: string } | void;
 
@@ -119,19 +120,7 @@ export default function ListingForm({
         />
       </div>
 
-      <div className="form-row">
-        <label htmlFor="photos">Photo URLs (one per line)</label>
-        <textarea
-          id="photos"
-          name="photos"
-          rows={3}
-          defaultValue={listing?.photos.join("\n")}
-          placeholder="https://…"
-        />
-        <p className="form-note">
-          Drag-and-drop photo upload isn&apos;t built yet — paste hosted image URLs for now.
-        </p>
-      </div>
+      <PhotoUpload initialPhotos={listing?.photos} />
 
       {error && <div className="form-error">{error}</div>}
 

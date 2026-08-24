@@ -1,6 +1,8 @@
 # Mahnopoly Website — Phase 1
 
-_Drafted 2026-08-21. Status: awaiting approval._
+_Drafted 2026-08-21. Status: approved 2026-08-23, real build in progress
+— see the root README's "Live URLs" and "What's left" sections for
+current status._
 
 ## What this is
 
