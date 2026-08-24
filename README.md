@@ -5,14 +5,23 @@ and for-sale listings and lets visitors send an inquiry on any property.
 It replaces the clickable draft in `mockup-review/` (kept there for
 reference) once this build is finished and approved.
 
+## Live URLs
+
+- **What William reviews today:** https://mahnopoly.vercel.app — the
+  static clickable mockup (`mockup-review/`), not the real build below.
+- **The real build, in progress:** preview deployment, currently
+  https://mahnopoly-me2si17cy-lee-ai-solutions.vercel.app — requires
+  being logged into the `lee-ai-solutions` Vercel team to view (Vercel's
+  own SSO wall on non-custom-domain URLs, not something this app added).
+  This URL changes on redeploy; get the current one with `vercel ls` or
+  the Vercel dashboard if this one goes stale.
+
 **Status: in progress.** The public pages (home, listings, a property page,
 and the inquiry form) work end to end against a real Supabase project and
 Resend, reading real listing and settings data from the database. The
-staff admin panel (`/admin`) is built — real Supabase Auth login, add/
-edit/delete listings, view inquiries, edit settings — but not yet tested
-against a real login, since creating that first staff account needs to
-happen in the Supabase dashboard (see "What's left"). See that section for
-what's still not done.
+staff admin panel (`/admin`) is built and verified against a real login —
+add/edit/delete listings, view inquiries, edit settings all confirmed
+working. See "What's left" for what's still not done.
 
 ## What this is, in plain terms
 
@@ -37,21 +46,31 @@ npm run dev
 ```
 
 Then open http://localhost:3000. No account or database is required to
-browse the site locally — it runs on the same placeholder data you can
-click through in production right now.
+browse the public pages locally — it falls back to placeholder data if
+`.env.local` isn't set up. The admin panel needs real Supabase credentials
+either way (see "Environment variables").
 
 ## Deploying
 
-This repo deploys to Vercel. Pushing to `main` on GitHub is what triggers a
-deploy once the project's Git integration is turned on (not yet — see
-"What's left"). Until then, deploys go out with `vercel --prod` from this
-folder.
+Deploys are **manual only**, on purpose: `vercel deploy` for a preview,
+`vercel deploy --prod` for production, run from this folder.
+
+This project's GitHub repo was connected to Vercel's auto-deploy-on-push
+integration — silently, from before this build even started, and nobody
+building this caught it until a `git push` shipped a broken build straight
+to `mahnopoly.vercel.app`, the URL William was reviewing. It's been
+explicitly disconnected (`vercel git disconnect`) so that can't happen
+again unnoticed. If auto-deploy is ever wanted back (e.g., once the real
+build is ready to become production), reconnect it deliberately — don't
+assume it's already off.
 
 ## Environment variables
 
 Copy `.env.example` to `.env.local` and fill in real values — see that
 file for what each one is and where to get it. Never commit `.env.local`;
-it's gitignored on purpose.
+it's gitignored on purpose. Preview deployments need the same variables
+set in Vercel too (`vercel env add <NAME> preview`) — they don't inherit
+`.env.local`.
 
 ## Who hosts it, and what it costs
 
@@ -77,21 +96,20 @@ it's gitignored on purpose.
    inbox and verifying a real domain in Resend (so mail sends from
    something like `inquiries@mahnopoly...com` instead) is a tracked
    action item, not forgotten.
-2. ~~Staff admin panel~~ — built (`/admin`): listings CRUD, inquiries view,
-   settings editor, real Supabase Auth login (no more mockup fake
-   password). Not yet tested against a real login — creating the first
-   staff account has to happen manually in Supabase (Authentication >
-   Users > Add user), since that needs the project's admin dashboard, not
-   anything the app's own keys can do. **Photo upload is still a
-   placeholder** — the listing form takes pasted photo URLs, not
-   drag-and-drop upload to Supabase Storage; that's a distinct follow-up
-   piece of work, not done here.
+2. ~~Staff admin panel~~ — built and verified (`/admin`): listings CRUD,
+   inquiries view, settings editor, real Supabase Auth login. **Photo
+   upload is still a placeholder** — the listing form takes pasted photo
+   URLs, not drag-and-drop upload to Supabase Storage; that's a distinct
+   follow-up piece of work, not done here.
 3. ~~Switch `src/lib/listings.ts` to read from the `listings` table~~ —
    done, along with `src/lib/settings.ts` for the tenant portal
    link/office info. Real listing content and photos from William still
    need to replace what's currently seeded (`supabase/seed.sql`).
 4. A domain, pointed at this deployment.
-5. Automated tests for the inquiry save-then-email path.
+5. When the real build is ready to go live: promote a deployment to
+   production (`vercel deploy --prod`), point the domain at it, and only
+   then consider reconnecting GitHub auto-deploy if that's still wanted.
+6. Automated tests for the inquiry save-then-email path.
 
 ## If something breaks
 
@@ -101,6 +119,9 @@ it's gitignored on purpose.
 - **Inquiry form errors or listings look wrong:** most likely the
   Supabase project's data or the `.env.local` / Vercel environment
   variables — check those before assuming the code is broken.
+- **Production suddenly shows the wrong thing:** check whether GitHub
+  auto-deploy got reconnected (`vercel git connect` was run) and a push
+  landed on `main` — see "Deploying" above for why that's dangerous here.
 - **Anything else:** this README plus `docs/plan.md` should be enough
   context for another developer to pick this up without the original
   author.
