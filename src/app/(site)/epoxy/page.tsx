@@ -42,26 +42,30 @@ const DIFFERENCE = [
 export default function EpoxyPage() {
   return (
     <>
+      {/* Visually hidden — William's call was a lean hero with just the
+          photo and CTA, no visible headline text. Kept as a real H1 for
+          SEO and screen readers even though nothing renders on screen. */}
+      <h1 className="sr-only">Epoxy Flooring in Topeka, Kansas</h1>
+      {/* Photo sits outside .hero on purpose — .hero has its own
+          background/padding (see globals.css), which was showing as a
+          bare band of cream above the image when nested inside it.
+          Matches the about page's structure. Contained, full photo
+          visible, no crop/border — pending a proper 3:1 banner photo
+          (see globals.css note on .full-bleed for that future treatment). */}
+      <div style={{ maxWidth: 900, margin: "0 auto", padding: "2rem 2rem 0", lineHeight: 0 }}>
+        <Image
+          src="/epoxy-flyer.png"
+          alt="A finished garage in Topeka, Kansas with a glossy dark speckled epoxy floor coating reflecting the overhead lighting, dark cabinetry and tool storage along the wall, and natural light through a window."
+          width={1536}
+          height={1024}
+          style={{ width: "100%", height: "auto", display: "block" }}
+          sizes="(max-width: 900px) 100vw, 900px"
+          priority
+        />
+      </div>
+
       <section className="hero">
-        {/* Visually hidden — William's call was a lean hero with just the
-            photo and CTA, no visible headline text. Kept as a real H1 for
-            SEO and screen readers even though nothing renders on screen. */}
-        <h1 className="sr-only">Epoxy Flooring in Topeka, Kansas</h1>
-        {/* Contained, full photo visible, no crop/border/full-bleed —
-            pending a proper 3:1 banner photo (see globals.css note on
-            .full-bleed for that future treatment). */}
-        <div style={{ maxWidth: 900, margin: "0 auto", lineHeight: 0 }}>
-          <Image
-            src="/epoxy-flyer.png"
-            alt="A finished garage in Topeka, Kansas with a glossy dark speckled epoxy floor coating reflecting the overhead lighting, dark cabinetry and tool storage along the wall, and natural light through a window."
-            width={1536}
-            height={1024}
-            style={{ width: "100%", height: "auto", display: "block" }}
-            sizes="(max-width: 900px) 100vw, 900px"
-            priority
-          />
-        </div>
-        <a href="#estimate" className="btn btn-navy" style={{ marginTop: "1.75rem" }}>
+        <a href="#estimate" className="btn btn-navy">
           Get a Free Estimate
         </a>
       </section>

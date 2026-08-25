@@ -18,21 +18,25 @@ export default async function Home() {
 
   return (
     <>
+      {/* Photo sits outside .hero on purpose — .hero has its own
+          background/padding (see globals.css), which was showing as a
+          bare band of cream above the image when nested inside it.
+          Matches the about page's structure. Contained, full photo
+          visible, no crop/border — pending a proper 3:1 banner photo
+          (see globals.css note on .full-bleed for that future treatment). */}
+      <div style={{ maxWidth: 900, margin: "0 auto", padding: "2rem 2rem 0", lineHeight: 0 }}>
+        <Image
+          src="/home-banner.png"
+          alt="Mahnopoly LLC — buy, build, manage. A craftsman-style home's front porch at dusk, the Topeka skyline at sunset, and a row of new-construction homes."
+          width={1536}
+          height={1024}
+          style={{ width: "100%", height: "auto", display: "block" }}
+          sizes="(max-width: 900px) 100vw, 900px"
+          priority
+        />
+      </div>
+
       <section className="hero">
-        {/* Contained, full photo visible, no crop/border/full-bleed —
-            pending a proper 3:1 banner photo (see globals.css note on
-            .full-bleed for that future treatment). */}
-        <div style={{ maxWidth: 900, margin: "0 auto 2rem", lineHeight: 0 }}>
-          <Image
-            src="/home-banner.png"
-            alt="Mahnopoly LLC — buy, build, manage. A craftsman-style home's front porch at dusk, the Topeka skyline at sunset, and a row of new-construction homes."
-            width={1536}
-            height={1024}
-            style={{ width: "100%", height: "auto", display: "block" }}
-            sizes="(max-width: 900px) 100vw, 900px"
-            priority
-          />
-        </div>
         <h1>Homes for sale and rent across Kansas</h1>
         <p className="subhead">
           Locally owned. Locally managed. Same folks on the sign in your
