@@ -18,7 +18,9 @@ A public website with:
 - `/about`, `/contact`, and `/epoxy` (real copy; a real photo for epoxy
   is still pending from William — placeholder holds its spot).
 - A U-Haul link in the nav, and Pay Rent / Maintenance Request buttons on
-  `/tenant-portal` — each hidden until its URL is set in Settings.
+  `/tenant-portal` — each hidden until its URL is set in Settings. As of
+  25 Aug 2026 the tenant portal, pay rent, and maintenance request URLs
+  are all set to Innago's tenant sign-in page (see "Who hosts it" below).
 - A `/zillow-feed.xml` feed of current rental listings, in the format
   Zillow's Rental Listing Bulk Feed Guide requires (see "The Zillow
   feed" below for what's still needed outside this codebase).
@@ -74,7 +76,12 @@ without a good reason.
 - **Domain:** `mahnopolyllc.com`, registered through GoDaddy, under
   William's account.
 - **Email:** 2 mailboxes (`admin@`, `william@`) via GoDaddy's
-  Microsoft 365 add-on, same account.
+  Microsoft 365 add-on, same account. Adding another mailbox (a personal
+  one for a family member, say) is entirely a GoDaddy/Microsoft 365
+  action — William does it himself from the GoDaddy Email & Office
+  panel. It's unrelated to Supabase or the `staff` table; that only
+  matters for someone who needs to log into `/admin`. Each mailbox is
+  billed per seat, so check current M365 pricing before adding several.
 - **Hosting:** Vercel, Pro plan ($20/month base + $20/month per
   additional deploying team seat), under the `mahnopolyllc` Vercel
   Team — not a personal account.
@@ -84,6 +91,19 @@ without a good reason.
   (`inquiries@mahnopolyllc.com` for inquiry notifications; Supabase's
   own auth emails — invites, password resets — also route through
   Resend's SMTP instead of Supabase's rate-limited default sender).
+  Under the developer's `leeaisolutions` Resend account, not William's —
+  a candidate for moving under his ownership alongside the GitHub repo
+  transfer below.
+- **Tenant portal, rent payments, and maintenance requests:** Innago,
+  William's account, signed up 25 Aug 2026. Innago doesn't give
+  landlords a company-specific portal URL — every tenant (once William
+  has invited them from his Innago account) signs in at the same
+  `https://auth.innago.com/login` and reaches a single dashboard with
+  rent payment, maintenance requests, documents, and messaging. That's
+  the one URL set for all three link-out fields in Settings; there's no
+  per-feature URL to configure. Kansas tenant-fee law — whether the
+  platform fee can be passed to tenants — still hasn't been verified
+  (see "What's outstanding").
 
 ## Environment variables
 
@@ -159,8 +179,15 @@ data.
   done; move it to an org under `admin@mahnopolyllc.com` (or add William
   as an owner) before this engagement formally closes.
 - **Kansas tenant-fee law** — whether the platform fee can be passed to
-  tenants needs verifying before William commits to Innago's tenant-paid
-  pricing model. Doesn't block anything here; a Phase 2 question.
+  tenants still needs verifying. William has already signed up for
+  Innago (25 Aug 2026), so this is no longer a "before he commits"
+  question — it's live and worth resolving with him directly rather
+  than deferring further. Doesn't block anything in this codebase.
+- **Resend account ownership** — the Resend account backing both
+  inquiry notifications and Supabase's auth emails is under the
+  developer's own `leeaisolutions` account, not William's. Same
+  category of issue as the GitHub repo above; move before this
+  engagement formally closes.
 
 ## If something breaks
 
@@ -180,7 +207,17 @@ data.
   (`/logs/auth-logs` in the dashboard) before assuming SMTP is broken —
   a stale/reused reset link produces exactly that error and is not a
   bug. Genuine SMTP misconfiguration shows up there as a distinct
-  failure on `mail.send`.
+  failure on `mail.send`, e.g. a `535` from Resend, which means the
+  password saved in Supabase's SMTP settings (Auth → Emails → SMTP
+  Settings) no longer matches a live Resend API key — happened once
+  already (25 Aug 2026, after the domain moved off Resend's sandbox);
+  fix is a fresh key in Resend, pasted into both Supabase's SMTP
+  password field and Vercel's `RESEND_API_KEY`, then a redeploy so the
+  function picks it up. Separately: if a reset/invite link is reported
+  dead within seconds of being sent, suspect Microsoft Defender's "Safe
+  Links" on the `@mahnopolyllc.com` M365 mailboxes auto-visiting (and
+  thereby consuming) the one-time link before the person opens it — not
+  a bug in this codebase, but worth ruling out before debugging further.
 - **Production suddenly shows the wrong thing:** check whether GitHub
   auto-deploy got reconnected (`vercel git connect` was run) and a push
   landed on `main` — see "Deploying" above for why that's dangerous here.
