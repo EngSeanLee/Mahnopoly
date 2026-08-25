@@ -61,15 +61,6 @@ export default async function Home() {
           the photo box had, just below it instead of around it. */}
       <section className="hero" style={{ background: "#fff" }}>
         <h1>Homes for sale and rent across Kansas</h1>
-        <p
-          style={{
-            fontWeight: 700,
-            color: "var(--ink)",
-            margin: "0 0 0.5rem",
-          }}
-        >
-          Local roots. Quality homes. Stronger communities.
-        </p>
         <p className="subhead">
           Locally owned. Locally managed. Same folks on the sign in your
           neighbor&apos;s yard.
@@ -102,38 +93,6 @@ export default async function Home() {
               : "Tenant portal — coming soon"}
           </p>
         </Link>
-      </div>
-
-      {/* Same copy as /about, on purpose — a visitor who never clicks
-          past the homepage should still get the story, not just listing
-          cards. About stays intact for anyone who does click through. */}
-      <div style={{ maxWidth: 700, margin: "0 auto", padding: "1rem 2rem 3rem", textAlign: "center" }}>
-        <h2 style={{ margin: "0 0 1rem" }}>About Mahnopoly</h2>
-        <div style={{ color: "var(--gray)", textAlign: "left" }}>
-          <p>
-            For more than 15 years, Mahnopoly has been part of the Kansas
-            community, investing in homes, properties, and the
-            neighborhoods around them. Through buying, building, and
-            managing residential properties, our goal is simple: create
-            and maintain quality places that people are proud to call
-            home.
-          </p>
-          <p>
-            We believe good property ownership is about more than
-            buildings. It&apos;s about taking care of the places we
-            invest in, treating people with respect, and contributing to
-            stronger communities for the long term. As a locally focused
-            company, Mahnopoly takes a hands-on approach and values
-            straightforward communication, dependable service, and doing
-            things the right way.
-          </p>
-          <p style={{ margin: 0 }}>
-            Whether we&apos;re improving an existing property, building
-            something new, or caring for one of our rental homes, we
-            want every Mahnopoly property to reflect the same commitment
-            to quality, responsibility, and the communities we serve.
-          </p>
-        </div>
       </div>
 
       <div className="section-row">
