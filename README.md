@@ -16,8 +16,9 @@ A public website with:
   framed statewide (Kansas), with each listing's city bolded on its card.
 - A page per property with photos and an inquiry form.
 - `/about`, `/contact`, and `/epoxy` — all real copy and real photos now.
-  `/about`'s written copy (William's background, the family/team story)
-  is still placeholder text pending what he wants said; its photo is in.
+- `/epoxy` also has a "Recent Work" photo gallery, staff-uploadable
+  through Settings — see "The epoxy photo gallery" below. Hidden
+  entirely until at least one photo's been added.
 - A U-Haul link in the nav, and Pay Rent / Maintenance Request buttons on
   `/tenant-portal` — each hidden until its URL is set in Settings. As of
   25 Aug 2026 the tenant portal, pay rent, and maintenance request URLs
@@ -214,6 +215,44 @@ comments in `src/app/(site)/page.tsx` and `.../epoxy/page.tsx`).
 `/about` never had this problem — its photo was built outside `.hero`
 from the start.
 
+## The epoxy photo gallery
+
+`/epoxy` shows a "Recent Work" gallery of real customer job photos,
+staff-uploadable through `/admin/settings` (an "Epoxy gallery photos"
+section, same upload/reorder/remove component listings already use).
+The gallery section on the public page is hidden entirely until at
+least one photo's been added — same "hidden until set" pattern as the
+U-Haul link and tenant-portal buttons.
+
+No new bucket or table: gallery photos reuse the existing
+`property-photos` Storage bucket (just under an `epoxy/` subfolder,
+for tidiness) and its staff-write/public-read RLS, which is bucket-
+scoped rather than listing-scoped already. The list of gallery URLs
+lives in a new `settings.epoxy_photos` jsonb column
+(`supabase/migrations/007_epoxy_photos.sql`), the same array-of-URLs
+shape a listing's own `photos` column already uses.
+
+**A real incident worth knowing about:** on 25 Aug 2026, an upload of
+several photos got the admin panel stuck showing "Uploading..."
+indefinitely, even though the photos had actually uploaded fine
+(confirmed in Supabase's Storage logs — clean 200s, no errors
+anywhere). Root cause: the upload function didn't wrap the Storage
+call in try/catch, so anything that made a single file's upload throw
+rather than return a normal error broke the whole batch loop before it
+ever recorded the files that *had* already succeeded — leaving them
+orphaned in Storage but invisible in the settings form, and the button
+stuck. Fixed in both `src/lib/storage.ts` (always returns an error
+instead of throwing) and `src/components/admin/PhotoUpload.tsx` (each
+successful upload commits to state immediately instead of waiting for
+the whole batch, and a try/finally guarantees the "uploading" state
+always clears). If uploads ever look stuck again: check Supabase's
+Storage logs first — if the files actually landed, they're safe, and
+worth attaching to `settings.epoxy_photos` directly via SQL rather than
+re-uploading. Orphaned/unreferenced files in the bucket (cross-check
+against `listings.photos` and `settings.epoxy_photos`) are safe to
+delete from the Storage browser — that's a manual step, not something
+run automatically.
+
 ## What's outstanding
 
 - **Zillow feed submission** — not started; see above.
@@ -225,9 +264,6 @@ from the start.
   William on the Facebook-sourced listings (several have estimated
   beds/baths/price, flagged in each listing's description) and any
   properties not on Facebook.
-- **About page copy** — the photo is real; the written copy (William's
-  background, the family/team story, what makes Mahnopoly different) is
-  still the original placeholder text, pending what he wants said.
 - **GitHub repo ownership** — still under `EngSeanLee`'s personal
   account. "Source code transferred" is part of the MVP's definition of
   done; move it to an org under `admin@mahnopolyllc.com` (or add William
@@ -272,6 +308,12 @@ from the start.
   Links" on the `@mahnopolyllc.com` M365 mailboxes auto-visiting (and
   thereby consuming) the one-time link before the person opens it — not
   a bug in this codebase, but worth ruling out before debugging further.
+- **Photo upload in `/admin` looks stuck on "Uploading...":** check
+  Supabase's Storage logs before assuming anything's wrong — a real
+  incident on 25 Aug 2026 had this happen while the files had actually
+  uploaded fine; see "The epoxy photo gallery" above for the full story
+  and the fix. Should be fixed now, but if it recurs, the photos are
+  probably already safe in Storage even though the button looks frozen.
 - **Production suddenly shows the wrong thing:** check whether GitHub
   auto-deploy got reconnected (`vercel git connect` was run) and a push
   landed on `main` — see "Deploying" above for why that's dangerous here.
