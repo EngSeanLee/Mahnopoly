@@ -27,6 +27,20 @@ body {
 
 a { color: inherit; text-decoration: none; }
 
+/* Visually hidden but still reachable by screen readers / SEO crawlers —
+   for headings a page needs structurally but isn't showing on screen. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Header */
 header.site-header {
   display: flex;

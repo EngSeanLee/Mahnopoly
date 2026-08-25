@@ -43,29 +43,14 @@ export default function EpoxyPage() {
   return (
     <>
       <section className="hero">
-        <h1>Epoxy Flooring in Topeka, Kansas</h1>
-        <p
-          className="subhead"
-          style={{ fontWeight: 700, color: "var(--ink)", marginBottom: "0.85rem" }}
-        >
-          Built to Take a Beating. Finished to Impress.
-        </p>
-        <p className="subhead" style={{ marginBottom: "1.75rem" }}>
-          Mahnopoly Epoxy LLC installs professional epoxy flooring for
-          garages, shops, basements, workspaces, and commercial properties
-          throughout Topeka and the surrounding area — turning ordinary
-          concrete into a clean, durable surface, done right from the
-          ground up.
-        </p>
-        <a href="#estimate" className="btn btn-navy">
-          Get a Free Estimate
-        </a>
-      </section>
-
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "3rem 2rem 0" }}>
+        {/* Visually hidden — the flyer image below carries the visible
+            headline/tagline, but the page still needs a real H1 for SEO
+            and screen readers. */}
+        <h1 className="sr-only">Epoxy Flooring in Topeka, Kansas</h1>
         <div
           style={{
-            width: "100%",
+            maxWidth: 900,
+            margin: "0 auto",
             borderRadius: 8,
             overflow: "hidden",
             border: "1px solid var(--border)",
@@ -74,7 +59,7 @@ export default function EpoxyPage() {
         >
           <Image
             src="/epoxy-flyer.png"
-            alt="Mahnopoly Epoxy LLC — a finished garage floor with a dark speckled epoxy coating and matching black cabinetry, alongside the highlights: built to last, easy to clean, looks amazing, installed right."
+            alt="Mahnopoly Epoxy LLC — epoxy flooring in Topeka, Kansas. Built to take a beating, finished to impress. A finished garage floor with a dark speckled epoxy coating and matching black cabinetry, alongside the highlights: built to last, easy to clean, looks amazing, installed right."
             width={1536}
             height={1024}
             style={{ width: "100%", height: "auto", display: "block" }}
@@ -82,7 +67,10 @@ export default function EpoxyPage() {
             priority
           />
         </div>
-      </div>
+        <a href="#estimate" className="btn btn-navy" style={{ marginTop: "1.75rem" }}>
+          Get a Free Estimate
+        </a>
+      </section>
 
       <div style={{ maxWidth: 800, margin: "0 auto", padding: "3rem 2rem" }}>
         <h2 style={{ margin: "0 0 1rem" }}>What Is Epoxy Flooring?</h2>

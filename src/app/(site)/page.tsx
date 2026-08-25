@@ -1,8 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
 import { getListings } from "@/lib/listings";
 import { getSettings } from "@/lib/settings";
 import ListingCard from "@/components/ListingCard";
-import PhotoPlaceholder from "@/components/PhotoPlaceholder";
 import { KeyIcon, HomeIcon, UserIcon } from "@/components/Icons";
 
 // This page stays statically generated (per docs/plan.md's "static
@@ -19,7 +19,26 @@ export default async function Home() {
   return (
     <>
       <section className="hero">
-        <PhotoPlaceholder label="wide property photo" className="big" />
+        <div
+          style={{
+            maxWidth: 900,
+            margin: "0 auto 1.75rem",
+            borderRadius: 8,
+            overflow: "hidden",
+            border: "1px solid var(--border)",
+            lineHeight: 0,
+          }}
+        >
+          <Image
+            src="/home-banner.png"
+            alt="Mahnopoly LLC — buy, build, manage. A craftsman-style home's front porch at dusk, the Topeka skyline at sunset, and a row of new-construction homes."
+            width={1536}
+            height={1024}
+            style={{ width: "100%", height: "auto", display: "block" }}
+            sizes="(max-width: 900px) 100vw, 900px"
+            priority
+          />
+        </div>
         <h1>Homes for sale and rent across Kansas</h1>
         <p className="subhead">
           Locally owned. Locally managed. Same folks on the sign in your
