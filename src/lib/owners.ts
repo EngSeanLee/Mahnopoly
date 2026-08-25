@@ -84,7 +84,17 @@ export async function inviteOwner(email: string): Promise<InviteResult> {
   if (!supabase) {
     return { ok: false, error: "Owner invites aren't configured yet (missing SUPABASE_SECRET_KEY)." };
   }
-  const { error } = await supabase.auth.admin.inviteUserByEmail(email);
+  // Without an explicit redirectTo, Supabase falls back to the project's
+  // dashboard-configured Site URL — which defaults to localhost:3000 and
+  // has to be manually kept in sync with wherever this actually runs.
+  // Passing it explicitly here means an invite email always lands
+  // somewhere real regardless of that dashboard setting (which still also
+  // needs this URL in its Redirect URLs allowlist, or Supabase rejects
+  // the redirect outright).
+  const siteUrl = process.env.SITE_URL || "http://localhost:3000";
+  const { error } = await supabase.auth.admin.inviteUserByEmail(email, {
+    redirectTo: `${siteUrl}/owner/set-password`,
+  });
   if (error) {
     console.error("inviteOwner: invite failed", error);
     return { ok: false, error: "Couldn't send the invite email. Try again." };
