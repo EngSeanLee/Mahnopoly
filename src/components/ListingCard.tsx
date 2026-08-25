@@ -12,7 +12,9 @@ export default function ListingCard({ listing }: { listing: Listing }) {
           {formatPrice(listing)}
         </div>
         <div className="meta">
-          {listing.beds} bd &middot; {listing.baths} ba &middot; {listing.neighborhood}
+          {listing.beds} bd &middot; {listing.baths} ba &middot;{" "}
+          <strong>{listing.city}</strong>
+          {listing.neighborhood ? ` (${listing.neighborhood})` : ""}
         </div>
         <StatusBadge status={listing.status} />
       </div>

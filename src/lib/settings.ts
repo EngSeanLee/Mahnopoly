@@ -3,7 +3,9 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 export interface SiteSettings {
   tenantPortalUrl: string;
+  payRentUrl: string;
   maintenanceRequestUrl: string;
+  uhaulUrl: string;
   // No longer drives any UI — the home page's tenant card always shows
   // now (falls back to "coming soon" until tenantPortalUrl is set).
   // Column stays in the DB/type to avoid an unnecessary migration; not
@@ -19,7 +21,9 @@ export interface SiteSettings {
 // settings row itself (see the update below).
 const FALLBACK_SETTINGS: SiteSettings = {
   tenantPortalUrl: "",
+  payRentUrl: "",
   maintenanceRequestUrl: "",
+  uhaulUrl: "",
   showTenantButtons: false,
   officeAddress: "504 SW 2nd Street, Topeka, KS 66603",
   officePhone: "(785) 329-6344",
@@ -28,7 +32,9 @@ const FALLBACK_SETTINGS: SiteSettings = {
 
 type SettingsRow = {
   tenant_portal_url: string | null;
+  pay_rent_url: string | null;
   maintenance_request_url: string | null;
+  uhaul_url: string | null;
   show_tenant_buttons: boolean;
   office_address: string | null;
   office_phone: string | null;
@@ -38,7 +44,9 @@ type SettingsRow = {
 function rowToSettings(row: SettingsRow): SiteSettings {
   return {
     tenantPortalUrl: row.tenant_portal_url ?? "",
+    payRentUrl: row.pay_rent_url ?? "",
     maintenanceRequestUrl: row.maintenance_request_url ?? "",
+    uhaulUrl: row.uhaul_url ?? "",
     showTenantButtons: row.show_tenant_buttons,
     officeAddress: row.office_address || FALLBACK_SETTINGS.officeAddress,
     officePhone: row.office_phone || FALLBACK_SETTINGS.officePhone,
@@ -56,7 +64,7 @@ export async function getSettings(): Promise<SiteSettings> {
   const { data, error } = await supabase
     .from("settings")
     .select(
-      "tenant_portal_url, maintenance_request_url, show_tenant_buttons, office_address, office_phone, office_hours"
+      "tenant_portal_url, pay_rent_url, maintenance_request_url, uhaul_url, show_tenant_buttons, office_address, office_phone, office_hours"
     )
     .eq("id", 1)
     .maybeSingle();
@@ -76,7 +84,9 @@ export async function updateSettings(
     .from("settings")
     .update({
       tenant_portal_url: settings.tenantPortalUrl,
+      pay_rent_url: settings.payRentUrl,
       maintenance_request_url: settings.maintenanceRequestUrl,
+      uhaul_url: settings.uhaulUrl,
       show_tenant_buttons: settings.showTenantButtons,
       office_address: settings.officeAddress,
       office_phone: settings.officePhone,

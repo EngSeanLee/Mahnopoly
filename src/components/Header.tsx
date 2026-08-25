@@ -18,7 +18,14 @@ export default function Header({ settings }: { settings: SiteSettings }) {
         <Link className="nav-link" href="/listings?tab=rent">For rent</Link>
         <Link className="nav-link" href="/listings?tab=sale">For sale</Link>
         <Link className="nav-link" href="/about">About</Link>
-        <Link className="nav-link" href="/#contact">Contact</Link>
+        <Link className="nav-link" href="/epoxy">Epoxy</Link>
+        <Link className="nav-link" href="/contact">Contact</Link>
+        {settings.uhaulUrl && (
+          <a className="nav-link" href={settings.uhaulUrl} target="_blank" rel="noopener noreferrer">
+            U-Haul
+          </a>
+        )}
+        <Link className="nav-staff" href="/owner/login">Owner login</Link>
         <Link className="nav-staff" href="/admin/login">Staff login</Link>
       </nav>
       <a className="phone-btn" href={telHref}>{settings.officePhone}</a>

@@ -12,7 +12,9 @@ export async function saveSettings(formData: FormData): Promise<SaveSettingsResu
 
   const settings: SiteSettings = {
     tenantPortalUrl: String(formData.get("tenantPortalUrl") || "").trim(),
+    payRentUrl: String(formData.get("payRentUrl") || "").trim(),
     maintenanceRequestUrl: String(formData.get("maintenanceRequestUrl") || "").trim(),
+    uhaulUrl: String(formData.get("uhaulUrl") || "").trim(),
     showTenantButtons: formData.get("showTenantButtons") === "on",
     officeAddress: String(formData.get("officeAddress") || "").trim(),
     officePhone: String(formData.get("officePhone") || "").trim(),

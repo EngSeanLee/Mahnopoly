@@ -40,6 +40,9 @@ export default async function PropertyPage({
           <strong>{listing.baths}</strong> bath
         </span>
         <span>
+          City: <strong>{listing.city}</strong>
+        </span>
+        <span>
           Neighborhood: <strong>{listing.neighborhood}</strong>
         </span>
         <span>

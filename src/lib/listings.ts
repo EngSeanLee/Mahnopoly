@@ -7,6 +7,8 @@ export type ListingStatus = "available" | "rented" | "pending" | "sold";
 export interface Listing {
   id: string;
   address: string;
+  city: string;
+  zip: string;
   neighborhood: string;
   type: ListingType;
   status: ListingStatus;
@@ -17,6 +19,12 @@ export interface Listing {
   available: string;
   description: string;
   photos: string[];
+  ownerId: string | null;
+  // Optional because the 5 dev-only FALLBACK_LISTINGS below don't carry
+  // one — real rows always do (schema.sql's `updated_at`). Only consumer
+  // right now is the Zillow feed's required <lastUpdated> (see
+  // src/app/zillow-feed.xml/route.ts).
+  updatedAt?: string;
 }
 
 // Same placeholder data the app launched with. Used only as a fallback —
@@ -28,6 +36,8 @@ const FALLBACK_LISTINGS: Listing[] = [
   {
     id: "clay-st",
     address: "1412 SW Clay St",
+    city: "Topeka",
+    zip: "",
     neighborhood: "SW Topeka",
     type: "rental",
     status: "available",
@@ -38,10 +48,13 @@ const FALLBACK_LISTINGS: Listing[] = [
     available: "Sept 1",
     description: "",
     photos: [],
+    ownerId: null,
   },
   {
     id: "burlingame-rd",
     address: "3317 SW Burlingame Rd",
+    city: "Topeka",
+    zip: "",
     neighborhood: "NW Topeka",
     type: "rental",
     status: "available",
@@ -52,10 +65,13 @@ const FALLBACK_LISTINGS: Listing[] = [
     available: "Sept 15",
     description: "",
     photos: [],
+    ownerId: null,
   },
   {
     id: "indiana-ave",
     address: "2208 SE Indiana Ave",
+    city: "Topeka",
+    zip: "",
     neighborhood: "College Hill",
     type: "rental",
     status: "rented",
@@ -66,10 +82,13 @@ const FALLBACK_LISTINGS: Listing[] = [
     available: "—",
     description: "",
     photos: [],
+    ownerId: null,
   },
   {
     id: "lyman-rd",
     address: "905 NW Lyman Rd",
+    city: "Topeka",
+    zip: "",
     neighborhood: "Westboro",
     type: "sale",
     status: "pending",
@@ -80,10 +99,13 @@ const FALLBACK_LISTINGS: Listing[] = [
     available: "—",
     description: "",
     photos: [],
+    ownerId: null,
   },
   {
     id: "macvicar-ave",
     address: "1725 SW MacVicar Ave",
+    city: "Topeka",
+    zip: "",
     neighborhood: "Westboro",
     type: "sale",
     status: "available",
@@ -94,6 +116,7 @@ const FALLBACK_LISTINGS: Listing[] = [
     available: "—",
     description: "",
     photos: [],
+    ownerId: null,
   },
 ];
 
@@ -103,6 +126,8 @@ const FALLBACK_LISTINGS: Listing[] = [
 type ListingRow = {
   id: string;
   address: string;
+  city: string | null;
+  zip: string | null;
   neighborhood: string;
   type: ListingType;
   status: ListingStatus;
@@ -113,12 +138,16 @@ type ListingRow = {
   available_date: string | null;
   description: string | null;
   photos: string[] | null;
+  owner_id: string | null;
+  updated_at: string;
 };
 
 function rowToListing(row: ListingRow): Listing {
   return {
     id: row.id,
     address: row.address,
+    city: row.city ?? "",
+    zip: row.zip ?? "",
     neighborhood: row.neighborhood,
     type: row.type,
     status: row.status,
@@ -129,11 +158,13 @@ function rowToListing(row: ListingRow): Listing {
     available: row.available_date ?? "—",
     description: row.description ?? "",
     photos: row.photos ?? [],
+    ownerId: row.owner_id,
+    updatedAt: row.updated_at,
   };
 }
 
 const LISTING_COLUMNS =
-  "id, address, neighborhood, type, status, price, beds, baths, pets, available_date, description, photos";
+  "id, address, city, zip, neighborhood, type, status, price, beds, baths, pets, available_date, description, photos, owner_id, updated_at";
 
 export async function getListings(): Promise<Listing[]> {
   const supabase = getSupabasePublicClient();
@@ -188,6 +219,8 @@ export const STATUS_LABEL: Record<ListingStatus, string> = {
 export interface ListingInput {
   id: string;
   address: string;
+  city: string;
+  zip: string;
   neighborhood: string;
   type: ListingType;
   status: ListingStatus;
@@ -198,6 +231,7 @@ export interface ListingInput {
   available: string;
   description: string;
   photos: string[];
+  ownerId: string | null;
 }
 
 export async function createListing(
@@ -207,6 +241,8 @@ export async function createListing(
   return supabase.from("listings").insert({
     id: input.id,
     address: input.address,
+    city: input.city,
+    zip: input.zip,
     neighborhood: input.neighborhood,
     type: input.type,
     status: input.status,
@@ -217,6 +253,7 @@ export async function createListing(
     available_date: input.available,
     description: input.description,
     photos: input.photos,
+    owner_id: input.ownerId,
   });
 }
 
@@ -229,6 +266,8 @@ export async function updateListing(
     .from("listings")
     .update({
       address: input.address,
+      city: input.city,
+      zip: input.zip,
       neighborhood: input.neighborhood,
       type: input.type,
       status: input.status,
@@ -239,6 +278,7 @@ export async function updateListing(
       available_date: input.available,
       description: input.description,
       photos: input.photos,
+      owner_id: input.ownerId,
       updated_at: new Date().toISOString(),
     })
     .eq("id", id);

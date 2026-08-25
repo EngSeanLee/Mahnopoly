@@ -26,7 +26,7 @@ export async function notifyOfficeOfInquiry(details: {
     // network-level failures throw. Checking `error` here was the missing
     // piece; without it this always reported success.
     const { data, error } = await resend.emails.send({
-      from: "Mahnopoly Website <onboarding@resend.dev>",
+      from: "Mahnopoly Website <inquiries@mahnopolyllc.com>",
       to: officeEmail,
       subject: `New inquiry: ${details.listingAddress}`,
       text: [
