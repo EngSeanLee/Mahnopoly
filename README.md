@@ -15,8 +15,9 @@ A public website with:
 - A home page and a listings page (rentals and for-sale, filterable),
   framed statewide (Kansas), with each listing's city bolded on its card.
 - A page per property with photos and an inquiry form.
-- `/about`, `/contact`, and `/epoxy` (real copy; a real photo for epoxy
-  is still pending from William — placeholder holds its spot).
+- `/about`, `/contact`, and `/epoxy` — all real copy and real photos now.
+  `/about`'s written copy (William's background, the family/team story)
+  is still placeholder text pending what he wants said; its photo is in.
 - A U-Haul link in the nav, and Pay Rent / Maintenance Request buttons on
   `/tenant-portal` — each hidden until its URL is set in Settings. As of
   25 Aug 2026 the tenant portal, pay rent, and maintenance request URLs
@@ -161,6 +162,58 @@ A listing needs a ZIP code to appear in the feed. If one's missing,
 it's silently skipped from the feed (and logged), not sent with bad
 data.
 
+## Marketing page photos
+
+Home, `/epoxy`, and `/about` each show real photography near the top —
+one photo apiece, except home, which stacks three. Not graphics with
+text baked in: the page copy already carries that messaging as real
+HTML (better for SEO and screen readers than pixels), so the photos
+just need to be photos.
+
+**Display width:** all contained (not edge-to-edge) at `max-width:
+900px`, centered, shown at their real aspect ratio — nothing gets
+cropped. Below roughly 900px of viewport width they just scale down.
+
+**Current photos, for sizing any replacement:**
+
+| Page | File(s) | Native size | Shape |
+|---|---|---|---|
+| Home | `public/home-banner-1/2/3.png` | 1920×417, 1920×480, 1920×480 | three wide photos, stacked, no gap between them |
+| `/epoxy` | `public/epoxy-flyer.png` | 1920×640 | 3:1 wide banner |
+| `/about` | `public/about-photo.png` | 1920×640 | 3:1 wide banner |
+
+Anything from about 1600px wide up will look sharp at the 900px display
+width on retina screens — going bigger than ~1900-2000px doesn't buy
+anything but file size. (Property listing photos are a separate thing
+entirely — staff upload those per-listing through `/admin`, shown at
+much smaller sizes: 130px-tall cards on the listings grid, a 320px-tall
+main photo and 152px-tall thumbnails on a property's own page.)
+
+**A gotcha worth knowing before generating a replacement:** the tool
+used for the first pass at these photos (ChatGPT's image generator, by
+the look of it) only outputs three fixed sizes — square, 1536×1024
+(3:2), or 1024×1536 — and silently ignores a requested resolution like
+"1800×600." The 1920×640 photos currently in place came from asking a
+different way (Claude's image tool); if a future photo comes back at
+1536×1024 instead, don't force it into a short wide slot — either crop
+it closer to 3:1 before handing it off, or use it at its own aspect
+ratio in a taller slot instead. Squeezing a 3:2 photo into a short wide
+band crops out most of the picture; stretching it to fill the same
+width at full height instead makes it enormous on wide screens.
+Neither is a Next.js/CSS bug — it's a mismatch between the photo's
+actual shape and the space it's going into.
+
+**The `.hero` class trap:** `.hero` (see `globals.css`) carries its own
+cream background and padding. A contained photo placed *inside* `.hero`
+shows a bare band of that cream color above (and/or below) it — easy to
+mistake for a leftover placeholder, but it's just the section's own
+styling bleeding through. Home and epoxy's photos sit *outside*
+`.hero`; the class is kept only for the heading/CTA below them, with
+its background overridden to white on those two pages (see the
+comments in `src/app/(site)/page.tsx` and `.../epoxy/page.tsx`).
+`/about` never had this problem — its photo was built outside `.hero`
+from the start.
+
 ## What's outstanding
 
 - **Zillow feed submission** — not started; see above.
@@ -172,8 +225,9 @@ data.
   William on the Facebook-sourced listings (several have estimated
   beds/baths/price, flagged in each listing's description) and any
   properties not on Facebook.
-- **Epoxy page photo** — copy is real; William's supplying a stock photo
-  to replace the placeholder.
+- **About page copy** — the photo is real; the written copy (William's
+  background, the family/team story, what makes Mahnopoly different) is
+  still the original placeholder text, pending what he wants said.
 - **GitHub repo ownership** — still under `EngSeanLee`'s personal
   account. "Source code transferred" is part of the MVP's definition of
   done; move it to an org under `admin@mahnopolyllc.com` (or add William
