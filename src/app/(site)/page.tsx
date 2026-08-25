@@ -20,7 +20,7 @@ export default async function Home() {
     <>
       <section className="hero">
         <PhotoPlaceholder label="wide property photo" className="big" />
-        <h1>Homes for sale and rent in Topeka</h1>
+        <h1>Homes for sale and rent across Kansas</h1>
         <p className="subhead">
           Locally owned. Locally managed. Same folks on the sign in your
           neighbor&apos;s yard.

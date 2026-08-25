@@ -14,7 +14,7 @@ export default function AboutPage() {
       <div style={{ marginTop: "2rem", color: "#6b7280" }}>
         <p>
           William&apos;s background and how long the business has been
-          managing and selling property in the Topeka area goes here —
+          managing and selling property across Kansas goes here —
           placeholder text until he sends over what he wants said.
         </p>
         <p>

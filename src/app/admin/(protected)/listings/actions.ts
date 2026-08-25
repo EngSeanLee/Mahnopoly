@@ -26,6 +26,8 @@ function parseListingForm(formData: FormData): Omit<ListingInput, "id"> & { id?:
   return {
     id: String(formData.get("id") || ""),
     address: String(formData.get("address") || "").trim(),
+    city: String(formData.get("city") || "").trim(),
+    zip: String(formData.get("zip") || "").trim(),
     neighborhood: String(formData.get("neighborhood") || "").trim(),
     type: (formData.get("type") as ListingType) || "rental",
     status: (formData.get("status") as ListingStatus) || "available",
@@ -42,12 +44,14 @@ function parseListingForm(formData: FormData): Omit<ListingInput, "id"> & { id?:
       .split("\n")
       .map((s) => s.trim())
       .filter(Boolean),
+    ownerId: String(formData.get("ownerId") || "").trim() || null,
   };
 }
 
 export async function createListingAction(formData: FormData): Promise<SaveResult> {
   const input = parseListingForm(formData);
   if (!input.address) return { ok: false, error: "Street address is required." };
+  if (!input.city) return { ok: false, error: "City is required." };
 
   const supabase = await getSupabaseAdminClient();
   if (!supabase) return { ok: false, error: "Not connected to a database yet." };
@@ -76,6 +80,7 @@ export async function updateListingAction(
 ): Promise<SaveResult> {
   const input = parseListingForm(formData);
   if (!input.address) return { ok: false, error: "Street address is required." };
+  if (!input.city) return { ok: false, error: "City is required." };
 
   const supabase = await getSupabaseAdminClient();
   if (!supabase) return { ok: false, error: "Not connected to a database yet." };

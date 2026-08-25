@@ -28,6 +28,16 @@ export default function SettingsForm({ settings }: { settings: SiteSettings }) {
         />
       </div>
       <div className="form-row">
+        <label htmlFor="payRentUrl">Pay rent URL</label>
+        <input
+          id="payRentUrl"
+          name="payRentUrl"
+          type="url"
+          defaultValue={settings.payRentUrl}
+          placeholder="https://…"
+        />
+      </div>
+      <div className="form-row">
         <label htmlFor="maintenanceRequestUrl">Maintenance request URL</label>
         <input
           id="maintenanceRequestUrl"
@@ -37,8 +47,22 @@ export default function SettingsForm({ settings }: { settings: SiteSettings }) {
           placeholder="https://…"
         />
         <p className="form-note">
-          The home page&apos;s &quot;Already a tenant&quot; button always shows.
-          It links here once set; until then it shows &quot;coming soon.&quot;
+          The tenant portal page always shows a Pay Rent button and a
+          Maintenance Request button. Each links out once its URL above is
+          set; until then it shows &quot;coming soon.&quot;
+        </p>
+      </div>
+      <div className="form-row">
+        <label htmlFor="uhaulUrl">U-Haul dealership URL</label>
+        <input
+          id="uhaulUrl"
+          name="uhaulUrl"
+          type="url"
+          defaultValue={settings.uhaulUrl}
+          placeholder="https://…"
+        />
+        <p className="form-note">
+          Adds a U-Haul link to the site navigation. Hidden until set.
         </p>
       </div>
       <div className="two-col">

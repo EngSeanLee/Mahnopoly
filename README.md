@@ -20,17 +20,33 @@ and the inquiry form) work end to end against a real Supabase project and
 Resend, reading real listing and settings data from the database. The
 staff admin panel (`/admin`) is built and verified against a real login —
 add/edit/delete listings, view inquiries, edit settings all confirmed
-working. See "What's left" for what's still not done.
+working. The owner portal, per-owner documents, the Zillow feed, and the
+new pages below are built and pass `npm test` / `npm run build`, but have
+**not** been run against the live Supabase project yet — several database
+migrations need to run first (see "Database migrations" below) before any
+of it works outside local dev's fallback data. See "What's left" for the
+full list of what's still not done.
 
 ## What this is, in plain terms
 
 A public website with:
-- A home page and a listings page (rentals and for-sale, filterable).
+- A home page and a listings page (rentals and for-sale, filterable),
+  framed statewide (Kansas), with each listing's city bolded on its card.
 - A page per property with photos-to-be and an inquiry form.
+- `/about`, `/contact`, and `/epoxy` (shell, copy pending from William).
+- A U-Haul link in the nav, and Pay Rent / Maintenance Request buttons on
+  `/tenant-portal` — all three hidden until their URL is set in Settings.
+- A `/zillow-feed.xml` feed of current rental listings, in the format
+  Zillow's Rental Listing Bulk Feed Guide requires (see "The Zillow feed"
+  below for what going live on Zillow additionally needs, outside this
+  codebase).
 - A staff-only admin panel (`/admin`, real login required) to add/edit/
-  remove listings, view inquiries, and edit the settings that control the
-  tenant portal link and office info — no code changes needed for any of
-  that day to day.
+  remove listings, manage owners, view inquiries, and edit the settings
+  that control every link-out URL and office info — no code changes
+  needed for any of that day to day.
+- An owner portal (`/owner`, separate login from staff) where a property
+  owner sees only their own properties and documents staff uploaded for
+  them — see "The owner portal" below for the invite flow.
 
 The full plan — scope, what's explicitly excluded, and why the pieces were
 chosen — is in `docs/plan.md`.
@@ -98,6 +114,31 @@ Nothing sensitive is exposed by that on its own — the admin panel still
 requires a real Supabase Auth login regardless — but revisit this before
 launch if it matters for other reasons.
 
+## Database migrations
+
+`supabase/schema.sql`, `supabase/storage.sql`, and `supabase/owner-storage.sql`
+describe the *current* schema — what a brand-new Supabase project should
+run once, in that order, to match. The live project already has an older
+version of `schema.sql` applied, so it instead needs the numbered files in
+`supabase/migrations/`, run in the Supabase SQL editor **in order**:
+
+1. `001_add_city.sql`
+2. `002_settings_pay_rent_and_uhaul.sql`
+3. `003_staff_table_and_rls_fix.sql` — **read the comment at the top of
+   this file before running it.** It requires inserting the real staff
+   login email into the new `staff` table as part of the same run, or the
+   admin panel locks everyone out, including the real staff account.
+4. `004_owner_portal.sql`, then `supabase/owner-storage.sql` (not a
+   numbered migration — same one-time-after-004 relationship
+   `storage.sql` already has with the original schema)
+5. `005_add_zip.sql`
+
+None of this has been run against the live project yet — until it is, the
+site keeps working off its fallback placeholder data (by design, same
+safety net that's always covered a misconfigured or unreachable database),
+which is what `npm run build`'s `getListings`/`getSettings` "query failed,
+using fallback" log lines mean if you see them.
+
 ## Environment variables
 
 Copy `.env.example` to `.env.local` and fill in real values — see that
@@ -105,6 +146,56 @@ file for what each one is and where to get it. Never commit `.env.local`;
 it's gitignored on purpose. Preview deployments need the same variables
 set in Vercel too (`vercel env add <NAME> preview`) — they don't inherit
 `.env.local`.
+
+**New since the last update:** `SUPABASE_SECRET_KEY` (the service-role
+key) is now required for the owner portal's invite-by-email flow
+(`src/lib/owners.ts`). It bypasses row-level security entirely and is used
+server-side only — never commit it, never prefix it `NEXT_PUBLIC_`. Add it
+to `.env.local` and to Vercel (`vercel env add SUPABASE_SECRET_KEY`)
+before inviting any owners.
+
+## The owner portal
+
+A property owner logs in separately from staff, at `/owner/login`, and
+sees only their own properties and any documents staff uploaded for them
+— never another owner's, and never staff-only data (inquiries, settings).
+That separation is enforced by row-level security, not just by which
+pages exist — see `supabase/schema.sql`'s comments on the `staff` and
+`owners` tables if changing any of this.
+
+To add an owner: staff go to `/admin/owners`, add their name and email,
+then click "Send invite." That calls Supabase's invite-by-email API,
+which emails the owner a link to `/owner/set-password`; setting a
+password there logs them straight into `/owner`, and the first visit
+there is also what links their new login back to the owner record staff
+created (see `claimOwnerRow` in `src/lib/owners.ts` for why that can't
+happen any earlier). **Not yet tested end to end with a real invite
+email** — the request side works against the real project, but nobody's
+actually clicked a real invite link through this flow yet. Do that before
+telling William it works, the same caution already noted below for the
+staff password-reset email.
+
+## The Zillow feed
+
+`/zillow-feed.xml` generates a live feed of current rental listings in
+the format Zillow's own Rental Listing Bulk Feed Guide requires (field
+names and rules were read directly from that guide while building this,
+not from memory — it's the kind of spec that drifts). Building the feed
+file is only step one, though: Zillow doesn't discover it on its own.
+Outside this codebase, someone needs to email rentalfeeds@zillow.com to
+request approval and test-environment setup, watch the test listings
+publish correctly, then have a go-live meeting — all on Zillow's
+timeline, not ours. Worth knowing before committing to that process: the
+feed guide itself says a landlord with a small number of properties
+should consider entering listings directly into Zillow Rental Manager
+instead of building and maintaining a feed — that may end up being less
+total effort than the feed-approval process, and is a fallback worth
+remembering if the approval process drags.
+
+A listing needs a ZIP code to appear in the feed (required by Zillow,
+previously not even stored in this app's database at all — see the "ZIP
+code" field on the listing-edit form). One's missing, it's silently
+skipped from the feed (and logged), not sent with bad data.
 
 ## Who hosts it, and what it costs
 
@@ -184,6 +275,55 @@ set in Vercel too (`vercel env add <NAME> preview`) — they don't inherit
    requirement. Now forced dynamic so every page under it reads fresh
    data on every request; documented trade-off (gives up static-page
    caching) in that file, reasonable given this site's traffic.
+9. Built against the newer `William MVP.md` scope (owner portal, Zillow
+   feed, U-Haul link, epoxy page, statewide Kansas framing). All of it
+   passes `npm test` and `npm run build`, but **none of it has run
+   against the live Supabase project yet** — see "Database migrations"
+   above; nothing in this item works in production until those run.
+   - Statewide framing: "Topeka"-specific copy removed from the title,
+     home page, and about page; listings now carry a real `city` field
+     (bolded on cards), separate from the old free-text `neighborhood`.
+   - Settings gained `payRentUrl` and `uhaulUrl`, distinct from the
+     existing tenant portal/maintenance URLs — each link-out button now
+     shows or hides independently based on whether its own URL is set.
+   - New pages: `/contact` (dedicated, replacing the old `/#contact`
+     anchor), `/epoxy` (shell, copy pending from William, same pattern
+     as `/about`), and a U-Haul nav link (hidden until its URL is set —
+     still needed from William, blocks nothing else).
+   - **Fixed a real security gap** before building the owner portal on
+     top of it: every staff-only RLS policy checked
+     `auth.role() = 'authenticated'`, which means *any* logged-in user
+     counted as staff. Harmless while staff were the only login this app
+     had; would have given every owner full staff access the moment
+     they could log in at all. Replaced with an explicit `staff`
+     allowlist table everywhere that check appeared (listings, settings,
+     inquiries, property-photo uploads) — see `003_staff_table_and_rls_fix.sql`.
+     The admin panel's own layout and middleware got the equivalent fix
+     (checking staff-table membership, not just "is logged in").
+   - Owner portal: `owners`, `owner_documents` tables, a private
+     `owner-documents` Storage bucket, an `/admin/owners` staff screen
+     (add an owner, assign them to listings from the existing
+     listing-edit form, upload documents, send their invite email), and
+     `/owner` (separate login, view-only, an owner's own properties and
+     documents only — enforced by RLS, not just page routing). **Not yet
+     tested end to end with a real invite email** — see "The owner
+     portal" above.
+   - `/zillow-feed.xml`: a live-generated feed in Zillow's real,
+     currently-documented format (fetched and read directly from
+     Zillow's own guide while building this, not written from memory).
+     Manually tested against real output, not just inspected — which is
+     what caught a real bug: `new Date("Sept 1")` (parsing the existing
+     free-text "available" field) silently invented a year (2001)
+     instead of failing, which would have sent Zillow a wrong move-in
+     date on every listing without a literal year in that field. Fixed
+     to require a strict `YYYY-MM-DD` match and omit the tag otherwise
+     (it's optional). See "The Zillow feed" above for what's still
+     needed outside this codebase before any of this reaches Zillow.
+   - Not done as part of this pass: `scripts/verify-rls.mjs` still only
+     tests the anonymous/public case, not "an owner is logged in but
+     tries to read staff-only data" — extending it needs a real test
+     owner account against the live project, which needs the migrations
+     above run first.
 
 ## If something breaks
 

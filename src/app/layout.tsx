@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Mahnopoly | Homes for sale and rent in Topeka",
+  title: "Mahnopoly | Homes for sale and rent across Kansas",
   description:
-    "Locally owned and managed rental and for-sale listings in Topeka, KS.",
+    "Locally owned and managed rental and for-sale listings across Kansas.",
 };
 
 // Just the HTML shell. Public pages get Header/Footer from
