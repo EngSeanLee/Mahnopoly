@@ -15,8 +15,7 @@ create policy "Public can view property photos"
   using (bucket_id = 'property-photos');
 
 -- Only staff (checked against the `staff` table in schema.sql, not just
--- "any authenticated user" — owners are authenticated too, once the owner
--- portal is live) can upload, replace, or remove photos.
+-- "any authenticated user") can upload, replace, or remove photos.
 create policy "Staff can upload property photos"
   on storage.objects for insert
   with check (

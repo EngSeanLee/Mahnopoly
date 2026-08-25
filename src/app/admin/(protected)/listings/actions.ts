@@ -44,7 +44,6 @@ function parseListingForm(formData: FormData): Omit<ListingInput, "id"> & { id?:
       .split("\n")
       .map((s) => s.trim())
       .filter(Boolean),
-    ownerId: String(formData.get("ownerId") || "").trim() || null,
   };
 }
 

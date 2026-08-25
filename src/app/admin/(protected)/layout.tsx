@@ -6,8 +6,8 @@ import { signOut } from "@/app/admin/login/actions";
 // Middleware already redirects non-staff requests away from /admin, but
 // that's a defense-in-depth belt-and-suspenders check, not the only one —
 // a layout render that somehow gets here without a session, or with a
-// session that isn't staff (an owner, once the owner portal is live —
-// see /owner), redirects too, rather than trusting middleware alone.
+// session that isn't staff, redirects too, rather than trusting
+// middleware alone.
 export default async function AdminLayout({
   children,
 }: {
@@ -21,9 +21,9 @@ export default async function AdminLayout({
   if (!user) redirect("/admin/login");
 
   // Being logged in isn't enough — must be in the staff allowlist (see
-  // supabase/schema.sql). Otherwise an owner who's logged into their own
-  // portal could browse straight to /admin URLs and see staff-only UI,
-  // even though RLS would still block any actual data read/write.
+  // supabase/schema.sql). Otherwise any authenticated Supabase user could
+  // browse straight to /admin URLs and see staff-only UI, even though
+  // RLS would still block any actual data read/write.
   const { data: staffRow } = supabase
     ? await supabase.from("staff").select("email").eq("email", user.email).maybeSingle()
     : { data: null };
@@ -47,7 +47,6 @@ export default async function AdminLayout({
           <div className="tabgroup">
             <Link className="tab" href="/admin">All Properties</Link>
             <Link className="tab" href="/admin/inquiries">Inquiries</Link>
-            <Link className="tab" href="/admin/owners">Owners</Link>
             <Link className="tab" href="/admin/settings">Settings</Link>
           </div>
         </div>

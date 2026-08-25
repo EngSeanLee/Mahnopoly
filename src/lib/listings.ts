@@ -19,7 +19,6 @@ export interface Listing {
   available: string;
   description: string;
   photos: string[];
-  ownerId: string | null;
   // Optional because the 5 dev-only FALLBACK_LISTINGS below don't carry
   // one — real rows always do (schema.sql's `updated_at`). Only consumer
   // right now is the Zillow feed's required <lastUpdated> (see
@@ -48,7 +47,6 @@ const FALLBACK_LISTINGS: Listing[] = [
     available: "Sept 1",
     description: "",
     photos: [],
-    ownerId: null,
   },
   {
     id: "burlingame-rd",
@@ -65,7 +63,6 @@ const FALLBACK_LISTINGS: Listing[] = [
     available: "Sept 15",
     description: "",
     photos: [],
-    ownerId: null,
   },
   {
     id: "indiana-ave",
@@ -82,7 +79,6 @@ const FALLBACK_LISTINGS: Listing[] = [
     available: "—",
     description: "",
     photos: [],
-    ownerId: null,
   },
   {
     id: "lyman-rd",
@@ -99,7 +95,6 @@ const FALLBACK_LISTINGS: Listing[] = [
     available: "—",
     description: "",
     photos: [],
-    ownerId: null,
   },
   {
     id: "macvicar-ave",
@@ -116,7 +111,6 @@ const FALLBACK_LISTINGS: Listing[] = [
     available: "—",
     description: "",
     photos: [],
-    ownerId: null,
   },
 ];
 
@@ -138,7 +132,6 @@ type ListingRow = {
   available_date: string | null;
   description: string | null;
   photos: string[] | null;
-  owner_id: string | null;
   updated_at: string;
 };
 
@@ -158,13 +151,12 @@ function rowToListing(row: ListingRow): Listing {
     available: row.available_date ?? "—",
     description: row.description ?? "",
     photos: row.photos ?? [],
-    ownerId: row.owner_id,
     updatedAt: row.updated_at,
   };
 }
 
 const LISTING_COLUMNS =
-  "id, address, city, zip, neighborhood, type, status, price, beds, baths, pets, available_date, description, photos, owner_id, updated_at";
+  "id, address, city, zip, neighborhood, type, status, price, beds, baths, pets, available_date, description, photos, updated_at";
 
 export async function getListings(): Promise<Listing[]> {
   const supabase = getSupabasePublicClient();
@@ -231,7 +223,6 @@ export interface ListingInput {
   available: string;
   description: string;
   photos: string[];
-  ownerId: string | null;
 }
 
 export async function createListing(
@@ -253,7 +244,6 @@ export async function createListing(
     available_date: input.available,
     description: input.description,
     photos: input.photos,
-    owner_id: input.ownerId,
   });
 }
 
@@ -278,7 +268,6 @@ export async function updateListing(
       available_date: input.available,
       description: input.description,
       photos: input.photos,
-      owner_id: input.ownerId,
       updated_at: new Date().toISOString(),
     })
     .eq("id", id);

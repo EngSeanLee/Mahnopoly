@@ -2,7 +2,6 @@
 
 import { useState, useTransition } from "react";
 import type { Listing } from "@/lib/listings";
-import type { Owner } from "@/lib/owners";
 import PhotoUpload from "./PhotoUpload";
 
 type SaveResult = { ok: false; error: string } | void;
@@ -10,11 +9,9 @@ type SaveResult = { ok: false; error: string } | void;
 export default function ListingForm({
   listing,
   onSave,
-  owners,
 }: {
   listing?: Listing;
   onSave: (formData: FormData) => Promise<SaveResult>;
-  owners: Owner[];
 }) {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -131,17 +128,6 @@ export default function ListingForm({
             defaultValue={listing?.pets === "—" ? "" : listing?.pets}
             placeholder="Cats only"
           />
-        </div>
-        <div className="form-row">
-          <label htmlFor="ownerId">Owner</label>
-          <select id="ownerId" name="ownerId" defaultValue={listing?.ownerId ?? ""}>
-            <option value="">— No owner assigned —</option>
-            {owners.map((owner) => (
-              <option key={owner.id} value={owner.id}>
-                {owner.name}
-              </option>
-            ))}
-          </select>
         </div>
       </div>
 

@@ -25,7 +25,6 @@ export default function Header({ settings }: { settings: SiteSettings }) {
             U-Haul
           </a>
         )}
-        <Link className="nav-staff" href="/owner/login">Owner Login</Link>
         <Link className="nav-staff" href="/admin/login">Staff Login</Link>
       </nav>
       <a className="phone-btn" href={telHref}>{settings.officePhone}</a>
