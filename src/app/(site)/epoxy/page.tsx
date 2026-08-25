@@ -43,9 +43,9 @@ export default function EpoxyPage() {
   return (
     <>
       <section className="hero">
-        {/* Visually hidden — the flyer image below carries the visible
-            headline/tagline, but the page still needs a real H1 for SEO
-            and screen readers. */}
+        {/* Visually hidden — William's call was a lean hero with just the
+            photo and CTA, no visible headline text. Kept as a real H1 for
+            SEO and screen readers even though nothing renders on screen. */}
         <h1 className="sr-only">Epoxy Flooring in Topeka, Kansas</h1>
         <div
           style={{
@@ -59,7 +59,7 @@ export default function EpoxyPage() {
         >
           <Image
             src="/epoxy-flyer.png"
-            alt="Mahnopoly Epoxy LLC — epoxy flooring in Topeka, Kansas. Built to take a beating, finished to impress. A finished garage floor with a dark speckled epoxy coating and matching black cabinetry, alongside the highlights: built to last, easy to clean, looks amazing, installed right."
+            alt="A finished garage in Topeka, Kansas with a glossy dark speckled epoxy floor coating reflecting the overhead lighting, dark cabinetry and tool storage along the wall, and natural light through a window."
             width={1536}
             height={1024}
             style={{ width: "100%", height: "auto", display: "block" }}

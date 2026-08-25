@@ -1,15 +1,31 @@
-import PhotoPlaceholder from "@/components/PhotoPlaceholder";
+import Image from "next/image";
 
 export const metadata = { title: "About | Mahnopoly" };
 
-// Real content pending from William — see docs/plan.md. Structure is
-// built so filling this in later is a content swap, not new layout work.
+// Real photo is in; the copy below is still pending from William — see
+// docs/plan.md.
 export default function AboutPage() {
   return (
     <div style={{ maxWidth: 800, margin: "0 auto", padding: "3rem 2rem" }}>
       <h1 style={{ marginBottom: "1.5rem" }}>About Mahnopoly</h1>
 
-      <PhotoPlaceholder label="family photo" className="big" height={320} />
+      <div
+        style={{
+          borderRadius: 8,
+          overflow: "hidden",
+          border: "1px solid var(--border)",
+          lineHeight: 0,
+        }}
+      >
+        <Image
+          src="/about-photo.png"
+          alt="A tree-lined residential street in Topeka, Kansas at golden hour, with established homes and mature trees along the sidewalk."
+          width={1536}
+          height={1024}
+          style={{ width: "100%", height: "auto", display: "block" }}
+          sizes="(max-width: 800px) 100vw, 736px"
+        />
+      </div>
 
       <div style={{ marginTop: "2rem", color: "#6b7280" }}>
         <p>
