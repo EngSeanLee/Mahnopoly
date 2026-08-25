@@ -2,23 +2,26 @@ import Image from "next/image";
 
 export const metadata = { title: "About | Mahnopoly" };
 
-// Real photo is in, full-bleed at the top like the home/epoxy heroes;
-// the copy below is still pending from William — see docs/plan.md.
+// Contained, full photo visible, no crop/border/full-bleed — pending a
+// proper 3:1 banner photo (see globals.css note on .full-bleed for that
+// future treatment). The copy below is still pending from William — see
+// docs/plan.md.
 export default function AboutPage() {
   return (
     <>
-      <div className="full-bleed" style={{ height: 320 }}>
+      <div style={{ maxWidth: 900, margin: "0 auto", padding: "2rem 2rem 0", lineHeight: 0 }}>
         <Image
           src="/about-photo.png"
           alt="A tree-lined residential street in Topeka, Kansas at golden hour, with established homes and mature trees along the sidewalk."
-          fill
-          sizes="100vw"
-          style={{ objectFit: "cover" }}
+          width={1536}
+          height={1024}
+          style={{ width: "100%", height: "auto", display: "block" }}
+          sizes="(max-width: 900px) 100vw, 900px"
           priority
         />
       </div>
 
-      <div style={{ maxWidth: 800, margin: "0 auto", padding: "3rem 2rem" }}>
+      <div style={{ maxWidth: 800, margin: "0 auto", padding: "2rem 2rem 3rem" }}>
         <h1 style={{ marginBottom: "1.5rem" }}>About Mahnopoly</h1>
 
         <div style={{ color: "#6b7280" }}>

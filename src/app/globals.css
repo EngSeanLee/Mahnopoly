@@ -28,9 +28,11 @@ body {
 a { color: inherit; text-decoration: none; }
 
 /* Breaks a child out to true full browser width regardless of how deep
-   it's nested inside a padded/max-width container — used for edge-to-edge
-   hero photos. Needs position:relative on the same element for the
-   next/image `fill` pattern to anchor against. */
+   it's nested inside a padded/max-width container. Not currently used —
+   home/epoxy/about went back to contained, uncropped photos (25 Aug 2026)
+   after a 3:2 photo either cropped badly or got very tall at this width.
+   Meant for pairing with a photo actually shot/generated at a wide banner
+   ratio (~3:1); see the home/epoxy/about hero comments. */
 .full-bleed {
   position: relative;
   width: 100vw;

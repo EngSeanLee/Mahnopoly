@@ -47,13 +47,17 @@ export default function EpoxyPage() {
             photo and CTA, no visible headline text. Kept as a real H1 for
             SEO and screen readers even though nothing renders on screen. */}
         <h1 className="sr-only">Epoxy Flooring in Topeka, Kansas</h1>
-        <div className="full-bleed" style={{ height: 420 }}>
+        {/* Contained, full photo visible, no crop/border/full-bleed —
+            pending a proper 3:1 banner photo (see globals.css note on
+            .full-bleed for that future treatment). */}
+        <div style={{ maxWidth: 900, margin: "0 auto", lineHeight: 0 }}>
           <Image
             src="/epoxy-flyer.png"
             alt="A finished garage in Topeka, Kansas with a glossy dark speckled epoxy floor coating reflecting the overhead lighting, dark cabinetry and tool storage along the wall, and natural light through a window."
-            fill
-            sizes="100vw"
-            style={{ objectFit: "cover" }}
+            width={1536}
+            height={1024}
+            style={{ width: "100%", height: "auto", display: "block" }}
+            sizes="(max-width: 900px) 100vw, 900px"
             priority
           />
         </div>
