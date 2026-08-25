@@ -10,7 +10,7 @@ export default async function OwnersPage() {
 
   return (
     <>
-      <h3 style={{ marginBottom: "1rem" }}>Add an owner</h3>
+      <h3 style={{ marginBottom: "1rem" }}>Add an Owner</h3>
       <OwnerForm />
 
       <h3 style={{ margin: "2rem 0 1rem" }}>Owners</h3>

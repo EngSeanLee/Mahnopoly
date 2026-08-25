@@ -32,7 +32,7 @@ export default async function AdminLayout({
   return (
     <>
       <div className="admin-header">
-        <div className="title">Mahnopoly admin</div>
+        <div className="title">Mahnopoly Admin</div>
         <div>
           Signed in as {user.email} &middot;{" "}
           <form action={signOut} style={{ display: "inline" }}>
@@ -45,7 +45,7 @@ export default async function AdminLayout({
       <div className="admin-wrap">
         <div className="admin-tabs">
           <div className="tabgroup">
-            <Link className="tab" href="/admin">All properties</Link>
+            <Link className="tab" href="/admin">All Properties</Link>
             <Link className="tab" href="/admin/inquiries">Inquiries</Link>
             <Link className="tab" href="/admin/owners">Owners</Link>
             <Link className="tab" href="/admin/settings">Settings</Link>

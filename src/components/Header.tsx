@@ -15,8 +15,8 @@ export default function Header({ settings }: { settings: SiteSettings }) {
       </div>
       <nav className="main-nav">
         <Link className="nav-link" href="/">Home</Link>
-        <Link className="nav-link" href="/listings?tab=rent">For rent</Link>
-        <Link className="nav-link" href="/listings?tab=sale">For sale</Link>
+        <Link className="nav-link" href="/listings?tab=rent">For Rent</Link>
+        <Link className="nav-link" href="/listings?tab=sale">For Sale</Link>
         <Link className="nav-link" href="/about">About</Link>
         <Link className="nav-link" href="/epoxy">Epoxy</Link>
         <Link className="nav-link" href="/contact">Contact</Link>
@@ -25,8 +25,8 @@ export default function Header({ settings }: { settings: SiteSettings }) {
             U-Haul
           </a>
         )}
-        <Link className="nav-staff" href="/owner/login">Owner login</Link>
-        <Link className="nav-staff" href="/admin/login">Staff login</Link>
+        <Link className="nav-staff" href="/owner/login">Owner Login</Link>
+        <Link className="nav-staff" href="/admin/login">Staff Login</Link>
       </nav>
       <a className="phone-btn" href={telHref}>{settings.officePhone}</a>
     </header>

@@ -21,13 +21,13 @@ export default async function ListingsPage({
           className={`tab${activeTab === "rent" ? " active" : ""}`}
           href="/listings?tab=rent"
         >
-          For rent
+          For Rent
         </Link>
         <Link
           className={`tab${activeTab === "sale" ? " active" : ""}`}
           href="/listings?tab=sale"
         >
-          For sale
+          For Sale
         </Link>
       </div>
       <div className="listing-grid">

@@ -30,7 +30,7 @@ export default async function OwnerPortalPage() {
 
   return (
     <>
-      <h3 style={{ marginBottom: "1rem" }}>Your properties</h3>
+      <h3 style={{ marginBottom: "1rem" }}>Your Properties</h3>
       {ownedListings.length === 0 ? (
         <p style={{ color: "#6b7280" }}>No properties on file yet.</p>
       ) : (
@@ -60,7 +60,7 @@ export default async function OwnerPortalPage() {
         </table>
       )}
 
-      <h3 style={{ margin: "2rem 0 1rem" }}>Your documents</h3>
+      <h3 style={{ margin: "2rem 0 1rem" }}>Your Documents</h3>
       {documentsWithUrls.length === 0 ? (
         <p style={{ color: "#6b7280" }}>No documents uploaded yet.</p>
       ) : (

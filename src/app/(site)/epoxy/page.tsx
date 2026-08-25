@@ -2,10 +2,9 @@ import PhotoPlaceholder from "@/components/PhotoPlaceholder";
 
 export const metadata = { title: "Epoxy Services | Mahnopoly" };
 
-// Shell only — real copy pending from William (see docs/plan.md /
-// William MVP.md open question #7). Structure is built so filling this
-// in later is a content swap, not new layout work, same pattern as
-// (site)/about/page.tsx.
+// Generic description copy — real photo pending from William (a stock
+// photo, per his own call), same PhotoPlaceholder pattern used elsewhere
+// until then.
 export default function EpoxyPage() {
   return (
     <div style={{ maxWidth: 800, margin: "0 auto", padding: "3rem 2rem" }}>
@@ -15,8 +14,16 @@ export default function EpoxyPage() {
 
       <div style={{ marginTop: "2rem", color: "#6b7280" }}>
         <p>
-          Details on Mahnopoly&apos;s epoxy services go here — placeholder
-          text until William sends over what he wants said.
+          Mahnopoly applies epoxy flooring for garages, basements,
+          workshops, and other concrete surfaces. Epoxy coating seals and
+          protects the concrete underneath, resists stains, oil, and wear
+          far better than bare concrete, and gives the floor a clean,
+          durable, easy-to-clean finish that holds up for years.
+        </p>
+        <p>
+          Call the office to talk through your space and get a quote —
+          see the phone number above or the contact info in the footer
+          below.
         </p>
       </div>
     </div>

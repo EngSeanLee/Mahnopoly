@@ -8,7 +8,7 @@ export default async function TenantPortalPage() {
 
   return (
     <div style={{ maxWidth: 700, margin: "0 auto", padding: "3rem 2rem" }}>
-      <h1 style={{ marginBottom: "1.5rem" }}>Tenant portal</h1>
+      <h1 style={{ marginBottom: "1.5rem" }}>Tenant Portal</h1>
 
       <div className="two-col" style={{ marginBottom: "1.5rem" }}>
         <a
@@ -19,7 +19,7 @@ export default async function TenantPortalPage() {
           rel={settings.payRentUrl ? "noopener noreferrer" : undefined}
           style={!settings.payRentUrl ? { pointerEvents: "none", opacity: 0.5 } : undefined}
         >
-          {settings.payRentUrl ? "Pay rent" : "Pay rent — coming soon"}
+          {settings.payRentUrl ? "Pay Rent" : "Pay Rent — Coming Soon"}
         </a>
         <a
           className="btn btn-navy"
@@ -29,7 +29,7 @@ export default async function TenantPortalPage() {
           rel={settings.maintenanceRequestUrl ? "noopener noreferrer" : undefined}
           style={!settings.maintenanceRequestUrl ? { pointerEvents: "none", opacity: 0.5 } : undefined}
         >
-          {settings.maintenanceRequestUrl ? "Submit a maintenance request" : "Maintenance request — coming soon"}
+          {settings.maintenanceRequestUrl ? "Submit a Maintenance Request" : "Maintenance Request — Coming Soon"}
         </a>
       </div>
 

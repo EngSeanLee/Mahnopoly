@@ -201,7 +201,6 @@ nav.main-nav a.nav-staff:hover { color: var(--navy); }
 .listing-card .photo-placeholder { height: 130px; border-radius: 0; border-left: none; border-right: none; border-top: none; }
 .listing-card .listing-body { padding: 0.9rem 1rem 1.1rem; }
 .listing-card .price { font-weight: 800; font-size: 1.15rem; color: var(--navy); }
-.listing-card .price.for-sale { color: var(--red); }
 .listing-card .meta { color: var(--gray); font-size: 0.88rem; margin-top: 0.2rem; }
 .status-badge {
   display: inline-block;
@@ -268,7 +267,6 @@ a.tab.active { color: var(--navy); border-bottom-color: var(--navy); }
 .property-header { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; align-items: flex-start; }
 .property-header .addr { font-size: 1.5rem; font-weight: 800; margin: 0 0 0.25rem; }
 .property-header .price-big { font-size: 1.6rem; font-weight: 800; color: var(--navy); }
-.property-header .price-big.for-sale { color: var(--red); }
 .property-facts {
   display: flex;
   gap: 1.5rem;

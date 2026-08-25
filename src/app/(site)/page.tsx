@@ -33,12 +33,12 @@ export default async function Home() {
       <div className="path-cards">
         <Link className="path-card rent" href="/listings?tab=rent">
           <span className="icon"><KeyIcon /></span>
-          <h3>Looking to rent</h3>
+          <h3>Looking to Rent</h3>
           <p>Browse what&apos;s open now</p>
         </Link>
         <Link className="path-card buy" href="/listings?tab=sale">
           <span className="icon"><HomeIcon /></span>
-          <h3>Looking to buy</h3>
+          <h3>Looking to Buy</h3>
           <p>See what&apos;s on the market</p>
         </Link>
         <Link
@@ -46,7 +46,7 @@ export default async function Home() {
           href={settings.tenantPortalUrl || "/tenant-portal"}
         >
           <span className="icon"><UserIcon /></span>
-          <h3>Already a tenant</h3>
+          <h3>Already a Tenant</h3>
           <p>
             {settings.tenantPortalUrl
               ? "Pay rent or submit a request"
@@ -56,7 +56,7 @@ export default async function Home() {
       </div>
 
       <div className="section-row">
-        <h2>Available now</h2>
+        <h2>Available Now</h2>
         <Link className="view-all" href="/listings?tab=rent">
           View all &rsaquo;
         </Link>

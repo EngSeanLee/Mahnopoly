@@ -33,7 +33,7 @@ export default async function OwnerLayout({
   return (
     <>
       <div className="admin-header">
-        <div className="title">Mahnopoly owner portal</div>
+        <div className="title">Mahnopoly Owner Portal</div>
         <div>
           Signed in as {owner.name} &middot;{" "}
           <form action={signOut} style={{ display: "inline" }}>
