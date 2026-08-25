@@ -48,6 +48,7 @@ create table if not exists settings (
   office_address text,
   office_phone text,
   office_hours text,
+  epoxy_photos jsonb not null default '[]',
   constraint settings_singleton check (id = 1)
 );
 insert into settings (id) values (1) on conflict (id) do nothing;

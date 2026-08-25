@@ -14,6 +14,10 @@ export interface SiteSettings {
   officeAddress: string;
   officePhone: string;
   officeHours: string;
+  // Photo gallery shown on /epoxy — same shape as a listing's `photos`
+  // column (array of property-photos bucket URLs), just global instead
+  // of per-listing. Empty until William uploads real job photos.
+  epoxyPhotos: string[];
 }
 
 // Real values, matching William's Facebook business page — used both as
@@ -28,6 +32,7 @@ const FALLBACK_SETTINGS: SiteSettings = {
   officeAddress: "504 SW 2nd Street, Topeka, KS 66603",
   officePhone: "(785) 329-6344",
   officeHours: "Mon–Fri hours",
+  epoxyPhotos: [],
 };
 
 type SettingsRow = {
@@ -39,6 +44,7 @@ type SettingsRow = {
   office_address: string | null;
   office_phone: string | null;
   office_hours: string | null;
+  epoxy_photos: string[] | null;
 };
 
 function rowToSettings(row: SettingsRow): SiteSettings {
@@ -51,6 +57,7 @@ function rowToSettings(row: SettingsRow): SiteSettings {
     officeAddress: row.office_address || FALLBACK_SETTINGS.officeAddress,
     officePhone: row.office_phone || FALLBACK_SETTINGS.officePhone,
     officeHours: row.office_hours || FALLBACK_SETTINGS.officeHours,
+    epoxyPhotos: row.epoxy_photos ?? [],
   };
 }
 
@@ -64,7 +71,7 @@ export async function getSettings(): Promise<SiteSettings> {
   const { data, error } = await supabase
     .from("settings")
     .select(
-      "tenant_portal_url, pay_rent_url, maintenance_request_url, uhaul_url, show_tenant_buttons, office_address, office_phone, office_hours"
+      "tenant_portal_url, pay_rent_url, maintenance_request_url, uhaul_url, show_tenant_buttons, office_address, office_phone, office_hours, epoxy_photos"
     )
     .eq("id", 1)
     .maybeSingle();
@@ -91,6 +98,7 @@ export async function updateSettings(
       office_address: settings.officeAddress,
       office_phone: settings.officePhone,
       office_hours: settings.officeHours,
+      epoxy_photos: settings.epoxyPhotos,
     })
     .eq("id", 1);
 }

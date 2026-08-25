@@ -7,8 +7,22 @@ import { uploadPhoto, deletePhoto } from "@/lib/storage";
 
 export default function PhotoUpload({
   initialPhotos = [],
+  fieldName = "photos",
+  label = "Photos",
+  folder,
+  placeholder = "Add photos — first one is the main photo",
 }: {
   initialPhotos?: string[];
+  // Name of the hidden form field this writes to — defaults to "photos"
+  // (the listing form's field). Give each PhotoUpload on a page its own
+  // fieldName if a page ever uses more than one at once.
+  fieldName?: string;
+  label?: string;
+  // Subfolder within the property-photos bucket, e.g. "epoxy" — keeps a
+  // global gallery's files visibly separate from per-listing photos in
+  // the Supabase Storage browser. Omit for the bucket root (listings).
+  folder?: string;
+  placeholder?: string;
 }) {
   const [photos, setPhotos] = useState<string[]>(initialPhotos);
   const [uploading, setUploading] = useState(false);
@@ -22,7 +36,7 @@ export default function PhotoUpload({
     const supabase = getSupabaseBrowserClient();
     const uploaded: string[] = [];
     for (const file of Array.from(files)) {
-      const result = await uploadPhoto(supabase, file);
+      const result = await uploadPhoto(supabase, file, folder);
       if ("error" in result) {
         setError(result.error);
       } else {
@@ -53,7 +67,7 @@ export default function PhotoUpload({
 
   return (
     <div className="form-row">
-      <label>Photos</label>
+      <label>{label}</label>
       {photos.length > 0 && (
         <div
           style={{
@@ -120,13 +134,14 @@ export default function PhotoUpload({
           onChange={(e) => handleFiles(e.target.files)}
           disabled={uploading}
         />
-        <div>{uploading ? "Uploading…" : "Add photos — first one is the main photo"}</div>
+        <div>{uploading ? "Uploading…" : placeholder}</div>
       </div>
       {error && <div className="form-error">{error}</div>}
 
-      {/* Read by the existing form parser (one URL per line) — see
-          parseListingForm in listings/actions.ts. */}
-      <input type="hidden" name="photos" value={photos.join("\n")} />
+      {/* Read by the corresponding form action (one URL per line) — see
+          parseListingForm in listings/actions.ts, or saveSettings in
+          settings/actions.ts. */}
+      <input type="hidden" name={fieldName} value={photos.join("\n")} />
     </div>
   );
 }

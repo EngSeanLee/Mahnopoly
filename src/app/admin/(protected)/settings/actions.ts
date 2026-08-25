@@ -19,6 +19,12 @@ export async function saveSettings(formData: FormData): Promise<SaveSettingsResu
     officeAddress: String(formData.get("officeAddress") || "").trim(),
     officePhone: String(formData.get("officePhone") || "").trim(),
     officeHours: String(formData.get("officeHours") || "").trim(),
+    // PhotoUpload's hidden field (src/components/admin/PhotoUpload.tsx),
+    // one URL per line, same convention as a listing's photos field.
+    epoxyPhotos: String(formData.get("epoxyPhotos") || "")
+      .split("\n")
+      .map((url) => url.trim())
+      .filter(Boolean),
   };
 
   const { error } = await updateSettings(supabase, settings);

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { getSettings } from "@/lib/settings";
 
 export const metadata = {
   title: "Epoxy Flooring in Topeka, Kansas | Mahnopoly Epoxy",
@@ -39,7 +40,8 @@ const DIFFERENCE = [
 // so bare <h2>/<h3>/<p> tags carry browser default spacing that stacks
 // unpredictably with section padding. Every heading/paragraph below
 // sets its own margin rather than relying on the UA default.
-export default function EpoxyPage() {
+export default async function EpoxyPage() {
+  const settings = await getSettings();
   return (
     <>
       {/* Visually hidden — William's call was a lean hero with just the
@@ -112,6 +114,46 @@ export default function EpoxyPage() {
           ))}
         </div>
       </div>
+
+      {/* Hidden entirely until at least one photo's uploaded via
+          /admin/settings — same "hidden until set" pattern as the
+          U-Haul link and tenant-portal buttons elsewhere on the site. */}
+      {settings.epoxyPhotos.length > 0 && (
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 2rem 3rem" }}>
+          <h2 style={{ textAlign: "center", margin: "0 0 2rem" }}>
+            Recent Work
+          </h2>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
+              gap: "1rem",
+            }}
+          >
+            {settings.epoxyPhotos.map((url, i) => (
+              <div
+                key={url}
+                style={{
+                  position: "relative",
+                  height: 220,
+                  borderRadius: 10,
+                  overflow: "hidden",
+                  border: "1px solid var(--border)",
+                }}
+              >
+                <Image
+                  src={url}
+                  alt={`Completed epoxy flooring project, photo ${i + 1}`}
+                  fill
+                  sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                  style={{ objectFit: "cover" }}
+                  unoptimized
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div
         id="estimate"

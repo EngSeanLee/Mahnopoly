@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import type { SiteSettings } from "@/lib/settings";
 import { saveSettings } from "@/app/admin/(protected)/settings/actions";
+import PhotoUpload from "./PhotoUpload";
 
 export default function SettingsForm({ settings }: { settings: SiteSettings }) {
   const [isPending, startTransition] = useTransition();
@@ -79,6 +80,18 @@ export default function SettingsForm({ settings }: { settings: SiteSettings }) {
         <label htmlFor="officeHours">Office hours</label>
         <input id="officeHours" name="officeHours" type="text" defaultValue={settings.officeHours} />
       </div>
+
+      <PhotoUpload
+        initialPhotos={settings.epoxyPhotos}
+        fieldName="epoxyPhotos"
+        label="Epoxy gallery photos"
+        folder="epoxy"
+        placeholder="Add photos — shown on the epoxy page in this order"
+      />
+      <p className="form-note" style={{ marginTop: "-0.5rem", marginBottom: "1.25rem" }}>
+        Shows as a gallery on /epoxy once at least one photo is added.
+        Hidden entirely until then.
+      </p>
 
       {result && result.ok && (
         <div className="form-success">Settings saved.</div>

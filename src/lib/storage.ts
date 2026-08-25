@@ -10,10 +10,12 @@ const BUCKET = "property-photos";
 // — the client-side call is convenience, not the security boundary.
 export async function uploadPhoto(
   supabase: SupabaseClient,
-  file: File
+  file: File,
+  folder?: string
 ): Promise<{ url: string } | { error: string }> {
   const ext = file.name.split(".").pop() || "jpg";
-  const path = `${crypto.randomUUID()}.${ext}`;
+  const name = `${crypto.randomUUID()}.${ext}`;
+  const path = folder ? `${folder}/${name}` : name;
 
   const { error } = await supabase.storage.from(BUCKET).upload(path, file, {
     cacheControl: "3600",
