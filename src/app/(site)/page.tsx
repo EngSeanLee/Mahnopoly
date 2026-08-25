@@ -19,23 +19,19 @@ export default async function Home() {
   return (
     <>
       <section className="hero">
-        <div
-          style={{
-            maxWidth: 900,
-            margin: "0 auto 1.75rem",
-            borderRadius: 8,
-            overflow: "hidden",
-            border: "1px solid var(--border)",
-            lineHeight: 0,
-          }}
-        >
+        {/* Auto height, not the fixed-band cover-crop used on epoxy/about —
+            this banner is 3 stacked panels (logo, skyline, row houses)
+            designed to be seen whole; cropping to a fixed height cuts
+            across the panel seams. Gets tall on wide screens as a
+            tradeoff for showing the whole graphic uncropped. */}
+        <div className="full-bleed" style={{ marginBottom: "2rem", lineHeight: 0 }}>
           <Image
             src="/home-banner.png"
             alt="Mahnopoly LLC — buy, build, manage. A craftsman-style home's front porch at dusk, the Topeka skyline at sunset, and a row of new-construction homes."
             width={1536}
             height={1024}
             style={{ width: "100%", height: "auto", display: "block" }}
-            sizes="(max-width: 900px) 100vw, 900px"
+            sizes="100vw"
             priority
           />
         </div>

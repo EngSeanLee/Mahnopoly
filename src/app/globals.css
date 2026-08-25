@@ -27,6 +27,18 @@ body {
 
 a { color: inherit; text-decoration: none; }
 
+/* Breaks a child out to true full browser width regardless of how deep
+   it's nested inside a padded/max-width container — used for edge-to-edge
+   hero photos. Needs position:relative on the same element for the
+   next/image `fill` pattern to anchor against. */
+.full-bleed {
+  position: relative;
+  width: 100vw;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
+}
+
 /* Visually hidden but still reachable by screen readers / SEO crawlers —
    for headings a page needs structurally but isn't showing on screen. */
 .sr-only {
