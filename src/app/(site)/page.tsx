@@ -18,25 +18,48 @@ export default async function Home() {
 
   return (
     <>
-      {/* Photo sits outside .hero on purpose — .hero has its own
+      {/* Photo sits outside .hero on purpose — .hero has its own cream
           background/padding (see globals.css), which was showing as a
-          bare band of cream above the image when nested inside it.
-          Matches the about page's structure. Contained, full photo
-          visible, no crop/border — pending a proper 3:1 banner photo
-          (see globals.css note on .full-bleed for that future treatment). */}
+          bare band of color around the image when nested inside it.
+          Matches the about page's structure. Three separate wide photos
+          stacked with no gap between them, each shown at its own natural
+          aspect ratio — replaces the earlier single 3-panel collage
+          graphic, higher resolution per panel this way. */}
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "2rem 2rem 0", lineHeight: 0 }}>
         <Image
-          src="/home-banner.png"
-          alt="Mahnopoly LLC — buy, build, manage. A craftsman-style home's front porch at dusk, the Topeka skyline at sunset, and a row of new-construction homes."
-          width={1536}
-          height={1024}
+          src="/home-banner-1.png"
+          alt="A craftsman-style home's front porch at golden hour, in a Topeka, Kansas neighborhood."
+          width={1920}
+          height={417}
+          style={{ width: "100%", height: "auto", display: "block" }}
+          sizes="(max-width: 900px) 100vw, 900px"
+          priority
+        />
+        <Image
+          src="/home-banner-2.png"
+          alt="The Topeka, Kansas skyline and surrounding neighborhoods at sunset, with the State Capitol dome visible."
+          width={1920}
+          height={480}
+          style={{ width: "100%", height: "auto", display: "block" }}
+          sizes="(max-width: 900px) 100vw, 900px"
+          priority
+        />
+        <Image
+          src="/home-banner-3.png"
+          alt="A row of craftsman-style homes along a tree-lined street at golden hour."
+          width={1920}
+          height={480}
           style={{ width: "100%", height: "auto", display: "block" }}
           sizes="(max-width: 900px) 100vw, 900px"
           priority
         />
       </div>
 
-      <section className="hero">
+      {/* Still .hero for its layout/type styles (.hero h1, .hero
+          p.subhead in globals.css) — just the cream background overridden
+          to plain white, which was the same leftover "placeholder" look
+          the photo box had, just below it instead of around it. */}
+      <section className="hero" style={{ background: "#fff" }}>
         <h1>Homes for sale and rent across Kansas</h1>
         <p className="subhead">
           Locally owned. Locally managed. Same folks on the sign in your

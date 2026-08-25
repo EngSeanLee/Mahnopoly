@@ -46,25 +46,29 @@ export default function EpoxyPage() {
           photo and CTA, no visible headline text. Kept as a real H1 for
           SEO and screen readers even though nothing renders on screen. */}
       <h1 className="sr-only">Epoxy Flooring in Topeka, Kansas</h1>
-      {/* Photo sits outside .hero on purpose — .hero has its own
+      {/* Photo sits outside .hero on purpose — .hero has its own cream
           background/padding (see globals.css), which was showing as a
-          bare band of cream above the image when nested inside it.
-          Matches the about page's structure. Contained, full photo
-          visible, no crop/border — pending a proper 3:1 banner photo
-          (see globals.css note on .full-bleed for that future treatment). */}
+          bare band of color around the image when nested inside it.
+          Matches the about page's structure. Now a genuine 3:1 photo
+          (1920x640), so it's shown at natural aspect ratio — no crop
+          needed. */}
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "2rem 2rem 0", lineHeight: 0 }}>
         <Image
           src="/epoxy-flyer.png"
           alt="A finished garage in Topeka, Kansas with a glossy dark speckled epoxy floor coating reflecting the overhead lighting, dark cabinetry and tool storage along the wall, and natural light through a window."
-          width={1536}
-          height={1024}
+          width={1920}
+          height={640}
           style={{ width: "100%", height: "auto", display: "block" }}
           sizes="(max-width: 900px) 100vw, 900px"
           priority
         />
       </div>
 
-      <section className="hero">
+      {/* Still .hero for its layout styles — just the cream background
+          overridden to plain white, which was the same leftover
+          "placeholder" look the photo box had, just below it instead of
+          around it. */}
+      <section className="hero" style={{ background: "#fff" }}>
         <a href="#estimate" className="btn btn-navy">
           Get a Free Estimate
         </a>
