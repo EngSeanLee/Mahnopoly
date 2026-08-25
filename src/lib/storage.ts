@@ -17,18 +17,31 @@ export async function uploadPhoto(
   const name = `${crypto.randomUUID()}.${ext}`;
   const path = folder ? `${folder}/${name}` : name;
 
-  const { error } = await supabase.storage.from(BUCKET).upload(path, file, {
-    cacheControl: "3600",
-    upsert: false,
-  });
+  // Wrapped in try/catch on top of the normal {error} return the SDK
+  // gives for an ordinary failure — a dropped connection or anything
+  // else that makes the call itself throw needs to become a returned
+  // error too, not an uncaught rejection. Uncaught here means the
+  // caller's upload loop (PhotoUpload.tsx) breaks mid-batch without
+  // ever flipping "uploading" back off, which looks exactly like the
+  // whole admin panel freezing even though earlier files in the same
+  // batch already uploaded fine (found happening for real, 25 Aug 2026).
+  try {
+    const { error } = await supabase.storage.from(BUCKET).upload(path, file, {
+      cacheControl: "3600",
+      upsert: false,
+    });
 
-  if (error) {
-    console.error("uploadPhoto: upload failed", error);
+    if (error) {
+      console.error("uploadPhoto: upload failed", error);
+      return { error: "Upload failed. Try again." };
+    }
+
+    const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
+    return { url: data.publicUrl };
+  } catch (err) {
+    console.error("uploadPhoto: unexpected error", err);
     return { error: "Upload failed. Try again." };
   }
-
-  const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
-  return { url: data.publicUrl };
 }
 
 export async function deletePhoto(supabase: SupabaseClient, url: string) {

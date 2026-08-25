@@ -33,19 +33,28 @@ export default function PhotoUpload({
     if (!files || files.length === 0) return;
     setError(null);
     setUploading(true);
-    const supabase = getSupabaseBrowserClient();
-    const uploaded: string[] = [];
-    for (const file of Array.from(files)) {
-      const result = await uploadPhoto(supabase, file, folder);
-      if ("error" in result) {
-        setError(result.error);
-      } else {
-        uploaded.push(result.url);
+    // Each successful upload commits to `photos` immediately, one file at
+    // a time, rather than batching them all into a single state update
+    // after the whole loop finishes. If a later file in the batch fails
+    // (or, before the storage.ts fix, threw and broke the loop outright),
+    // everything already uploaded stays visible and gets saved — instead
+    // of vanishing from the UI while sitting safely, but unreferenced, in
+    // Storage. try/finally guarantees "uploading" always clears, even on
+    // a genuinely unexpected error, so this can't get stuck again.
+    try {
+      const supabase = getSupabaseBrowserClient();
+      for (const file of Array.from(files)) {
+        const result = await uploadPhoto(supabase, file, folder);
+        if ("error" in result) {
+          setError(result.error);
+        } else {
+          setPhotos((prev) => [...prev, result.url]);
+        }
       }
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
     }
-    setPhotos((prev) => [...prev, ...uploaded]);
-    setUploading(false);
-    if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
   function move(index: number, direction: -1 | 1) {
