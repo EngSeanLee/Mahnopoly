@@ -17,7 +17,7 @@ export default function ListingPhoto({
   sizes?: string;
 }) {
   const url = photos[index];
-  if (!url) return <PhotoPlaceholder className={className} />;
+  if (!url) return <PhotoPlaceholder label="Photo pending" className={className} />;
 
   return (
     <div className={`photo-placeholder has-photo ${className}`}>
