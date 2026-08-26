@@ -18,10 +18,10 @@ export const dynamic = "force-dynamic";
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
   const settings = await getSettings();
   return (
-    <>
+    <div className="site-cursor">
       <Header settings={settings} />
       {children}
       <Footer settings={settings} />
-    </>
+    </div>
   );
 }
