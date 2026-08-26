@@ -15,7 +15,7 @@ export default function PhotoHero({
   padding?: string;
   children: React.ReactNode;
 }) {
-  const cycle = 7 * photos.length * 3; // seconds per photo before its next turn
+  const cycle = 7 * photos.length; // seconds per photo before its next turn
   return (
     <div className="photo-hero" style={{ minHeight, padding }}>
       {photos.map((src, i) => (
