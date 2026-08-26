@@ -12,6 +12,21 @@ interface InquiryRow {
   created_at: string;
 }
 
+// This page is a Server Component — it renders on Vercel's servers, not
+// in the visitor's browser, and those run in UTC. `new Date(...).
+// toLocaleString()` with no arguments uses whatever timezone the code
+// is actually running in, so it was silently showing inquiry times 5-6
+// hours ahead of Topeka/Emporia local time (William caught this).
+// Pinning the timezone here makes it correct regardless of where the
+// server happens to run, rather than correct only by accident.
+function formatReceived(iso: string): string {
+  return new Date(iso).toLocaleString("en-US", {
+    timeZone: "America/Chicago",
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+}
+
 // Card list rather than a table — see the .inquiry-card comment in
 // globals.css for why. Each card also resolves listing_id to a real
 // address (falling back to the raw id if the listing's since been
@@ -53,9 +68,7 @@ export default async function InquiriesPage() {
         return (
           <div className="inquiry-card" key={inquiry.id}>
             <div className="inquiry-top">
-              <span className="inquiry-when">
-                {new Date(inquiry.created_at).toLocaleString()}
-              </span>
+              <span className="inquiry-when">{formatReceived(inquiry.created_at)}</span>
               <span className="inquiry-property">
                 {inquiry.listing_id ? (
                   address ? (

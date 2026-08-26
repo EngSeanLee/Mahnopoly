@@ -317,6 +317,16 @@ with no way to reach it), same for the properties table. Two changes:
   it scrolls horizontally within its own box instead of overflowing
   invisibly. Same class is there for any other admin table that needs
   it later.
+- **Inquiry timestamps were wrong** — off by 5-6 hours, always ahead of
+  actual local time. Root cause: `/admin/inquiries` is a Server
+  Component, so `new Date(...).toLocaleString()` with no arguments was
+  running on Vercel's server (UTC), not in the viewer's browser.
+  Verified by forcing `TZ=UTC` locally: the old code printed a UTC
+  time; explicitly formatting with `timeZone: "America/Chicago"`
+  (`formatReceived` in that file) prints the correct Topeka/Emporia
+  time regardless of what timezone the server itself happens to run
+  in. Worth remembering if a timestamp anywhere else in the app ever
+  looks off — same root cause, same fix.
 
 Also fixed while in here: the public nav's "Staff Login" link showed a
 "|" divider meant to separate it from the item before it — on a phone,
