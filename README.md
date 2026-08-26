@@ -12,10 +12,17 @@ listing data from the production database.
 ## What this is, in plain terms
 
 A public website with:
-- A home page and a listings page (rentals and for-sale, filterable),
-  framed statewide (Kansas), with each listing's city bolded on its card.
+- A home page and a listings page (rentals and for-sale, filterable,
+  sortable by price or newest), framed statewide (Kansas), with each
+  listing's city bolded on its card.
 - A page per property with photos and an inquiry form.
-- `/about`, `/contact`, and `/epoxy` — all real copy and real photos now.
+- `/mahtropolis` — Mahnopoly's own 24-lot subdivision in Emporia, KS:
+  the story, the recorded plat, and real photos of it under
+  construction. New as of the 26 Aug 2026 redesign.
+- `/about`, `/contact`, and `/epoxy` — all real copy and real photos
+  now. `/contact` also has a general "Send a note" form (not tied to a
+  specific listing) that reaches the office the same way a listing
+  inquiry does.
 - `/epoxy` also has a "Recent Work" photo gallery, staff-uploadable
   through Settings — see "The epoxy photo gallery" below. Hidden
   entirely until at least one photo's been added.
@@ -299,6 +306,19 @@ the original placeholder-style stock photos.
   page got that wrong throughout (hero tag, meta description, alt
   text); fixed 26 Aug 2026. Worth double-checking any new Mahtropolis
   copy doesn't reintroduce a Topeka assumption.
+- **The ticker's marquee loop** (`Ticker.tsx`) is a two-copies,
+  animate-negative-50% loop, which is only seamless if each copy is at
+  least as wide as the viewport — the original 8-phrase list came up
+  short on a wide monitor, so the track ran out of content before the
+  loop point and visibly stalled/snapped instead of scrolling
+  continuously. Fixed 26 Aug 2026 by repeating the phrase list 4× within
+  each half (`REPEAT` in that file) — same loop math, just enough width
+  margin for any realistic screen. If it ever runs out again on an
+  unusually wide display, bump `REPEAT` further; there's no downside to
+  it being higher than strictly needed.
+- **The About page photo was AI-generated**, not real — swapped 26 Aug
+  2026 for a real photo from the Mahnopoly Pictures Drive folder (see
+  "Marketing page photos" above) after William caught it.
 
 ## Admin panel mobile pass (26 Aug 2026)
 
@@ -348,21 +368,6 @@ Hours/Epoxy) stack label-above-value under 480px width regardless
 either way, but the actual report is unconfirmed — get a screenshot
 or the specific page next time this comes up rather than guessing
 further.
-
-## The ticker's marquee loop (26 Aug 2026)
-
-The red scrolling band (`Ticker.tsx`) used the standard two-copies-
-animate-negative-50%-loop technique, which is only seamless if each
-copy is at least as wide as the viewport — on a wide enough monitor,
-one copy of the (short, 8-phrase) list came up short of the screen
-width, so the track ran out of content before the loop point and
-visibly stalled/snapped back instead of scrolling continuously. Fixed
-by repeating the phrase list 4× within each of the two halves
-(`REPEAT` in `Ticker.tsx`) — same loop math, just enough width margin
-that it shouldn't run out on any realistic screen. If it ever does
-(an extremely wide display), bump `REPEAT` further; there's no
-downside to it being higher than strictly needed, just a few more
-DOM nodes.
 
 ## What's outstanding
 
