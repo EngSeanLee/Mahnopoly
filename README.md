@@ -253,6 +253,47 @@ against `listings.photos` and `settings.epoxy_photos`) are safe to
 delete from the Storage browser — that's a manual step, not something
 run automatically.
 
+## The visual redesign (branch `redesign/mahnopoly-2026`)
+
+A full visual redesign — navy/oxblood-red on cream, Instrument Serif
+display headlines, Archivo body copy, IBM Plex Mono uppercase labels —
+was implemented on the `redesign/mahnopoly-2026` branch, not yet merged
+to `main`. Source of truth for the design itself is a Claude Design
+project ("Mahnopoly Redesign", turn 3 / the pages marked "client-ready"):
+Home, For Rent, For Sale, About, Epoxy, Contact, plus a new Mahtropolis
+page. Fonts are self-hosted via `next/font/google` (see `src/app/layout.tsx`);
+design tokens, the ticker/marquee, and the photo-hero pattern live in
+`src/app/globals.css`, `src/components/Ticker.tsx`, and
+`src/components/PhotoHero.tsx`. The admin panel's own chrome
+(`.admin-*`, login, tables) was deliberately left alone beyond inheriting
+the shared color tokens — no house cursor, no serif type, no ticker
+there.
+
+**Before merging to `main`, resolve these:**
+
+- **Mahtropolis is new scope**, not just a reskin — a page and nav link
+  that don't exist on the live site today. It was in the design's
+  "client-ready" set but flagged there as "proposed." Confirm with
+  William before it goes live.
+- **The design's own hero photography couldn't be fetched** — the design
+  MCP's `get_file` is capped at 256 KiB and the mockup's hero images
+  exceeded it, coming back truncated. The hero crossfade (Home, Listings)
+  and the Mahtropolis backdrop reuse the site's existing real photos
+  (`home-banner-*.png`) instead. The one design asset that did fit — the
+  actual recorded Mahtropolis plat map — is real and lives at
+  `public/redesign/plat-map.webp`. Worth a real "first finished house on
+  the street" photo for the placeholder still on `/mahtropolis`.
+- **Contact page gained a real feature, not just a restyle**: a general
+  "Send a note" inquiry form (`src/app/(site)/contact/actions.ts`,
+  `src/components/GeneralInquiryForm.tsx`) that saves to the same
+  `inquiries` table with `listing_id: null` (already nullable in
+  `supabase/schema.sql` — no migration needed) and emails the office the
+  same way a listing inquiry does. Worth a real test send before launch.
+- **Listings page gained real sorting** (price / newest, via
+  `?sort=`) that didn't exist before — same data, just now orderable.
+- Not yet re-verified against a real (non-fallback) Supabase project —
+  everything above was checked with local fallback data only.
+
 ## What's outstanding
 
 - **Zillow feed submission** — not started; see above.
