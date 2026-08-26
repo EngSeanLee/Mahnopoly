@@ -24,8 +24,8 @@ export default function MahtropolisPage() {
     <>
       <div style={{ position: "relative", height: 480, overflow: "hidden" }}>
         <Image
-          src="/home-banner-3.png"
-          alt="A row of craftsman-style homes along a tree-lined street at golden hour."
+          src="/redesign/mahtropolis-hero.jpg"
+          alt="Aerial view of Mahnopoly Avenue mid-construction — the freshly paved street and curbed lots of the Mahtropolis subdivision, with the North Topeka water tower in the distance."
           fill
           sizes="100vw"
           style={{ objectFit: "cover" }}
@@ -173,10 +173,10 @@ export default function MahtropolisPage() {
           }}
         >
           <div style={{ position: "relative", height: 230, borderRadius: 5, overflow: "hidden" }}>
-            <Image src="/home-banner-1.png" alt="" fill sizes="33vw" style={{ objectFit: "cover" }} />
+            <Image src="/redesign/rowhomes-dusk.jpg" alt="A finished row of Mahnopoly townhomes at dusk." fill sizes="33vw" style={{ objectFit: "cover" }} />
           </div>
           <div style={{ position: "relative", height: 230, borderRadius: 5, overflow: "hidden" }}>
-            <Image src="/home-banner-2.png" alt="" fill sizes="33vw" style={{ objectFit: "cover" }} />
+            <Image src="/redesign/duplex-dusk.jpg" alt="A finished Mahnopoly duplex at dusk." fill sizes="33vw" style={{ objectFit: "cover" }} />
           </div>
           <div style={{ borderRadius: 5, overflow: "hidden" }}>
             <PhotoPlaceholder label="First finished house on the street" height={230} />

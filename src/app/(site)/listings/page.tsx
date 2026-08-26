@@ -5,7 +5,7 @@ import ListingCard from "@/components/ListingCard";
 import PhotoHero from "@/components/PhotoHero";
 import Ticker from "@/components/Ticker";
 
-const HERO_PHOTOS = ["/home-banner-1.png", "/home-banner-2.png", "/home-banner-3.png"];
+const HERO_PHOTOS = ["/redesign/hero-1.jpg", "/redesign/hero-2.jpg", "/redesign/hero-3.jpg"];
 
 export default async function ListingsPage({
   searchParams,

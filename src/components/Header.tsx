@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
 import type { SiteSettings } from "@/lib/settings";
 
@@ -30,9 +31,14 @@ export default function Header({ settings }: { settings: SiteSettings }) {
   return (
     <header className="site-header">
       <Link href="/" className="brand" aria-label="Mahnopoly LLC — home">
-        <div className="brand-name">
-          MAHNOPOLY<span className="llc">LLC</span>
-        </div>
+        <Image
+          src="/redesign/logo.png"
+          alt="Mahnopoly LLC"
+          width={1003}
+          height={190}
+          className="brand-logo"
+          priority
+        />
         <div className="brand-tag">Topeka, Kansas &middot; Est. 2011</div>
       </Link>
       <nav className="main-nav">

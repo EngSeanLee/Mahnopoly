@@ -165,55 +165,58 @@ data.
 
 ## Marketing page photos
 
-Home, `/epoxy`, and `/about` each show real photography near the top —
-one photo apiece, except home, which stacks three. Not graphics with
-text baked in: the page copy already carries that messaging as real
-HTML (better for SEO and screen readers than pixels), so the photos
-just need to be photos.
+As of the redesign (see "The visual redesign" above), most public
+pages carry real photography as a full-bleed backdrop rather than a
+contained banner — the `.hero`-with-cream-padding pattern this section
+used to document is gone (the class itself no longer exists in
+`globals.css`). Not graphics with text baked in either way: page copy
+is still real HTML over the photo, not pixels, for SEO/screen-reader
+reasons.
 
-**Display width:** all contained (not edge-to-edge) at `max-width:
-900px`, centered, shown at their real aspect ratio — nothing gets
-cropped. Below roughly 900px of viewport width they just scale down.
+**Current photos and where they came from:**
 
-**Current photos, for sizing any replacement:**
-
-| Page | File(s) | Native size | Shape |
+| Page | File(s) | Native size | Source |
 |---|---|---|---|
-| Home | `public/home-banner-1/2/3.png` | 1920×417, 1920×480, 1920×480 | three wide photos, stacked, no gap between them |
-| `/epoxy` | `public/epoxy-flyer.png` | 1920×640 | 3:1 wide banner |
-| `/about` | `public/about-photo.png` | 1920×640 | 3:1 wide banner |
+| Home, `/listings` | `public/redesign/hero-1/2/3.jpg` | ~2200px wide | Real Mahnopoly rental photography (drone), from the `Mahnopoly Pictures` Google Drive folder under the `lee.aisolutions@gmail.com` account. Cross-fade backdrop behind the hero text — see `PhotoHero.tsx`. |
+| `/mahtropolis` | `public/redesign/mahtropolis-hero.jpg` | ~2200px wide | Same Drive folder — an aerial of Mahnopoly Avenue mid-construction (paved street, curbed lots, the North Topeka water tower in the background). |
+| `/mahtropolis` (photo grid) | `public/redesign/rowhomes-dusk.jpg`, `duplex-dusk.jpg` | ~2200px wide | Same Drive folder — two finished Mahnopoly properties. |
+| `/mahtropolis` (plat panel) | `public/redesign/plat-map.webp` | as provided | The actual recorded subdivision plat (from the redesign's Claude Design project), tinted navy via CSS `filter`. Distinct from the site photos above — this one's a legal document, not a marketing photo. |
+| `/epoxy` | `public/epoxy-flyer.png` | 1920×640 | Unchanged — real photo, predates the redesign. |
+| `/about` | `public/about-photo.png` | 1920×640, contained at `max-width: 900px` | Unchanged — the only page still using the older contained-banner treatment; see below for why. |
 
-Anything from about 1600px wide up will look sharp at the 900px display
-width on retina screens — going bigger than ~1900-2000px doesn't buy
-anything but file size. (Property listing photos are a separate thing
-entirely — staff upload those per-listing through `/admin`, shown at
-much smaller sizes: 130px-tall cards on the listings grid, a 320px-tall
-main photo and 152px-tall thumbnails on a property's own page.)
+The three `hero-*.jpg` / `mahtropolis-hero.jpg` / `*-dusk.jpg` files
+were resized (long edge capped at 2200px) and re-encoded (JPEG quality
+82) from the Drive originals before adding them here — some of those
+originals were 12-14MB straight off a drone, which is not something to
+ship as a page background. `public/redesign/logo.png` /
+`logo-white.png` (see "The logo" below) came from the same Drive
+folder's `MahnopolyLLC.jpg`, background-removed.
 
-**A gotcha worth knowing before generating a replacement:** the tool
-used for the first pass at these photos (ChatGPT's image generator, by
-the look of it) only outputs three fixed sizes — square, 1536×1024
-(3:2), or 1024×1536 — and silently ignores a requested resolution like
-"1800×600." The 1920×640 photos currently in place came from asking a
-different way (Claude's image tool); if a future photo comes back at
-1536×1024 instead, don't force it into a short wide slot — either crop
-it closer to 3:1 before handing it off, or use it at its own aspect
-ratio in a taller slot instead. Squeezing a 3:2 photo into a short wide
-band crops out most of the picture; stretching it to fill the same
-width at full height instead makes it enormous on wide screens.
-Neither is a Next.js/CSS bug — it's a mismatch between the photo's
-actual shape and the space it's going into.
+**Why `/about` is still the old contained-banner style:** its real
+photo is a wide 3:1 banner (1920×640), which fits that treatment
+naturally — no reason to change what already works. If a differently-
+shaped photo ever replaces it, don't force a 3:2 or square photo into
+that short wide slot (crops out most of the picture) or stretch it to
+fill the width at full height (gets enormous on wide screens) — either
+crop closer to 3:1 first, or give it its own taller slot instead.
+Property listing photos are a separate thing entirely — staff upload
+those per-listing through `/admin`, shown at much smaller sizes:
+130px-tall cards on the listings grid, a 320px-tall main photo and
+152px-tall thumbnails on a property's own page.
 
-**The `.hero` class trap:** `.hero` (see `globals.css`) carries its own
-cream background and padding. A contained photo placed *inside* `.hero`
-shows a bare band of that cream color above (and/or below) it — easy to
-mistake for a leftover placeholder, but it's just the section's own
-styling bleeding through. Home and epoxy's photos sit *outside*
-`.hero`; the class is kept only for the heading/CTA below them, with
-its background overridden to white on those two pages (see the
-comments in `src/app/(site)/page.tsx` and `.../epoxy/page.tsx`).
-`/about` never had this problem — its photo was built outside `.hero`
-from the start.
+## The logo
+
+`public/redesign/logo.png` (full color, for light backgrounds — the
+header) and `logo-white.png` (solid white silhouette, for the navy
+footer) are the real Mahnopoly LLC logo, sourced from
+`MahnopolyLLC.jpg` in the `Mahnopoly Pictures` Google Drive folder
+(under `lee.aisolutions@gmail.com`) and background-removed — the
+source file was a flat JPEG (white background baked in, no
+transparency), processed with a threshold-based white→transparent pass
+for `logo.png`, then flattened to solid white (keeping the same alpha)
+for `logo-white.png`. Both are used, wrapped in a link to `/`, in
+`Header.tsx` and `Footer.tsx` — update both files (and regenerate both
+PNGs the same way) if the logo ever changes.
 
 ## The epoxy photo gallery
 
@@ -253,46 +256,43 @@ against `listings.photos` and `settings.epoxy_photos`) are safe to
 delete from the Storage browser — that's a manual step, not something
 run automatically.
 
-## The visual redesign (branch `redesign/mahnopoly-2026`)
+## The visual redesign
 
-A full visual redesign — navy/oxblood-red on cream, Instrument Serif
-display headlines, Archivo body copy, IBM Plex Mono uppercase labels —
-was implemented on the `redesign/mahnopoly-2026` branch, not yet merged
-to `main`. Source of truth for the design itself is a Claude Design
-project ("Mahnopoly Redesign", turn 3 / the pages marked "client-ready"):
-Home, For Rent, For Sale, About, Epoxy, Contact, plus a new Mahtropolis
-page. Fonts are self-hosted via `next/font/google` (see `src/app/layout.tsx`);
+**Live on `main` and in production as of 26 Aug 2026.** A full visual
+redesign — navy/oxblood-red on cream, Instrument Serif display
+headlines, Archivo body copy, IBM Plex Mono uppercase labels, real
+Mahnopoly photography, the real logo — replaced the original site.
+Built on the `redesign/mahnopoly-2026` branch (merged via PR #1), source
+of truth for the visual design itself was a Claude Design project
+("Mahnopoly Redesign", turn 3 / the pages marked "client-ready"): Home,
+For Rent, For Sale, About, Epoxy, Contact, plus a new Mahtropolis page.
+Fonts are self-hosted via `next/font/google` (see `src/app/layout.tsx`);
 design tokens, the ticker/marquee, and the photo-hero pattern live in
 `src/app/globals.css`, `src/components/Ticker.tsx`, and
 `src/components/PhotoHero.tsx`. The admin panel's own chrome
 (`.admin-*`, login, tables) was deliberately left alone beyond inheriting
 the shared color tokens — no house cursor, no serif type, no ticker
-there.
+there. Real photography and the real logo (see "Marketing page photos"
+and "The logo" below) replaced the design mockup's own stand-ins and
+the original placeholder-style stock photos.
 
-**Before merging to `main`, resolve these:**
+**Still worth knowing:**
 
 - **Mahtropolis is new scope**, not just a reskin — a page and nav link
-  that don't exist on the live site today. It was in the design's
-  "client-ready" set but flagged there as "proposed." Confirm with
-  William before it goes live.
-- **The design's own hero photography couldn't be fetched** — the design
-  MCP's `get_file` is capped at 256 KiB and the mockup's hero images
-  exceeded it, coming back truncated. The hero crossfade (Home, Listings)
-  and the Mahtropolis backdrop reuse the site's existing real photos
-  (`home-banner-*.png`) instead. The one design asset that did fit — the
-  actual recorded Mahtropolis plat map — is real and lives at
-  `public/redesign/plat-map.webp`. Worth a real "first finished house on
-  the street" photo for the placeholder still on `/mahtropolis`.
+  that didn't exist on the live site before this redesign. It was in
+  the design's "client-ready" set but flagged there as "proposed" —
+  it's live now; confirm with William that's actually wanted.
 - **Contact page gained a real feature, not just a restyle**: a general
   "Send a note" inquiry form (`src/app/(site)/contact/actions.ts`,
   `src/components/GeneralInquiryForm.tsx`) that saves to the same
   `inquiries` table with `listing_id: null` (already nullable in
   `supabase/schema.sql` — no migration needed) and emails the office the
-  same way a listing inquiry does. Worth a real test send before launch.
+  same way a listing inquiry does. Worth a real test send to confirm
+  end to end.
 - **Listings page gained real sorting** (price / newest, via
   `?sort=`) that didn't exist before — same data, just now orderable.
-- Not yet re-verified against a real (non-fallback) Supabase project —
-  everything above was checked with local fallback data only.
+- `/mahtropolis`'s photo grid still has one placeholder slot ("first
+  finished house on the street") — worth a real photo when one exists.
 
 ## What's outstanding
 

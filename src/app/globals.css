@@ -114,16 +114,8 @@ header.site-header {
   border-bottom: 1px solid var(--border);
   flex-wrap: wrap;
 }
-.brand { display: flex; flex-direction: column; gap: 0.2rem; }
-.brand-name {
-  font-family: var(--font-sans);
-  font-size: 1.8rem;
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  line-height: 1;
-  color: var(--navy);
-}
-.brand-name .llc { color: var(--red); font-size: 0.55em; vertical-align: super; }
+.brand { display: flex; flex-direction: column; gap: 0.35rem; }
+.brand-logo { height: 34px; width: auto; display: block; }
 .brand-tag {
   font-family: var(--font-mono);
   font-size: 0.5rem;
@@ -459,14 +451,9 @@ footer.site-footer {
   border-top: 5px solid var(--red);
   color: #fff;
 }
-footer.site-footer .foot-name {
-  font-family: var(--font-sans);
-  font-weight: 900;
-  font-size: 1.4rem;
-  letter-spacing: -0.03em;
-}
-footer.site-footer .foot-name .llc { color: var(--red-bright); }
-footer.site-footer .foot-meta { color: rgba(214, 226, 250, 0.6); font-size: 0.75rem; line-height: 1.7; margin-top: 0.6rem; }
+footer.site-footer .foot-logo-link { display: inline-block; }
+footer.site-footer .foot-logo { height: 30px; width: auto; display: block; }
+footer.site-footer .foot-meta { color: rgba(214, 226, 250, 0.6); font-size: 0.75rem; line-height: 1.7; margin-top: 0.75rem; }
 footer.site-footer .foot-phone { font-weight: 700; font-size: 1.05rem; }
 
 /* Tabs + sort (listings page) */
@@ -718,6 +705,5 @@ table.admin-table td.edit-cell a { cursor: pointer; }
 }
 
 @media (max-width: 640px) {
-  .hero { padding: 2rem 1.25rem; }
   .path-cards, .listing-grid, .section-row, .tabs, .property-wrap, .admin-wrap { padding-left: 1.25rem; padding-right: 1.25rem; }
 }

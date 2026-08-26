@@ -19,7 +19,7 @@ export default async function Home() {
 
   return (
     <>
-      <PhotoHero photos={["/home-banner-1.png", "/home-banner-2.png", "/home-banner-3.png"]}>
+      <PhotoHero photos={["/redesign/hero-1.jpg", "/redesign/hero-2.jpg", "/redesign/hero-3.jpg"]}>
         <h1 className="hero-title">
           The possibilities
           <br />
@@ -90,7 +90,7 @@ export default async function Home() {
           }}
         >
           <Image
-            src="/home-banner-3.png"
+            src="/redesign/mahtropolis-hero.jpg"
             alt=""
             fill
             sizes="100vw"
