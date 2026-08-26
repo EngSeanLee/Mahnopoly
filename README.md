@@ -178,8 +178,8 @@ reasons.
 | Page | File(s) | Native size | Source |
 |---|---|---|---|
 | Home, `/listings` | `public/redesign/hero-1/2/3.jpg` | ~2200px wide | Real Mahnopoly rental photography (drone), from the `Mahnopoly Pictures` Google Drive folder under the `lee.aisolutions@gmail.com` account. Cross-fade backdrop behind the hero text — see `PhotoHero.tsx`. |
-| `/mahtropolis` | `public/redesign/mahtropolis-hero.jpg` | ~2200px wide | Same Drive folder — an aerial of Mahnopoly Avenue mid-construction (paved street, curbed lots, the North Topeka water tower in the background). |
-| `/mahtropolis` (photo grid) | `public/redesign/rowhomes-dusk.jpg`, `duplex-dusk.jpg` | ~2200px wide | Same Drive folder — two finished Mahnopoly properties. |
+| `/mahtropolis` | `public/redesign/mahtropolis-hero.jpg` | ~2200px wide | Same Drive folder — an aerial of Mahnopoly Avenue mid-construction (paved street, curbed lots, a water tower in the background) in Emporia, where Mahtropolis actually is — **not** Topeka, an earlier draft got this wrong. |
+| `/mahtropolis` (photo grid) | `public/redesign/rowhomes-dusk.jpg`, `duplex-dusk.jpg`, `two-houses.jpg` | ~2200px wide | Same Drive folder — three finished/under-construction Mahnopoly properties. This folder is now fully used; ask if there's a different Drive folder for more Mahtropolis-specific variety. |
 | `/mahtropolis` (plat panel) | `public/redesign/plat-map.webp` | as provided | The actual recorded subdivision plat (from the redesign's Claude Design project), tinted navy via CSS `filter`. Distinct from the site photos above — this one's a legal document, not a marketing photo. |
 | `/epoxy` | `public/epoxy-flyer.png` | 1920×640 | Unchanged — real photo, predates the redesign. |
 | `/about` | `public/about-photo.png` | 1920×640, contained at `max-width: 900px` | Unchanged — the only page still using the older contained-banner treatment; see below for why. |
@@ -291,8 +291,10 @@ the original placeholder-style stock photos.
   end to end.
 - **Listings page gained real sorting** (price / newest, via
   `?sort=`) that didn't exist before — same data, just now orderable.
-- `/mahtropolis`'s photo grid still has one placeholder slot ("first
-  finished house on the street") — worth a real photo when one exists.
+- **Mahtropolis is in Emporia, not Topeka** — an earlier draft of this
+  page got that wrong throughout (hero tag, meta description, alt
+  text); fixed 26 Aug 2026. Worth double-checking any new Mahtropolis
+  copy doesn't reintroduce a Topeka assumption.
 
 ## What's outstanding
 

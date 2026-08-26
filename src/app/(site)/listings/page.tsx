@@ -161,7 +161,7 @@ function MahtropolisTile() {
             color: "#fff",
           }}
         >
-          SEE THE PLAT<span style={{ color: "var(--red-soft)" }}>→</span>
+          TAKE A LOOK<span style={{ color: "var(--red-soft)" }}>→</span>
         </div>
       </div>
     </Link>

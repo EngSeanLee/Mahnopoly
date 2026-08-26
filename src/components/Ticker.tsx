@@ -6,7 +6,7 @@ const ITEMS = [
   "Streets Poured",
   "Epoxy Floors",
   "Rentals Managed",
-  "Nine Kansas Towns",
+  "Kansas Towns",
 ];
 
 // The red scrolling band under every public hero. Purely decorative brag

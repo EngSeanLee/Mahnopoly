@@ -27,14 +27,11 @@ export default async function Home() {
         </h1>
         <p className="hero-subhead">
           Homes to rent, homes to buy, and a whole street we built from
-          dirt. All of it run out of one office in Topeka.
+          dirt — with local folks you can actually talk to.
         </p>
         <div className="hero-actions">
           <Link className="btn btn-cream" href="/listings?tab=rent">
             See what&apos;s open
-          </Link>
-          <Link className="link-mono" href="/mahtropolis">
-            WALK THE PLAT →
           </Link>
         </div>
       </PhotoHero>

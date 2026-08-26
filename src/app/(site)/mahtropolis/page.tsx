@@ -1,11 +1,10 @@
 import Image from "next/image";
 import Ticker from "@/components/Ticker";
-import PhotoPlaceholder from "@/components/PhotoPlaceholder";
 
 export const metadata = {
   title: "Mahtropolis | Mahnopoly",
   description:
-    "Mahtropolis — a 24-lot subdivision Mahnopoly platted from an open field in North Topeka: street, curbs, and recorded plat all in place, houses going up one at a time.",
+    "Mahtropolis — a 24-lot subdivision Mahnopoly platted from an open field in Emporia, Kansas: street, curbs, and recorded plat all in place, houses going up one at a time.",
 };
 
 const STATS = [
@@ -25,7 +24,7 @@ export default function MahtropolisPage() {
       <div style={{ position: "relative", height: 480, overflow: "hidden" }}>
         <Image
           src="/redesign/mahtropolis-hero.jpg"
-          alt="Aerial view of Mahnopoly Avenue mid-construction — the freshly paved street and curbed lots of the Mahtropolis subdivision, with the North Topeka water tower in the distance."
+          alt="Aerial view of Mahnopoly Avenue mid-construction — the freshly paved street and curbed lots of the Mahtropolis subdivision in Emporia, Kansas, with a water tower in the distance."
           fill
           sizes="100vw"
           style={{ objectFit: "cover" }}
@@ -38,7 +37,7 @@ export default function MahtropolisPage() {
             background: "linear-gradient(to top, rgba(10,16,34,.88), rgba(10,16,34,.2) 70%)",
           }}
         />
-        <div style={{ position: "absolute", left: "2.5rem", bottom: 40, maxWidth: 480 }}>
+        <div style={{ position: "absolute", left: "2.5rem", right: "2.5rem", bottom: 40, maxWidth: 480 }}>
           <span
             style={{
               fontFamily: "var(--font-mono)",
@@ -48,7 +47,7 @@ export default function MahtropolisPage() {
               color: "var(--red-soft)",
             }}
           >
-            NORTH TOPEKA &middot; PHASE ONE COMPLETE
+            EMPORIA, KANSAS &middot; PHASE ONE COMPLETE
           </span>
           <h1
             style={{
@@ -64,7 +63,7 @@ export default function MahtropolisPage() {
           </h1>
           <p style={{ margin: "18px 0 0", color: "rgba(255,255,255,.75)", fontSize: "0.9rem", lineHeight: 1.75 }}>
             We bought the field, cut the street, set the curbs, and filed
-            the plat. Twenty-four lots with our name on the sign.
+            the plat. Twenty-four lots — one waiting for your name on it.
           </p>
         </div>
       </div>
@@ -178,8 +177,8 @@ export default function MahtropolisPage() {
           <div style={{ position: "relative", height: 230, borderRadius: 5, overflow: "hidden" }}>
             <Image src="/redesign/duplex-dusk.jpg" alt="A finished Mahnopoly duplex at dusk." fill sizes="33vw" style={{ objectFit: "cover" }} />
           </div>
-          <div style={{ borderRadius: 5, overflow: "hidden" }}>
-            <PhotoPlaceholder label="First finished house on the street" height={230} />
+          <div style={{ position: "relative", height: 230, borderRadius: 5, overflow: "hidden" }}>
+            <Image src="/redesign/two-houses.jpg" alt="Two Mahnopoly homes under construction, side by side." fill sizes="33vw" style={{ objectFit: "cover" }} />
           </div>
         </div>
       </div>
