@@ -24,7 +24,7 @@ export default function MahtropolisPage() {
       <div style={{ position: "relative", height: 480, overflow: "hidden" }}>
         <Image
           src="/redesign/mahtropolis-hero.jpg"
-          alt="Aerial view of Mahnopoly Avenue mid-construction — the freshly paved street and curbed lots of the Mahtropolis subdivision in Emporia, Kansas, with a water tower in the distance."
+          alt="A finished row of Mahnopoly townhomes at dusk."
           fill
           sizes="100vw"
           style={{ objectFit: "cover" }}
@@ -172,13 +172,13 @@ export default function MahtropolisPage() {
           }}
         >
           <div style={{ position: "relative", height: 230, borderRadius: 5, overflow: "hidden" }}>
-            <Image src="/redesign/rowhomes-dusk.jpg" alt="A finished row of Mahnopoly townhomes at dusk." fill sizes="33vw" style={{ objectFit: "cover" }} />
+            <Image src="/redesign/mahtropolis-grading.jpg" alt="Aerial view of the Mahtropolis lot mid-grading, before the street went in." fill sizes="33vw" style={{ objectFit: "cover" }} />
           </div>
           <div style={{ position: "relative", height: 230, borderRadius: 5, overflow: "hidden" }}>
-            <Image src="/redesign/duplex-dusk.jpg" alt="A finished Mahnopoly duplex at dusk." fill sizes="33vw" style={{ objectFit: "cover" }} />
+            <Image src="/redesign/mahtropolis-street.jpg" alt="Aerial view of Mahnopoly Avenue mid-construction — the freshly paved street and curbed lots, with a water tower in the distance." fill sizes="33vw" style={{ objectFit: "cover" }} />
           </div>
           <div style={{ position: "relative", height: 230, borderRadius: 5, overflow: "hidden" }}>
-            <Image src="/redesign/two-houses.jpg" alt="Two Mahnopoly homes under construction, side by side." fill sizes="33vw" style={{ objectFit: "cover" }} />
+            <Image src="/redesign/mahtropolis-street-ground.jpg" alt="Ground-level view down the finished Mahnopoly Avenue, with a water tower in the distance." fill sizes="33vw" style={{ objectFit: "cover" }} />
           </div>
         </div>
       </div>

@@ -178,31 +178,35 @@ reasons.
 | Page | File(s) | Native size | Source |
 |---|---|---|---|
 | Home, `/listings` | `public/redesign/hero-1/2/3.jpg` | ~2200px wide | Real Mahnopoly rental photography (drone), from the `Mahnopoly Pictures` Google Drive folder under the `lee.aisolutions@gmail.com` account. Cross-fade backdrop behind the hero text — see `PhotoHero.tsx`. |
-| `/mahtropolis` | `public/redesign/mahtropolis-hero.jpg` | ~2200px wide | Same Drive folder — an aerial of Mahnopoly Avenue mid-construction (paved street, curbed lots, a water tower in the background) in Emporia, where Mahtropolis actually is — **not** Topeka, an earlier draft got this wrong. |
-| `/mahtropolis` (photo grid) | `public/redesign/rowhomes-dusk.jpg`, `duplex-dusk.jpg`, `two-houses.jpg` | ~2200px wide | Same Drive folder — three finished/under-construction Mahnopoly properties. This folder is now fully used; ask if there's a different Drive folder for more Mahtropolis-specific variety. |
-| `/mahtropolis` (plat panel) | `public/redesign/plat-map.webp` | as provided | The actual recorded subdivision plat (from the redesign's Claude Design project), tinted navy via CSS `filter`. Distinct from the site photos above — this one's a legal document, not a marketing photo. |
+| `/mahtropolis` hero | `public/redesign/mahtropolis-hero.jpg` | ~2200px wide | Same Drive folder (`619D033B-...JPEG`) — a finished row of Mahnopoly townhomes at dusk. Chosen specifically for this slot, 26 Aug 2026 — not the same photo as the grid's street/water-tower shot below, on purpose. |
+| `/mahtropolis` photo grid, left→right | `mahtropolis-grading.jpg`, `mahtropolis-street.jpg`, `mahtropolis-street-ground.jpg` | ~2000-2200px wide | Same Drive folder (`dji_fly_..._301...HEIC`, `Mahtropolis.JPG`, `IMG_2880.HEIC`) — the lot mid-grading (aerial), the paved street mid-construction with the water tower (aerial), and that same street at ground level. Order set 26 Aug 2026 — keep it if the grid is ever touched again. |
+| `/mahtropolis` plat panel | `public/redesign/plat-map.webp` | as provided | The actual recorded subdivision plat (from the redesign's Claude Design project), tinted navy via CSS `filter`. Distinct from the site photos above — this one's a legal document, not a marketing photo. |
 | `/epoxy` | `public/epoxy-flyer.png` | 1920×640 | Unchanged — real photo, predates the redesign. |
-| `/about` | `public/about-photo.png` | 1920×640, contained at `max-width: 900px` | Unchanged — the only page still using the older contained-banner treatment; see below for why. |
+| `/about` | `public/redesign/about-photo.jpg` | 2200×1238, contained at `max-width: 900px` | Same Drive folder (`6F5FDE6C-...JPEG`) — a finished Mahnopoly duplex at dusk. Replaced an AI-generated placeholder photo, 26 Aug 2026 (William caught it). |
 
-The three `hero-*.jpg` / `mahtropolis-hero.jpg` / `*-dusk.jpg` files
-were resized (long edge capped at 2200px) and re-encoded (JPEG quality
-82) from the Drive originals before adding them here — some of those
-originals were 12-14MB straight off a drone, which is not something to
-ship as a page background. `public/redesign/logo.png` /
-`logo-white.png` (see "The logo" below) came from the same Drive
-folder's `MahnopolyLLC.jpg`, background-removed.
+Every file under `public/redesign/` that came from that Drive folder
+(the two above, plus the ones in "The logo" below) was resized (long
+edge capped at 2200px) and re-encoded (JPEG quality 82) before adding
+it here — several of the Drive originals were 12-14MB straight off a
+drone. Two of the Mahtropolis grid photos were `.HEIC` — nothing
+available in this environment could decode that format directly, so
+each was pulled via Google Drive's own rendered preview image instead
+(open the file in Drive, read the `<img>` src Drive's viewer already
+rendered it to, fetch that directly) rather than the raw file.
 
-**Why `/about` is still the old contained-banner style:** its real
-photo is a wide 3:1 banner (1920×640), which fits that treatment
-naturally — no reason to change what already works. If a differently-
-shaped photo ever replaces it, don't force a 3:2 or square photo into
-that short wide slot (crops out most of the picture) or stretch it to
-fill the width at full height (gets enormous on wide screens) — either
-crop closer to 3:1 first, or give it its own taller slot instead.
-Property listing photos are a separate thing entirely — staff upload
-those per-listing through `/admin`, shown at much smaller sizes:
-130px-tall cards on the listings grid, a 320px-tall main photo and
-152px-tall thumbnails on a property's own page.
+**A gotcha worth knowing before replacing any of these:** match the
+new photo's aspect ratio to how it's actually displayed. The hero/grid
+images all use Next/Image `fill` + `object-fit: cover`, which crops
+safely to whatever box it's given — any aspect ratio works there. The
+`/about` photo does **not** — it's a plain contained image with
+`width`/`height` props Next uses to size the box, so those must match
+the real file's aspect ratio (2200×1238 right now) or the image will
+visibly stretch/squish. If a future replacement photo has a different
+shape, update those two numbers to match it — don't force it into
+2200×1238. Property listing photos are a separate thing entirely —
+staff upload those per-listing through `/admin`, shown at much smaller
+sizes: 130px-tall cards on the listings grid, a 320px-tall main photo
+and 152px-tall thumbnails on a property's own page.
 
 ## The logo
 
@@ -344,6 +348,21 @@ Hours/Epoxy) stack label-above-value under 480px width regardless
 either way, but the actual report is unconfirmed — get a screenshot
 or the specific page next time this comes up rather than guessing
 further.
+
+## The ticker's marquee loop (26 Aug 2026)
+
+The red scrolling band (`Ticker.tsx`) used the standard two-copies-
+animate-negative-50%-loop technique, which is only seamless if each
+copy is at least as wide as the viewport — on a wide enough monitor,
+one copy of the (short, 8-phrase) list came up short of the screen
+width, so the track ran out of content before the loop point and
+visibly stalled/snapped back instead of scrolling continuously. Fixed
+by repeating the phrase list 4× within each of the two halves
+(`REPEAT` in `Ticker.tsx`) — same loop math, just enough width margin
+that it shouldn't run out on any realistic screen. If it ever does
+(an extremely wide display), bump `REPEAT` further; there's no
+downside to it being higher than strictly needed, just a few more
+DOM nodes.
 
 ## What's outstanding
 

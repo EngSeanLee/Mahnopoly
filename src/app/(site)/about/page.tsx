@@ -14,22 +14,20 @@ const STATS = [
   { value: "24", label: "Lots at Mahtropolis" },
 ];
 
-// Contained, full photo visible, no crop/border — genuine 3:1 photo
-// (1920x640), shown at natural aspect ratio. Real copy from William as
-// of 25 Aug 2026 — no longer placeholder. Kept as a top banner (rather
-// than the redesign mockup's tall side-by-side photo panel) because this
-// photo's actual shape is a wide 3:1 banner — see README > "A gotcha
-// worth knowing" for why forcing a wide photo into a tall slot is a bad
-// trade, not a bug to fix here.
+// Contained, full photo visible, no crop, at the photo's own aspect
+// ratio (2200x1238) — see README > "A gotcha worth knowing" for why
+// forcing a photo into a slot shaped for a different ratio is a bad
+// trade. Real Mahnopoly photography (from the Mahnopoly Pictures Drive
+// folder), replacing an earlier AI-generated placeholder photo.
 export default function AboutPage() {
   return (
     <>
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "2rem 2rem 0", lineHeight: 0 }}>
         <Image
-          src="/about-photo.png"
-          alt="A craftsman-style home's front porch at golden hour, with a row of homes and tree-lined sidewalk along a Topeka, Kansas neighborhood street."
-          width={1920}
-          height={640}
+          src="/redesign/about-photo.jpg"
+          alt="A finished Mahnopoly duplex at dusk, with warm porch lighting."
+          width={2200}
+          height={1238}
           style={{ width: "100%", height: "auto", display: "block", borderRadius: 5 }}
           sizes="(max-width: 900px) 100vw, 900px"
           priority
