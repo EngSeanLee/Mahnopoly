@@ -31,42 +31,44 @@ export default async function AdminDashboardPage() {
         </Link>
       </div>
 
-      <table className="admin-table">
-        <thead>
-          <tr>
-            <th>Address</th>
-            <th>Type</th>
-            <th>Price</th>
-            <th>Status</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {listings.map((listing) => (
-            <tr key={listing.id}>
-              <td>{listing.address}</td>
-              <td>{listing.type === "rental" ? "Rental" : "For sale"}</td>
-              <td>{formatPrice(listing)}</td>
-              <td>
-                <span className={`status-badge status-${listing.status}`}>
-                  {STATUS_LABEL[listing.status]}
-                </span>
-              </td>
-              <td className="edit-cell" style={{ display: "flex", gap: "1rem", justifyContent: "flex-end" }}>
-                <Link href={`/admin/listings/${listing.id}/edit`}>Edit</Link>
-                <DeleteListingButton listingId={listing.id} address={listing.address} />
-              </td>
-            </tr>
-          ))}
-          {listings.length === 0 && (
+      <div className="table-scroll">
+        <table className="admin-table">
+          <thead>
             <tr>
-              <td colSpan={5} style={{ color: "#6b7280", padding: "1.5rem 0.5rem" }}>
-                No properties yet — add the first one above.
-              </td>
+              <th>Address</th>
+              <th>Type</th>
+              <th>Price</th>
+              <th>Status</th>
+              <th></th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {listings.map((listing) => (
+              <tr key={listing.id}>
+                <td>{listing.address}</td>
+                <td>{listing.type === "rental" ? "Rental" : "For sale"}</td>
+                <td>{formatPrice(listing)}</td>
+                <td>
+                  <span className={`status-badge status-${listing.status}`}>
+                    {STATUS_LABEL[listing.status]}
+                  </span>
+                </td>
+                <td className="edit-cell" style={{ display: "flex", gap: "1rem", justifyContent: "flex-end" }}>
+                  <Link href={`/admin/listings/${listing.id}/edit`}>Edit</Link>
+                  <DeleteListingButton listingId={listing.id} address={listing.address} />
+                </td>
+              </tr>
+            ))}
+            {listings.length === 0 && (
+              <tr>
+                <td colSpan={5} style={{ color: "#6b7280", padding: "1.5rem 0.5rem" }}>
+                  No properties yet — add the first one above.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }

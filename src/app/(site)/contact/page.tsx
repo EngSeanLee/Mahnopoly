@@ -51,35 +51,14 @@ export default async function ContactPage() {
 
         <div style={{ marginTop: 36, display: "grid", gap: 20, maxWidth: 460 }}>
           {rows.map((row) => (
-            <div
-              key={row.label}
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "baseline",
-                gap: "1rem",
-                paddingBottom: 12,
-                borderBottom: "1px solid var(--border)",
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "0.6rem",
-                  fontWeight: 500,
-                  letterSpacing: "0.16em",
-                  color: "var(--ink-50)",
-                  textTransform: "uppercase",
-                }}
-              >
-                {row.label}
-              </span>
+            <div key={row.label} className="info-row">
+              <span className="info-label">{row.label}</span>
               {row.href ? (
-                <a href={row.href} style={{ fontSize: "0.95rem", color: "var(--navy)" }}>
+                <a href={row.href} className="info-value">
                   {row.value}
                 </a>
               ) : (
-                <span style={{ fontSize: "0.95rem", color: "var(--navy)" }}>{row.value}</span>
+                <span className="info-value">{row.value}</span>
               )}
             </div>
           ))}

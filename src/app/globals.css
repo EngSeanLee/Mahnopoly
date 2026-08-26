@@ -553,6 +553,37 @@ a.sort-pill.active { background: var(--red); color: #fff; border-color: var(--re
   margin-top: 1rem;
 }
 
+/* Label/value row (Contact page's Office/Phone/Hours/Epoxy list). Side
+   by side normally; stacks label-above-value under 480px so a long
+   value (the office hours string, in particular) never has to crowd a
+   short label on one line on a phone. */
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.info-row .info-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--ink-50);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.info-row .info-value {
+  font-size: 0.95rem;
+  color: var(--navy);
+  text-align: right;
+}
+@media (max-width: 480px) {
+  .info-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .info-row .info-value { text-align: left; }
+}
+
 /* Admin — deliberately its own, quieter visual language (no serif
    display type, no house cursor, no ticker); only the shared color
    tokens above carry over, so the brand still reads as the same company. */
@@ -596,13 +627,20 @@ a.sort-pill.active { background: var(--red); color: #fff; border-color: var(--re
 .admin-tabs a.tab { padding-bottom: 0.4rem; font-family: var(--font-sans); font-weight: 700; font-size: 1.05rem; letter-spacing: normal; text-transform: none; color: var(--gray); }
 .admin-tabs a.tab.active { color: var(--navy); border-bottom-color: var(--navy); }
 
-table.admin-table { width: 100%; border-collapse: collapse; }
+/* Lets a wide table scroll horizontally within its own box instead of
+   either overflowing the page (invisibly, with no way to reach the rest
+   of it) or squeezing every column unreadably thin. Wrap any
+   table.admin-table in this on a phone-width screen. */
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+table.admin-table { width: 100%; min-width: 560px; border-collapse: collapse; }
 table.admin-table th {
   text-align: left;
   font-size: 0.85rem;
   color: var(--gray);
   border-bottom: 1px solid var(--border);
   padding: 0.6rem 0.5rem;
+  white-space: nowrap;
 }
 table.admin-table td {
   padding: 0.85rem 0.5rem;
@@ -611,6 +649,45 @@ table.admin-table td {
 }
 table.admin-table td.edit-cell { text-align: right; color: var(--navy); font-weight: 600; }
 table.admin-table td.edit-cell a { cursor: pointer; }
+
+/* Inquiries — a card list rather than a table. A table forces every
+   inquiry's message onto one row's worth of height and has no good way
+   to show a long one; a card lets it wrap and be fully read, and reads
+   fine at any width from a phone up, so there's no separate mobile
+   layout to keep in sync with a desktop one. */
+.inquiry-list { display: grid; gap: 1rem; }
+.inquiry-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.1rem 1.25rem;
+}
+.inquiry-card .inquiry-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin-bottom: 0.6rem;
+}
+.inquiry-card .inquiry-when { color: var(--gray); font-size: 0.8rem; white-space: nowrap; }
+.inquiry-card .inquiry-property { font-weight: 700; color: var(--navy); }
+.inquiry-card .inquiry-property a { color: inherit; text-decoration: underline; text-decoration-color: var(--border); }
+.inquiry-card .inquiry-who {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.9rem;
+  font-size: 0.9rem;
+  margin-bottom: 0.6rem;
+}
+.inquiry-card .inquiry-who a { color: var(--navy); font-weight: 600; }
+.inquiry-card .inquiry-message {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--ink);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+.inquiry-card .inquiry-message.empty { color: var(--gray); font-style: italic; }
 
 .add-property-panel {
   border: 1px solid var(--border);
@@ -699,6 +776,11 @@ table.admin-table td.edit-cell a { cursor: pointer; }
 @media (max-width: 900px) {
   header.site-header { padding: 1rem 1.5rem; }
   nav.main-nav { order: 3; width: 100%; justify-content: flex-start; gap: 1rem 1.25rem; }
+  /* The "|" divider before Staff Login reads fine sitting inline after
+     U-Haul on a wide row; once the nav wraps onto its own lines it can
+     land alone at the start of a line with nothing to its left to
+     divide from — drop the border/indent here instead of showing that. */
+  nav.main-nav a.nav-staff { border-left: none; padding-left: 0; }
   .photo-hero { padding: 70px 1.5rem 36px; }
   .listing-controls { gap: 16px; }
   .sort-group { margin-left: 0; }

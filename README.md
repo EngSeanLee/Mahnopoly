@@ -296,6 +296,45 @@ the original placeholder-style stock photos.
   text); fixed 26 Aug 2026. Worth double-checking any new Mahtropolis
   copy doesn't reintroduce a Topeka assumption.
 
+## Admin panel mobile pass (26 Aug 2026)
+
+The admin panel's tables didn't scroll on a phone — a long inquiry
+message just squeezed the whole row unreadably thin (or ran off-screen
+with no way to reach it), same for the properties table. Two changes:
+
+- **`/admin/inquiries` is now a card list, not a table**
+  (`src/app/admin/(protected)/inquiries/page.tsx`) — each inquiry is
+  its own box with the message free to wrap and be fully read, at any
+  screen width, rather than forced into one row's height. Also new:
+  phone/email are real `tel:`/`mailto:` links, and the property shows
+  as its actual address (linked to that listing's edit page) instead
+  of the raw `listing_id` slug — resolved via `getListings()` at
+  render time, so a deleted listing degrades to showing the id instead
+  of breaking.
+- **The properties table** (`/admin`) — kept as a table (its rows are
+  short and uniform, a table still fits) but wrapped in a new
+  `.table-scroll` container (`overflow-x: auto`) so on a narrow screen
+  it scrolls horizontally within its own box instead of overflowing
+  invisibly. Same class is there for any other admin table that needs
+  it later.
+
+Also fixed while in here: the public nav's "Staff Login" link showed a
+"|" divider meant to separate it from the item before it — on a phone,
+once the nav wraps onto its own lines, that divider can land alone at
+the start of a line with nothing to divide from. Dropped it below the
+900px breakpoint where the nav wraps (`globals.css`).
+
+**Still open:** a text from William described "the button" as
+"jumbled" near the days-of-week/hours text, but that wasn't reproduced
+in a mobile check of `/contact` (where hours are shown next to the
+"Send it over" button) or the footer (hours next to the phone number)
+— both read cleanly. Made the `/contact` info rows (Office/Phone/
+Hours/Epoxy) stack label-above-value under 480px width regardless
+(`.info-row` in `globals.css`) since that's a reasonable hardening
+either way, but the actual report is unconfirmed — get a screenshot
+or the specific page next time this comes up rather than guessing
+further.
+
 ## What's outstanding
 
 - **Zillow feed submission** — not started; see above.
