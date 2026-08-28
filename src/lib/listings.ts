@@ -158,9 +158,26 @@ function rowToListing(row: ListingRow): Listing {
 const LISTING_COLUMNS =
   "id, address, city, zip, neighborhood, type, status, price, beds, baths, pets, available_date, description, photos, updated_at";
 
-export async function getListings(): Promise<Listing[]> {
+export type ListingsLoadResult = {
+  listings: Listing[];
+  unavailable: boolean;
+};
+
+function developmentFallback(): ListingsLoadResult {
+  if (process.env.NODE_ENV !== "production") {
+    return { listings: FALLBACK_LISTINGS, unavailable: false };
+  }
+  return { listings: [], unavailable: true };
+}
+
+// Public marketing pages use the status-bearing version so an actual empty
+// portfolio can be distinguished from a database outage. Production never
+// substitutes the realistic development fixtures: showing an old address and
+// price as available is worse than showing a clear temporary-unavailable
+// message.
+export async function getListingsWithStatus(): Promise<ListingsLoadResult> {
   const supabase = getSupabasePublicClient();
-  if (!supabase) return FALLBACK_LISTINGS;
+  if (!supabase) return developmentFallback();
 
   const { data, error } = await supabase
     .from("listings")
@@ -168,15 +185,23 @@ export async function getListings(): Promise<Listing[]> {
     .order("created_at", { ascending: false });
 
   if (error || !data) {
-    console.error("getListings: query failed, using fallback data", error);
-    return FALLBACK_LISTINGS;
+    console.error("getListings: query failed", error);
+    return developmentFallback();
   }
-  return data.map(rowToListing);
+  return { listings: data.map(rowToListing), unavailable: false };
+}
+
+export async function getListings(): Promise<Listing[]> {
+  return (await getListingsWithStatus()).listings;
 }
 
 export async function getListing(id: string): Promise<Listing | undefined> {
   const supabase = getSupabasePublicClient();
-  if (!supabase) return FALLBACK_LISTINGS.find((l) => l.id === id);
+  if (!supabase) {
+    return process.env.NODE_ENV !== "production"
+      ? FALLBACK_LISTINGS.find((l) => l.id === id)
+      : undefined;
+  }
 
   const { data, error } = await supabase
     .from("listings")

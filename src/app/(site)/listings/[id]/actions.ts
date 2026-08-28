@@ -2,6 +2,13 @@
 
 import { getSupabasePublicClient } from "@/lib/supabase/public";
 import { notifyOfficeOfInquiry } from "@/lib/notify";
+import { getListing } from "@/lib/listings";
+import {
+  consumeLocalInquiryLimit,
+  inquiryRateLimitError,
+  inquiryRequestKey,
+  validateInquiryForm,
+} from "@/lib/inquiry-protection";
 
 export type InquiryResult =
   | { ok: true; emailed: boolean }
@@ -11,16 +18,19 @@ export type InquiryResult =
 // A Resend outage must never lose an inquiry.
 export async function submitInquiry(
   listingId: string,
-  listingAddress: string,
   formData: FormData
 ): Promise<InquiryResult> {
-  const name = String(formData.get("name") || "").trim();
-  const email = String(formData.get("email") || "").trim();
-  const phone = String(formData.get("phone") || "").trim();
-  const message = String(formData.get("message") || "").trim();
+  const validated = validateInquiryForm(formData);
+  if (!validated.ok) {
+    return validated.bot
+      ? { ok: true, emailed: false }
+      : { ok: false, error: validated.error };
+  }
+  const { name, email, phone, message } = validated.fields;
 
-  if (!name || !email) {
-    return { ok: false, error: "Name and email are required." };
+  const requestKey = await inquiryRequestKey();
+  if (!consumeLocalInquiryLimit(requestKey)) {
+    return { ok: false, error: inquiryRateLimitError() };
   }
 
   const supabase = getSupabasePublicClient();
@@ -39,12 +49,19 @@ export async function submitInquiry(
     };
   }
 
-  const { error: insertError } = await supabase.from("inquiries").insert({
-    listing_id: listingId,
-    name,
-    email,
-    phone,
-    message,
+  // Derive the address from the database instead of trusting the bound value
+  // supplied by a browser. Server Action arguments are untrusted input too.
+  const listing = await getListing(listingId);
+  if (!listing) {
+    return { ok: false, error: "This listing is no longer available. Please call the office." };
+  }
+
+  const { error: insertError } = await supabase.rpc("submit_inquiry", {
+    p_listing_id: listingId,
+    p_name: name,
+    p_email: email,
+    p_phone: phone,
+    p_message: message,
   });
 
   if (insertError) {
@@ -53,7 +70,7 @@ export async function submitInquiry(
   }
 
   const { sent } = await notifyOfficeOfInquiry({
-    listingAddress,
+    listingAddress: listing.address,
     name,
     email,
     phone,

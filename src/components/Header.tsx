@@ -17,6 +17,7 @@ const NAV_LINKS = [
     label: "For Sale",
     match: (path: string, tab: string | null) => path === "/listings" && tab === "sale",
   },
+  { href: "/apply", label: "Apply", match: (path: string) => path === "/apply" },
   { href: "/epoxy", label: "Epoxy", match: (path: string) => path === "/epoxy" },
   { href: "/mahtropolis", label: "Mahtropolis", match: (path: string) => path === "/mahtropolis" },
   { href: "/about", label: "About", match: (path: string) => path === "/about" },

@@ -23,6 +23,8 @@ A public website with:
   now. `/contact` also has a general "Send a note" form (not tied to a
   specific listing) that reaches the office the same way a listing
   inquiry does.
+- `/apply` — the live rental-application download and office handoff,
+  now tracked in source instead of existing only in an unpushed deploy.
 - `/epoxy` also has a "Recent Work" photo gallery, staff-uploadable
   through Settings — see "The epoxy photo gallery" below. Hidden
   entirely until at least one photo's been added.
@@ -68,17 +70,19 @@ behind each run (visible in `/admin`, clearly labeled).
 
 ## Deploying
 
-Deploys are **manual only**, on purpose:
+Pushing code does not deploy production. Every pull request and push to
+`main` runs `.github/workflows/ci.yml` (install, lint, tests, production
+build). Production is promoted manually from a reviewed commit with the
+**Deploy production** workflow. That workflow repeats the checks, builds
+with the production Vercel environment, and deploys the immutable build.
 
-```
-vercel deploy --prod --scope mahnopolyllc
-```
+Configure the GitHub `production` environment with `VERCEL_TOKEN`,
+`VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID`, require an environment reviewer,
+then select the exact branch/tag/commit in **Actions → Deploy production →
+Run workflow**. `/release` reports the deployed commit/deployment metadata.
 
-run from this folder. GitHub auto-deploy is deliberately **not**
-connected — an earlier version of this project had it silently wired up
-and a `git push` once shipped a broken build straight to production
-before anyone caught it. Don't reconnect it (`vercel git connect`)
-without a good reason.
+This preserves deliberate manual promotion without recreating the old
+failure mode where an ordinary `git push` silently shipped production.
 
 ## Who hosts it, and what it costs
 
@@ -144,10 +148,15 @@ history of what ran against production, in order:
    and the private `owner-documents` storage bucket. No real data was
    lost — no owner was ever created for actual business use, only test
    rows from building the feature.
+7. `007_epoxy_photos.sql` — adds the staff-managed epoxy gallery URLs.
+8. `008_harden_inquiry_submission.sql` — removes unrestricted anonymous
+   inquiry inserts and replaces them with a validated, volume-limited RPC.
 
-All six have run against the live project. A fresh project should just
+Apply any numbered migrations not yet present in production before deploying
+code that depends on them; specifically, `008` must precede the inquiry-action
+release in this change. A fresh project should just
 run `schema.sql` then `storage.sql` — those already reflect the
-post-`006` state, not the intermediate owner-portal detour.
+current state, not the intermediate owner-portal detour.
 
 ## The Zillow feed
 

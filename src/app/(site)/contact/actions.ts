@@ -3,6 +3,12 @@
 import { getSupabasePublicClient } from "@/lib/supabase/public";
 import { notifyOfficeOfInquiry } from "@/lib/notify";
 import type { InquiryResult } from "@/app/(site)/listings/[id]/actions";
+import {
+  consumeLocalInquiryLimit,
+  inquiryRateLimitError,
+  inquiryRequestKey,
+  validateInquiryForm,
+} from "@/lib/inquiry-protection";
 
 // General "Send a note" inquiry from /contact — not tied to a specific
 // listing (listing_id is nullable in supabase/schema.sql for exactly
@@ -10,14 +16,17 @@ import type { InquiryResult } from "@/app/(site)/listings/[id]/actions";
 // folded into the saved message so staff still see it in /admin, and
 // into the office notification email's subject line.
 export async function submitGeneralInquiry(formData: FormData): Promise<InquiryResult> {
-  const name = String(formData.get("name") || "").trim();
-  const email = String(formData.get("email") || "").trim();
-  const phone = String(formData.get("phone") || "").trim();
-  const property = String(formData.get("property") || "").trim();
-  const messageBody = String(formData.get("message") || "").trim();
+  const validated = validateInquiryForm(formData);
+  if (!validated.ok) {
+    return validated.bot
+      ? { ok: true, emailed: false }
+      : { ok: false, error: validated.error };
+  }
+  const { name, email, phone, property, message: messageBody } = validated.fields;
 
-  if (!name || !email) {
-    return { ok: false, error: "Name and email are required." };
+  const requestKey = await inquiryRequestKey();
+  if (!consumeLocalInquiryLimit(requestKey)) {
+    return { ok: false, error: inquiryRateLimitError() };
   }
 
   const message = property ? `Which property: ${property}\n\n${messageBody}` : messageBody;
@@ -32,12 +41,12 @@ export async function submitGeneralInquiry(formData: FormData): Promise<InquiryR
     };
   }
 
-  const { error: insertError } = await supabase.from("inquiries").insert({
-    listing_id: null,
-    name,
-    email,
-    phone,
-    message,
+  const { error: insertError } = await supabase.rpc("submit_inquiry", {
+    p_listing_id: null,
+    p_name: name,
+    p_email: email,
+    p_phone: phone,
+    p_message: message,
   });
 
   if (insertError) {

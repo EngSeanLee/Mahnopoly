@@ -3,6 +3,8 @@ import Image from "next/image";
 import type { SiteSettings } from "@/lib/settings";
 
 export default function Footer({ settings }: { settings: SiteSettings }) {
+  const telHref = `tel:${settings.officePhone.replace(/[^\d+]/g, "")}`;
+
   return (
     <footer className="site-footer" id="contact">
       <div>
@@ -21,7 +23,12 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
           {settings.officeHours}
         </div>
       </div>
-      <div className="foot-phone">{settings.officePhone}</div>
+      <nav className="foot-nav" aria-label="More pages">
+        <Link href="/about">About</Link>
+        <Link href="/contact">Contact</Link>
+        <Link href="/mahtropolis">Mahtropolis</Link>
+      </nav>
+      <a className="foot-phone" href={telHref}>{settings.officePhone}</a>
     </footer>
   );
 }

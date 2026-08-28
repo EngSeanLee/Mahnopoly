@@ -60,16 +60,15 @@ await check("read settings", async () => {
   assert(res.ok, `expected 2xx, got ${res.status}`);
 });
 await check("submit an inquiry", async () => {
-  // Real listing id from supabase/seed.sql — must exist for the FK.
-  const res = await fetch(`${url}/rest/v1/inquiries`, {
+  const res = await fetch(`${url}/rest/v1/rpc/submit_inquiry`, {
     method: "POST",
-    headers: { ...headers, Prefer: "return=minimal" },
+    headers,
     body: JSON.stringify({
-      listing_id: "clay-st",
-      name: "RLS verification script",
-      email: "rls-check@example.com",
-      phone: "",
-      message: "Automated check (scripts/verify-rls.mjs) — safe to ignore/delete.",
+      p_listing_id: null,
+      p_name: "RLS verification script",
+      p_email: `rls-check-${Date.now()}@example.com`,
+      p_phone: "",
+      p_message: "Automated check (scripts/verify-rls.mjs) — safe to ignore/delete.",
     }),
   });
   assert(res.ok, `expected 2xx, got ${res.status}: ${await res.text()}`);
@@ -84,6 +83,17 @@ await check("view property photos in storage", async () => {
 });
 
 console.log("\nPublic (anon) — should be DENIED:");
+await check("insert directly into inquiries", async () => {
+  const res = await fetch(`${url}/rest/v1/inquiries`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      name: "Direct insert should fail",
+      email: "direct-insert@example.com",
+    }),
+  });
+  assert(!res.ok, `expected rejection, got ${res.status}`);
+});
 await check("read inquiries (other people's leads)", async () => {
   const res = await fetch(`${url}/rest/v1/inquiries?select=id&limit=1`, { headers });
   const body = await res.json();

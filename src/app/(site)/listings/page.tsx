@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getListings } from "@/lib/listings";
+import { getListingsWithStatus } from "@/lib/listings";
+import { getSettings } from "@/lib/settings";
 import ListingCard from "@/components/ListingCard";
 import PhotoHero from "@/components/PhotoHero";
 import Ticker from "@/components/Ticker";
@@ -17,12 +18,16 @@ export default async function ListingsPage({
   const type = activeTab === "rent" ? "rental" : "sale";
   const activeSort = sort === "newest" ? "newest" : "price";
 
-  const listings = await getListings();
-  const rentCount = listings.filter((l) => l.type === "rental" && l.status !== "rented").length;
-  const saleCount = listings.filter((l) => l.type === "sale" && l.status !== "rented").length;
+  const [{ listings, unavailable }, settings] = await Promise.all([
+    getListingsWithStatus(),
+    getSettings(),
+  ]);
+  const telHref = `tel:${settings.officePhone.replace(/[^\d+]/g, "")}`;
+  const rentCount = listings.filter((l) => l.type === "rental" && l.status === "available").length;
+  const saleCount = listings.filter((l) => l.type === "sale" && l.status === "available").length;
 
   const items = listings
-    .filter((l) => l.type === type && l.status !== "rented")
+    .filter((l) => l.type === type && l.status === "available")
     .sort((a, b) =>
       activeSort === "price"
         ? a.price - b.price
@@ -76,9 +81,29 @@ export default async function ListingsPage({
           {items.length ? (
             items.map((listing) => <ListingCard key={listing.id} listing={listing} />)
           ) : (
-            <p style={{ color: "var(--ink-55)" }}>
-              Nothing listed here right now — check back soon.
-            </p>
+            <div className="listing-empty listing-empty-grid">
+              <span className="eyebrow">
+                {unavailable ? "TEMPORARILY UNAVAILABLE" : "NO PUBLIC OPENINGS TODAY"}
+              </span>
+              <h2>
+                {unavailable
+                  ? "Call us for current availability."
+                  : activeTab === "rent"
+                    ? "Let us know what kind of home you need."
+                    : "Ask what is coming next."}
+              </h2>
+              <p>
+                {unavailable
+                  ? "The live inventory could not be loaded. The office can give you the latest information."
+                  : "Send your preferred city, budget, and timing. We will know what to watch for when inventory changes."}
+              </p>
+              <div className="empty-actions">
+                <Link className="btn btn-red" href="/contact?topic=availability">
+                  Contact the office
+                </Link>
+                <a className="empty-phone" href={telHref}>{settings.officePhone}</a>
+              </div>
+            </div>
           )}
           <MahtropolisTile />
         </div>

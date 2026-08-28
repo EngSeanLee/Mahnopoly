@@ -20,7 +20,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
   return (
     <div className="site-cursor">
       <Header settings={settings} />
-      {children}
+      <main id="main-content">{children}</main>
       <Footer settings={settings} />
     </div>
   );

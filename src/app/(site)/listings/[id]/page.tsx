@@ -63,7 +63,7 @@ export default async function PropertyPage({
         </div>
         <div className="inquiry-box">
           <h3>Interested in this property?</h3>
-          <InquiryForm listingId={listing.id} listingAddress={listing.address} />
+          <InquiryForm listingId={listing.id} />
         </div>
       </div>
     </div>

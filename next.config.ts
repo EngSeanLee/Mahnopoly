@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  deploymentId:
+    process.env.VERCEL_GIT_COMMIT_SHA || process.env.NEXT_DEPLOYMENT_ID,
   images: {
     // Property photos live in Supabase Storage's public bucket
     // (supabase/storage.sql). The project ref is fixed per-environment

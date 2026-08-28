@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getListings } from "@/lib/listings";
+import { getListingsWithStatus } from "@/lib/listings";
 import { getSettings } from "@/lib/settings";
 import ListingCard from "@/components/ListingCard";
 import PhotoHero from "@/components/PhotoHero";
@@ -14,8 +14,13 @@ import Ticker from "@/components/Ticker";
 // admin/settings/actions.ts), so both stay current without redeploying
 // and without giving up the caching/speed benefit of static rendering.
 export default async function Home() {
-  const [listings, settings] = await Promise.all([getListings(), getSettings()]);
-  const featured = listings.filter((l) => l.status !== "rented").slice(0, 3);
+  const [{ listings, unavailable }, settings] = await Promise.all([
+    getListingsWithStatus(),
+    getSettings(),
+  ]);
+  const openListings = listings.filter((listing) => listing.status === "available");
+  const featured = openListings.slice(0, 3);
+  const telHref = `tel:${settings.officePhone.replace(/[^\d+]/g, "")}`;
 
   return (
     <>
@@ -30,8 +35,11 @@ export default async function Home() {
           dirt — with local folks you can actually talk to.
         </p>
         <div className="hero-actions">
-          <Link className="btn btn-cream" href="/listings?tab=rent">
-            See what&apos;s open
+          <Link
+            className="btn btn-cream"
+            href={openListings.length ? "/listings?tab=rent" : "/contact?topic=availability"}
+          >
+            {openListings.length ? "See what's open" : "Join the availability list"}
           </Link>
         </div>
       </PhotoHero>
@@ -64,16 +72,50 @@ export default async function Home() {
       </div>
 
       <div className="section-row">
-        <h2>Open right now</h2>
-        <Link className="view-all" href="/listings?tab=rent">
-          ALL {listings.length} LISTINGS →
-        </Link>
+        <h2>
+          {unavailable
+            ? "Current listings"
+            : openListings.length
+              ? "Open right now"
+              : "Looking for your next place?"}
+        </h2>
+        {openListings.length > 0 && (
+          <Link className="view-all" href="/listings?tab=rent">
+            ALL {openListings.length} OPEN LISTINGS →
+          </Link>
+        )}
       </div>
-      <div className="listing-grid">
-        {featured.map((listing) => (
-          <ListingCard key={listing.id} listing={listing} />
-        ))}
-      </div>
+      {featured.length > 0 ? (
+        <div className="listing-grid">
+          {featured.map((listing) => (
+            <ListingCard key={listing.id} listing={listing} />
+          ))}
+        </div>
+      ) : (
+        <div className="listing-empty-wrap">
+          <div className="listing-empty">
+            <span className="eyebrow">
+              {unavailable ? "TEMPORARILY UNAVAILABLE" : "NO PUBLIC OPENINGS TODAY"}
+            </span>
+            <h3>
+              {unavailable
+                ? "Call us for current availability."
+                : "Tell us what you are looking for."}
+            </h3>
+            <p>
+              {unavailable
+                ? "Our live inventory could not be loaded, but the office can give you the latest information."
+                : "Inventory changes quickly. Send the office your preferred city, price range, and move-in date, and we will know what to watch for."}
+            </p>
+            <div className="empty-actions">
+              <Link className="btn btn-red" href="/contact?topic=availability">
+                Join the availability list
+              </Link>
+              <a className="empty-phone" href={telHref}>{settings.officePhone}</a>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div style={{ padding: "20px 2.5rem 78px", background: "var(--cream)" }}>
         <Link

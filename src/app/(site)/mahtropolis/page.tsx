@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import Ticker from "@/components/Ticker";
 
 export const metadata = {
@@ -65,6 +66,9 @@ export default function MahtropolisPage() {
             We bought the field, cut the street, set the curbs, and filed
             the plat. Twenty-four lots — one waiting for your name on it.
           </p>
+          <Link className="btn btn-red" href="/contact?topic=mahtropolis" style={{ display: "inline-block", marginTop: 22 }}>
+            Ask about a lot
+          </Link>
         </div>
       </div>
 
@@ -181,6 +185,18 @@ export default function MahtropolisPage() {
             <Image src="/redesign/mahtropolis-street-ground.jpg" alt="Ground-level view down the finished Mahnopoly Avenue, with a water tower in the distance." fill sizes="33vw" style={{ objectFit: "cover" }} />
           </div>
         </div>
+
+        <section className="mahtropolis-cta">
+          <span className="eyebrow">AVAILABLE LOTS &amp; UPCOMING HOMES</span>
+          <h2>Put your name on the next conversation.</h2>
+          <p>
+            Ask about current lot availability, expected timelines, and what
+            Mahnopoly is planning next in Emporia.
+          </p>
+          <Link className="btn btn-red" href="/contact?topic=mahtropolis">
+            Ask about Mahtropolis
+          </Link>
+        </section>
       </div>
     </>
   );

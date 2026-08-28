@@ -3,7 +3,12 @@ import GeneralInquiryForm from "@/components/GeneralInquiryForm";
 
 export const metadata = { title: "Contact | Mahnopoly" };
 
-export default async function ContactPage() {
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ topic?: string }>;
+}) {
+  const { topic } = await searchParams;
   const settings = await getSettings();
   const telHref = `tel:${settings.officePhone.replace(/[^\d+]/g, "")}`;
 
@@ -76,7 +81,15 @@ export default async function ContactPage() {
           Send a note
         </div>
         <div style={{ marginTop: 24, maxWidth: 460 }}>
-          <GeneralInquiryForm />
+          <GeneralInquiryForm
+            defaultProperty={
+              topic === "mahtropolis"
+                ? "Mahtropolis lot or upcoming home"
+                : topic === "availability"
+                  ? "Future rental or for-sale availability"
+                  : ""
+            }
+          />
         </div>
       </div>
     </div>
